@@ -94,6 +94,13 @@
   animation: border-running 6s linear infinite;
 }
 
+
+.animated-gradient-border-2 {
+  background: linear-gradient(152.36deg, #ffffff, #1a1a1a, #ffffff);
+  background-size: 400% 400%;
+  animation: border-running 6s linear infinite;
+}
+
 /* Glow Effect */
 /* box-1 */
 

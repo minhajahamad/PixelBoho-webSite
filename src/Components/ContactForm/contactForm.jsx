@@ -3,7 +3,7 @@ import React from 'react';
 const ContactForm = () => {
   return (
     <div className="bg-[url('/images/Contact-Form-img.png')] bg-no-repeat bg-cover bg-center h-[700px] relative ">
-      <div className="text-white absolute right-[252px] top-[100px] ">
+      <div className="text-white absolute right-[50px] top-[50px] xl:right-[252px] xl:top-[100px] ">
         <p className="font-medium text-[60px]">Say Hi!</p>
         <p className="text-[16px] font-light xl:w-[380px] ">
           Book an appointment with us to get started on your
@@ -11,7 +11,7 @@ const ContactForm = () => {
             Journey of Success
           </span>{' '}
         </p>
-        <div className="p-[.7px] xl:w-[380px] rounded-[10px]  bg-[linear-gradient(to_bottom_right,#808080,#1A1A1A)] xl:mt-3  ">
+        <div className="p-[.7px] xl:w-[380px] rounded-[10px]  bg-[linear-gradient(to_bottom_right,#808080,#1A1A1A)] animated-gradient-border-2 xl:mt-3  ">
           <div className="p-5 w-full h-full   bg-[#101010] rounded-[10px]  ">
             <form>
               <div className="flex flex-col gap-1 ">

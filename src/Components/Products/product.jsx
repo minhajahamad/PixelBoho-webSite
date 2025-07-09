@@ -55,11 +55,6 @@
 
 // export default Product;
 
-
-
-
-
-
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 
@@ -130,7 +125,7 @@ const Counter = ({ end }) => {
     return () => clearInterval(counter);
   }, [isInView, end]);
 
-  const easeOutCubic = t => (--t) * t * t + 1;
+  const easeOutCubic = t => --t * t * t + 1;
 
   return <span ref={ref}>{count}+</span>;
 };
@@ -152,38 +147,40 @@ const Product = () => {
       </div>
 
       <div className="p-[.7px] xl:h-[200px] xl:w-[920px] xl:ml-12 mt-9 xl:mt-8 rounded-[22px] animated-gradient-border-1">
-        <div className="bg-[#101010] rounded-[22px] h-full w-full  flex items-center gap-1  text-white px-15  ">
-          <div className="xl:w-[300px] xl:h-45 xl:mr-6  flex flex-col items-center justify-center px-2 ">
-            <p className="xl:text-[50px] font-semibold mx-auto">
+        <div className="bg-[#101010] rounded-[22px] h-full w-full  flex flex-col xl:flex-row  items-center xl:gap-1 gap-10  text-white px-15 py-10 ">
+          <div className="w-[350px] md:w-[550px] xl:w-[300px] xl:h-45 xl:mr-6  flex flex-col items-center justify-center px-2 ">
+            <p className="text-[60px] md:text-[80px]  xl:text-[50px] font-semibold mx-auto">
               <Counter end={200} />
             </p>
-            <p className="mx-auto font-light text-[14px]">Creative Concepts</p>
-            <p className="mx-auto font-light text-[14px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[16px] md:text-[22px]  xl:text-[14px]">
+              Creative Concepts
+            </p>
+            <p className="mx-auto font-light text-[16px] md:text-[22px]  xl:text-[14px] text-[#E2E2E2]">
               Nourishing creatives which{' '}
             </p>
-            <p className="mx-auto font-light text-[14px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[16px] md:text-[22px]  xl:text-[14px] text-[#E2E2E2]">
               prospects your brand identity
             </p>
           </div>
           <div className="xl:w-[300px] xl:h-45  flex flex-col items-center justify-center px-2 ">
-            <p className="xl:text-[50px] font-semibold mx-auto">
+            <p className=" text-[60px] md:text-[80px] xl:text-[50px] font-semibold mx-auto">
               <Counter end={150} />
             </p>
-            <p className="mx-auto font-light text-[14px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[16px] md:text-[22px]  xl:text-[14px] text-[#E2E2E2]">
               Product Solutions
             </p>
-            <p className="mx-auto font-light text-[14px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[16px] md:text-[22px]  xl:text-[14px] text-[#E2E2E2]">
               Best in class industrial
             </p>
-            <p className="mx-auto font-light text-[14px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[16px] md:text-[22px]  xl:text-[14px] text-[#E2E2E2]">
               level software solutions
             </p>
           </div>
           <div className="xl:w-[300px] xl:h-45  flex flex-col items-center  px-2 pt-5">
-            <p className="xl:text-[50px] font-semibold">
+            <p className=" text-[60px] md:text-[80px] xl:text-[50px] font-semibold">
               <Counter end={15} />
             </p>
-            <p className="mx-auto font-light text-[14px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[16px] md:text-[22px] xl:text-[14px] text-[#E2E2E2]">
               {' '}
               Happy Customers
             </p>

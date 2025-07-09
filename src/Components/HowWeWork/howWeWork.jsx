@@ -194,24 +194,24 @@ const HowWeWork = () => {
   const { title, description, imageRight } = currentSection;
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <div
-        className="h-screen flex flex-col justify-center items-center bg-black sticky top-0 z-10"
+        className="h-screen lg:h-[1000px]   flex flex-col justify-center items-center bg-black sticky top-0 z-10"
         ref={ref}
       >
         <p className="text-center font-semibold text-[65px] text-white mb-4">
           How We Work
         </p>
 
-        <div className="bg-black h-[500px] flex pl-[180px] relative overflow-x-hidden w-full">
-          <div className="w-[1225px] h-[100px] absolute z-1 top-[-20px] left-[207px] pointer-events-none">
+        <div className="bg-black h-[500px]  flex flex-col xl:flex-row pl-[60px] lg:pl-40  xl:pl-[180px] relative overflow-x-hidden w-full">
+          <div className="w-[1225px] h-[100px] absolute z-1 top-[-20px] left-[207px] pointer-events-none hidden xl:block">
             <img
               src="/images/Blur Top.png"
               className="w-full h-full opacity-90 mix-blend-screen blur-sm"
               alt="Top Blur"
             />
           </div>
-          <div className="absolute h-[110px] w-[1225px] bottom-0 z-1 left-[207px] pointer-events-none">
+          <div className="absolute h-[110px] w-[1225px] bottom-0 z-1 left-[207px] pointer-events-none hidden xl:block">
             <img
               src="/images/Blur Bottom.png"
               className="h-full w-full opacity-90 mix-blend-screen blur-sm"
@@ -219,10 +219,10 @@ const HowWeWork = () => {
             />
           </div>
 
-          <div className="h-full w-[55%] flex flex-col justify-center relative">
+          <div className="h-full w-[55%]  flex flex-col  justify-center relative mt-3 ">
             <img
               src="/images/Disc.png"
-              className="w-[200px] h-[210px] absolute left-[-274px] top-[55px] z-0"
+              className=" xl:h-[210px] lg:h-[210px] absolute xl:left-[-274px] lg:left-[-300px] top-[55px] z-0 hidden lg:block"
               alt="Disc"
             />
             <AnimatePresence mode="wait">
@@ -233,17 +233,17 @@ const HowWeWork = () => {
                 exit={{ opacity: 0, y: -200 }}
                 transition={{ duration: 0.45, ease: 'easeInOut' }}
               >
-                <p className="font-marketing-1 text-[60px] text-white">
+                <p className="font-marketing-1 xl:w-[500px] text-[50px] lg:text-[60px]  text-white leading-[60px]">
                   {title}
                 </p>
-                <p className="font-light text-[17px] text-[#E2E2E2] mt-6 w-[600px]">
+                <p className="font-light text-[17px] lg:text-[20px] xl:text-[14px] text-[#E2E2E2] mt-6 w-[300px] md:w-[500px] lg:w-[700px] xl:w-[600px]">
                   {description}
                 </p>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="bg-black w-[45%] h-full overflow-hidden">
+          <div className="bg-black w-[60%] xl:w-[45%] h-full mt-4 overflow-hidden scrollbar-hide ">
             <AnimatePresence mode="wait">
               <motion.img
                 key={imageRight}
@@ -252,7 +252,7 @@ const HowWeWork = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -200 }}
                 transition={{ duration: 0.45, ease: 'easeInOut' }}
-                className="w-full h-full object-cover relative z-0"
+                className="w-full h-full object-cover relative z-0 overflow-y-hidden "
                 alt="How We Work"
               />
             </AnimatePresence>
@@ -277,7 +277,7 @@ const HowWeWork = () => {
         {/* Scroll hint */}
         {step < sections.length - 1 && (
           <motion.div
-            className="absolute bottom-8 text-gray-400 text-sm"
+            className="absolute bottom-15 md:bottom-35 lg:bottom-80 xl:bottom-37 text-gray-400 text-sm"
             animate={{ opacity: isScrolling ? 0 : 1 }}
             transition={{ duration: 0.3 }}
           >

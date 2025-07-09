@@ -274,7 +274,7 @@ const LogoStrip = () => {
 
   return (
     <div className="py-20 xl:py-10 flex flex-col items-center justify-center bg-black relative overflow-hidden">
-      <div className="w-[1100px] overflow-hidden">
+      <div className=" w-[380px] md:w-[680px] lg:w-[880px]  xl:w-[1100px] overflow-hidden">
         <div className="marquee-container fade-effect cursor-pointer">
           <div className="marquee-track ">
             {columns.map((pair, i) => (
@@ -316,12 +316,12 @@ const LogoStrip = () => {
       </div>
 
       {/* Divider */}
-      <hr className="text-white w-[100%] md:w-[100%] xl:w-[93%] xl:mt-[5%] mt-[50%] md:mt-[25%]" />
+      <hr className="text-white w-[80%] md:w-[80%] lg:w-[88%] xl:w-[85%] xl:mt-[10%] mt-[30%] md:mt-[15%]" />
 
       {/* Background decoration */}
       <img
         src="/images/eclipse-right-1.png"
-        className="absolute w-[400px] h-[500px] top-[-800px] right-[-150px] xl:top-[-495px] xl:right-[-150px]"
+        className="absolute w-[400px] h-[500px] top-[-900px] right-[-150px] xl:top-[-495px] xl:right-[-150px]"
         alt="Eclipse decoration"
       />
     </div>
