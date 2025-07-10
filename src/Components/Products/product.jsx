@@ -56,46 +56,11 @@
 // export default Product;
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import {  useInView } from 'framer-motion';
 
-const NextSection = () => (
-  <div className="bg-white h-screen flex items-center justify-center">
-    <h1 className="text-black text-4xl font-bold">Next Section</h1>
-  </div>
-);
 
-const sections = [
-  {
-    title: 'Discover & Decode',
-    description:
-      "We start by listening—closely. To your goals, your market, and your brand's unique DNA. Then we dig deep with research and insights to decode what your audience actually wants.",
-    imageRight: '/images/Image 1.png',
-  },
-  {
-    title: 'Map & Wireframe',
-    description:
-      'With clarity in hand, we structure intuitive flows and user journeys that put purpose first. Every click, scroll, and interaction is mapped to support your business objectives.',
-    imageRight: '/images/Image 2.png',
-  },
-  {
-    title: 'Design With Intent',
-    description:
-      "Our design process isn't just about looking good—it's about building visual systems that convert. Think bold aesthetics, crisp layouts, and storytelling that moves people. You're involved at every key step.",
-    imageRight: '/images/Image 3.png',
-  },
-  {
-    title: 'Build & Elevate',
-    description:
-      "Once approved, our developers bring everything to life—with precision code, smooth animations, and tech that scales. We don't just develop—we engineer ",
-    imageRight: '/images/Image 4.png',
-  },
-  {
-    title: 'Launch, Learn, and Grow',
-    description:
-      "Your brand doesn't stop at launch. We monitor, analyze, and optimize. From post-launch support to campaign integration, we ensure your digital presence stays sharp, relevant, and growth-driven.",
-    imageRight: '/images/Image 5.png',
-  },
-];
+
+
 
 const Counter = ({ end }) => {
   const [count, setCount] = useState(0);

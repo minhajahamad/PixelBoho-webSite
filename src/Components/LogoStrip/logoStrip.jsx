@@ -248,6 +248,7 @@
 // };
 
 // export default LogoStrip;
+
 import React from 'react';
 
 const LogoStrip = () => {
@@ -274,49 +275,44 @@ const LogoStrip = () => {
 
   return (
     <div className="py-20 xl:py-10 flex flex-col items-center justify-center bg-black relative overflow-hidden">
-      <div className=" w-[380px] md:w-[680px] lg:w-[880px]  xl:w-[1100px] overflow-hidden">
-        <div className="marquee-container fade-effect cursor-pointer">
-          <div className="marquee-track ">
+      <div className="w-[380px] md:w-[680px] lg:w-[880px] xl:w-[1100px] overflow-hidden">
+        <div className="marquee-container fade-effect cursor-pointer group"> {/* Added group here */}
+          <div className="marquee-track flex">
             {columns.map((pair, i) => (
               <div
                 key={`set1-${i}`}
                 className="logo-column flex flex-col items-center gap-10 flex-shrink-0 w-[160px]"
               >
-                <img
-                  src={pair.top}
-                  alt={`Top Logo ${i}`}
-                  className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain "
-                />
-                <img
-                  src={pair.bottom}
-                  alt={`Bottom Logo ${i}`}
-                  className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain"
-                />
+                {[pair.top, pair.bottom].map((src, idx) => (
+                  <img
+                    key={`${i}-1-${idx}`}
+                    src={src}
+                    alt={`Top Logo ${i}-${idx}`}
+                    className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain transition-all duration-300 transform group-hover:opacity-40 hover:opacity-100 hover:scale-105"
+                  />
+                ))}
               </div>
             ))}
+
             {columns.map((pair, i) => (
               <div
                 key={`set2-${i}`}
                 className="logo-column flex flex-col items-center gap-10 flex-shrink-0 w-[160px]"
               >
-                <img
-                  src={pair.top}
-                  alt={`Top Logo ${i}`}
-                  className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain"
-                />
-                <img
-                  src={pair.bottom}
-                  alt={`Bottom Logo ${i}`}
-                  className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain"
-                />
+                {[pair.top, pair.bottom].map((src, idx) => (
+                  <img
+                    key={`${i}-2-${idx}`}
+                    src={src}
+                    alt={`Bottom Logo ${i}-${idx}`}
+                    className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain transition-all duration-300 transform group-hover:opacity-40 hover:opacity-100 hover:scale-105"
+                  />
+                ))}
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Divider */}
-      <hr className="text-white w-[80%] md:w-[80%] lg:w-[88%] xl:w-[85%] xl:mt-[10%] mt-[30%] md:mt-[15%]" />
 
       {/* Background decoration */}
       <img

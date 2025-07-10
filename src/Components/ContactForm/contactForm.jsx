@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-const ContactForm = () => {
+const ContactForm = forwardRef((props, ref) => {
   return (
-    <div className="bg-[url('/images/Contact-Form-img.png')] bg-no-repeat bg-cover bg-center h-[700px] relative ">
+    <div
+      ref={ref}
+      className="bg-[url('/images/Contact-Form-img.png')] bg-no-repeat bg-cover bg-center h-[700px] relative "
+    >
       <div className="text-white absolute right-[50px] top-[50px] xl:right-[252px] xl:top-[100px] ">
         <p className="font-medium text-[60px]">Say Hi!</p>
         <p className="text-[16px] font-light xl:w-[380px] ">
@@ -34,7 +37,7 @@ const ContactForm = () => {
                 </label>
                 <select className="xl:w-[330px] border border-[#5B5B5B]  rounded-[6px] bg-[#353535] focus:border-[#E2E2E2] focus:outline-none  " />
               </div>
-              <div className="xl:w-[330px] bg-[#FFBA3A] text-black font-semibold text-[16px] rounded-[10px] p-1 text-center xl:mt-8 ">
+              <div className="xl:w-[330px] bg-[#FFBA3A] text-black font-semibold text-[16px] rounded-[10px] p-1 text-center xl:mt-8 cursor-pointer hover:bg-[#ffac12] transition-colors duration-300 ">
                 Book a Meeting
               </div>
             </form>
@@ -43,6 +46,6 @@ const ContactForm = () => {
       </div>
     </div>
   );
-};
+});
 
 export default ContactForm;
