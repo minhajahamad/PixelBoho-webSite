@@ -33,7 +33,7 @@ const HeroSection = () => {
         Say Hi
         <img
           src="/images/Bye-img.png"
-          className="h-[10px] w-[10px] xl:h-[25px] xl:w-[25px] opacity-0 translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-in-out absolute right-3"
+          className="h-[20px] w-[20px] xl:h-[25px] xl:w-[25px] opacity-0 translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-in-out absolute right-3"
         />
       </div>
     </div>
