@@ -80,16 +80,16 @@ const Home = () => {
         onContactClick={scrollToContact}
         onLogoClick={scrollToHero}
       />
-      {/* <div ref={heroRef}>
+      <div ref={heroRef}>
         <HeroSection />
       </div>
-      <LogoStrip />
-      <ServiceCard ref={servicesRef} />
-      <Product ref={productRef} />
-      <HowWeWork ref={howWeWorkRef} />
-      <ContactForm ref={contactRef} />
-      <NewsLetter />
-      <Footer /> */}
+      {/* <LogoStrip /> */}
+      {/* <ServiceCard ref={servicesRef} /> */}
+      {/* <Product ref={productRef} /> */}
+      {/* <HowWeWork ref={howWeWorkRef} /> */}
+      {/* <ContactForm ref={contactRef} /> */}
+      {/* <NewsLetter /> */}
+      {/* <Footer /> */}
     </div>
   );
 };
