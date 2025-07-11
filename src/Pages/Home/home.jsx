@@ -14,6 +14,7 @@ const Home = () => {
   const contactRef = useRef(null);
   const howWeWorkRef = useRef(null);
   const productRef = useRef(null);
+  const heroRef = useRef(null);
 
   const smoothScrollTo = ref => {
     const element = ref.current;
@@ -46,6 +47,7 @@ const Home = () => {
   const scrollToServices = () => smoothScrollTo(servicesRef);
   const scrollToContact = () => smoothScrollTo(contactRef);
   const scrollToHowWeWork = () => smoothScrollTo(howWeWorkRef);
+  const scrollToHero = () => smoothScrollTo(heroRef);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -76,15 +78,18 @@ const Home = () => {
       <Header
         onServiceClick={scrollToServices}
         onContactClick={scrollToContact}
+        onLogoClick={scrollToHero}
       />
-      <HeroSection />
+      {/* <div ref={heroRef}>
+        <HeroSection />
+      </div>
       <LogoStrip />
       <ServiceCard ref={servicesRef} />
       <Product ref={productRef} />
       <HowWeWork ref={howWeWorkRef} />
       <ContactForm ref={contactRef} />
       <NewsLetter />
-      <Footer />
+      <Footer /> */}
     </div>
   );
 };

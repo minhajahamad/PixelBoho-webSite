@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @import 'tailwindcss';
@@ -6,6 +7,7 @@
 @theme {
   --font-marketing-1: 'Gilda Display', 'serif';
   --font-poppins: 'Poppins', 'sans-serif';
+  --font-rubik: 'Rubik', 'sans-serif';
 }
 
 @layer base {
@@ -495,4 +497,46 @@
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+.gradient-color {
+  background-color: #464646;
+  transition: all 0.5s ease;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gradient-color i {
+  color: white;
+  font-size: 18px;
+  transition: all 0.5s ease;
+}
+
+.gradient-color:hover {
+  background-color: white;
+}
+
+.gradient-color:hover i {
+  background-image: linear-gradient(to right, #f56040, #fcaf45, #833ab4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.footer-image {
+  animation: slideLeftRight 10s ease-in-out infinite alternate;
+}
+
+@keyframes slideLeftRight {
+  0% {
+    transform: translateX(70px);
+  }
+  100% {
+    transform: translateX(-800px); /* adjust the distance you want it to move */
+  }
 }
