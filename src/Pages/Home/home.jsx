@@ -83,9 +83,9 @@ const Home = () => {
       <div ref={heroRef}>
         <HeroSection />
       </div>
-      {/* <LogoStrip /> */}
-      {/* <ServiceCard ref={servicesRef} /> */}
-      {/* <Product ref={productRef} /> */}
+      <LogoStrip />
+      <ServiceCard ref={servicesRef} />
+      <Product ref={productRef} />
       {/* <HowWeWork ref={howWeWorkRef} /> */}
       {/* <ContactForm ref={contactRef} /> */}
       {/* <NewsLetter /> */}

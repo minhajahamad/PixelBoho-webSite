@@ -2,55 +2,53 @@
 
 // const LogoStrip = () => {
 //   return (
-//     <div className="py-20 xl:py-10 md:px-15  flex flex-col items-center justify-center bg-black  relative  overflow-x-hidden ">
-//       <div className="  xl:w-[1100px]  h-[220px]  grid grid-cols-2  md:grid-cols-4  xl:grid-cols-5  gap-10 items-center justify-items-center px-4 py-6">
-//         <img
-//           src="/images/Prep-Academy.png"
-//           className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain "
-//         />
-//         <img
-//           src="/images/RLFC.png"
-//           className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain "
-//         />
-//         <img
-//           src="/images/Crowd-Works.png"
-//           className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain "
-//         />
-//         <img
-//           src="/images/Career-Launching.png"
-//           className="xl:h-15 h-10 md:h-19 lg:h-22  object-contain "
-//         />
-//         <img
-//           src="/images/JCI.png"
-//           className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain "
-//         />
-//         <img
-//           src="/images/Orchids.png"
-//           className="xl:h-15 h-10  md:h-19 lg:h-22 object-contain "
-//         />
-//         <img
-//           src="/images/Godrej.png"
-//           className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain"
-//         />
-//         <img
-//           src="/images/Puravankara.png"
-//           className="xl:h-15 h-10 md:h-19 lg:h-22  object-contain "
-//         />
-//         <img
-//           src="/images/Kannattu.png"
-//           className="xl:h-15 h-10 md:h-19 lg:h-22  object-contain "
-//         />
-//         <img
-//           src="/images/Dr-Scent.png"
-//           className="xl:h-15 h-10  md:h-19 lg:h-22 object-contain "
-//         />
+//     <div className="w-full bg-black xl:py-10 relative overflow-x-hidden">
+//       <div className="flex xl:w-[1200px] animate-marquee gap-10 overflow-x-hidden">
+//         {[...Array(2)].map((_, index) => (
+//           <div key={index} className="flex gap-10 items-center">
+//             <img
+//               src="/images/Prep-Academy.png"
+//               className="xl:h-20 h-10 object-contain"
+//             />
+//             <img
+//               src="/images/RLFC.png"
+//               className="xl:h-20 h-10 object-contain"
+//             />
+//             <img
+//               src="/images/Crowd-Works.png"
+//               className="xl:h-20 h-10 object-contain"
+//             />
+//             <img
+//               src="/images/Career-Launching.png"
+//               className="xl:h-20 h-10 object-contain"
+//             />
+//             <img
+//               src="/images/Orchids.png"
+//               className="xl:h-20 h-10 object-contain"
+//             />
+//             <img
+//               src="/images/Godrej.png"
+//               className="xl:h-20 h-10 object-contain"
+//             />
+//             <img
+//               src="/images/Puravankara.png"
+//               className="xl:h-20 h-10 object-contain"
+//             />
+//             <img
+//               src="/images/Kannattu.png"
+//               className="xl:h-20 h-10 object-contain"
+//             />
+//             <img
+//               src="/images/Dr-Scent.png"
+//               className="xl:h-20 h-10 object-contain"
+//             />
+//           </div>
+//         ))}
 //       </div>
-
-//       <hr className="text-white w-[100%] md:w-[100%] xl:w-[93%] xl:mt-[5%]  mt-[50%] md:mt-[25%] " />
 
 //       <img
 //         src="/images/eclipse-right-1.png"
-//         className="absolute   w-[400px] h-[500px] top-[-800px] right-[-150px] xl:top-[-495px] xl:right-[-150px]  "
+//         className="absolute w-[400px] h-[500px] top-[-800px] right-[-150px] xl:top-[-495px] xl:right-[-150px] pointer-events-none"
 //       />
 //     </div>
 //   );
@@ -90,7 +88,7 @@
 //                 <img
 //                   key={`first-row-${setIndex}-${index}`}
 //                   src={logo}
-//                   className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain flex-shrink-0 cursor-pointer"
+//                   className="xl:h-20 h-10 md:h-19 lg:h-22 object-contain flex-shrink-0 cursor-pointer"
 //                   alt={`Logo ${index + 1}`}
 //                 />
 //               ))}
@@ -108,7 +106,7 @@
 //                 <img
 //                   key={`second-row-${setIndex}-${index}`}
 //                   src={logo}
-//                   className="xl:h-15 h-10 md:h-19 lg:h-22 object-contain flex-shrink-0 cursor-pointer"
+//                   className="xl:h-20 h-10 md:h-19 lg:h-22 object-contain flex-shrink-0 cursor-pointer"
 //                   alt={`Logo ${index + 6}`}
 //                 />
 //               ))}
@@ -124,125 +122,6 @@
 //         className="absolute w-[400px] h-[500px] top-[-800px] right-[-150px] xl:top-[-495px] xl:right-[-150px]"
 //         alt="Eclipse decoration"
 //       />
-//     </div>
-//   );
-// };
-
-// export default LogoStrip;
-
-// import React from 'react';
-
-// const LogoStrip = () => {
-//   return (
-//     <div className="xl:py-10  bg-black flex items-center justify-center   ">
-//       <div className="w-[1100px] h-[220px] bg-amber-200 flex flex-col   ">
-//         <div className="w-full h-[50%] bg-black relative flex items-center overflow-hidden">
-//           <div
-//             className="absolute  scroll-div"
-//             style={{
-//               animationDelay: 'calc( 10s / 5 * (5 - 1) * -1)',
-//               left: 'max(calc(160px * 5),100%)',
-//             }}
-//           >
-//             <img
-//               src="/images/Prep-Academy.png"
-//               className="h-[70px]   w-[160px]"
-//             />
-//           </div>
-//           <div
-//             className="absolute  scroll-div"
-//             style={{
-//               animationDelay: 'calc( 10s / 5 * (5 - 2) * -1)',
-//               left: 'max(calc(160px * 5),100%)',
-//             }}
-//           >
-//             <img src="/images/RLFC.png" className="h-[70px]   w-[160px]" />
-//           </div>
-//           <div
-//             className="absolute  scroll-div"
-//             style={{
-//               animationDelay: 'calc( 10s / 5 * (5 - 3) * -1)',
-//               left: 'max(calc(160px * 5),100%)',
-//             }}
-//           >
-//             <img
-//               src=" /images/Crowd-Works.png"
-//               className="h-[70px]   w-[160px]"
-//             />
-//           </div>
-//           <div
-//             className="absolute  scroll-div"
-//             style={{
-//               animationDelay: 'calc( 10s / 5 * (5 - 4) * -1)',
-//               left: 'max(calc(160px * 5),100%)',
-//             }}
-//           >
-//             <img
-//               src=" /images/Career-Launching.png"
-//               className="h-[70px]   w-[160px]"
-//             />
-//           </div>
-//           <div
-//             className="absolute  scroll-div"
-//             style={{
-//               animationDelay: 'calc( 10s / 5 * (5 - 5) * -1)',
-//               left: 'max(calc(160px * 5),100%)',
-//             }}
-//           >
-//             <img src=" /images/JCI.png" className="h-[70px]   w-[160px]" />
-//           </div>
-//         </div>
-//         <div className="w-full h-[50%] bg-black relative flex items-center overflow-hidden">
-//           <div
-//             className="absolute  scroll-div"
-//             style={{
-//               animationDelay: 'calc( 10s / 5 * (5 - 1) * -1)',
-//               left: 'max(calc(160px * 5),100%)',
-//             }}
-//           >
-//             <img src="/images/Orchids.png" className="h-[70px]   w-[160px]" />
-//           </div>
-//           <div
-//             className="absolute  scroll-div"
-//             style={{
-//               animationDelay: 'calc( 10s / 5 * (5 - 2) * -1)',
-//               left: 'max(calc(160px * 5),100%)',
-//             }}
-//           >
-//             <img src="/images/Godrej.png" className="h-[70px]   w-[160px]" />
-//           </div>
-//           <div
-//             className="absolute  scroll-div"
-//             style={{
-//               animationDelay: 'calc( 10s / 5 * (5 - 3) * -1)',
-//               left: 'max(calc(160px * 5),100%)',
-//             }}
-//           >
-//             <img
-//               src=" /images/Puravankara.png"
-//               className="h-[70px]   w-[160px]"
-//             />
-//           </div>
-//           <div
-//             className="absolute  scroll-div"
-//             style={{
-//               animationDelay: 'calc( 10s / 5 * (5 - 4) * -1)',
-//               left: 'max(calc(160px * 5),100%)',
-//             }}
-//           >
-//             <img src=" /images/Kannattu.png" className="h-[70px]   w-[160px]" />
-//           </div>
-//           <div
-//             className="absolute  scroll-div"
-//             style={{
-//               animationDelay: 'calc( 10s / 5 * (5 - 5) * -1)',
-//               left: 'max(calc(160px * 5),100%)',
-//             }}
-//           >
-//             <img src="/images/Dr-Scent.png" className="h-[70px]   w-[160px]" />
-//           </div>
-//         </div>
-//       </div>
 //     </div>
 //   );
 // };
@@ -274,11 +153,9 @@ const LogoStrip = () => {
   }));
 
   return (
-    <div className="py-20 xl:py-10 2xl:py-20 flex flex-col items-center justify-center bg-black relative overflow-hidden 2xl:mt-20">
-      <div className="w-[380px] md:w-[680px] lg:w-[880px] xl:w-[1100px] 2xl:w-[2200px] overflow-hidden">
+    <div className="bg-black py-20 xl:py-10 2xl:py-15   relative overflow-hidden  ">
+      <div className="w-[360px] md:w-[680px] lg:w-[880px] xl:w-[1250px] 2xl:w-[2200px]  overflow-hidden mx-auto">
         <div className="marquee-container fade-effect cursor-pointer group">
-          {' '}
-          {/* Added group here */}
           <div className="marquee-track flex">
             {columns.map((pair, i) => (
               <div
@@ -290,7 +167,7 @@ const LogoStrip = () => {
                     key={`${i}-1-${idx}`}
                     src={src}
                     alt={`Top Logo ${i}-${idx}`}
-                    className="2xl:h-30 xl:h-15 h-10 md:h-19 lg:h-22 object-contain transition-all duration-300 transform group-hover:opacity-40 hover:opacity-100 hover:scale-105"
+                    className="2xl:h-30 xl:h-20 h-10 md:h-19 lg:h-22 object-contain transition-all duration-300 transform group-hover:opacity-40 hover:opacity-100 hover:scale-105"
                   />
                 ))}
               </div>
@@ -299,14 +176,14 @@ const LogoStrip = () => {
             {columns.map((pair, i) => (
               <div
                 key={`set2-${i}`}
-                className="logo-column flex flex-col items-center gap-10 xl:gap-20 flex-shrink-0 w-[160px] 2xl:w-[250px]"
+                className="logo-column flex flex-col items-center gap-10 xl:gap-10 2xl:gap-20 flex-shrink-0 w-[160px] 2xl:w-[250px]"
               >
                 {[pair.top, pair.bottom].map((src, idx) => (
                   <img
                     key={`${i}-2-${idx}`}
                     src={src}
                     alt={`Bottom Logo ${i}-${idx}`}
-                    className="2xl:h-30 xl:h-15 h-10 md:h-19 lg:h-22 object-contain transition-all duration-300 transform group-hover:opacity-40 hover:opacity-100 hover:scale-105"
+                    className="2xl:h-30 xl:h-20 h-10 md:h-19 lg:h-22 object-contain transition-all duration-300 transform group-hover:opacity-40 hover:opacity-100 hover:scale-105"
                   />
                 ))}
               </div>
@@ -315,7 +192,6 @@ const LogoStrip = () => {
         </div>
       </div>
 
-      {/* Background decoration */}
       <img
         src="/images/eclipse-right-1.png"
         className="absolute w-[400px] h-[500px] top-[-900px] right-[-150px] xl:top-[-495px] xl:right-[-150px]"

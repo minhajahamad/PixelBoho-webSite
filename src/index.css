@@ -47,19 +47,6 @@
     transform: translateX(calc(-160px * 5 - 40px * 4));
   }
 }
-
-@media (max-width: 768px) {
-  .marquee-track {
-    animation-duration: 10s;
-  }
-}
-
-@media (min-width: 1200px) {
-  .marquee-track {
-    animation-duration: 20s;
-  }
-}
-
 .fade-effect {
   mask-image: linear-gradient(
     to right,

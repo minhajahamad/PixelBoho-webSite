@@ -4,24 +4,24 @@ const ServiceCard = forwardRef((props, ref) => {
   return (
     <div
       ref={ref}
-      className="bg-black py-10 md:py-5 md:px-10 lg:py-10 xl:py-5 "
+      className="bg-black w-full py-10 md:py-5  lg:py-10 xl:py-15  "
     >
-      <hr className="text-white flex  w-[80%] md:w-[95%] lg:w-[93%] xl:w-[90%] xl:mt-[5%] mt-[30%] md:mt-[15%] mx-auto " />
-
-      <div className="font-semibold text-[70px] md:text-[110px] xl:text-[80px] 2xl:text-[140px] leading-[75px] md:leading-[110px] xl:leading-[90px] 2xl:leading-[150px] flex flex-col xl:flex-row  gap-18 2xl:gap-90 pl-[40px] xl:pl-[150px] py-15   ">
-        <div>
+      <div className="flex flex-col gap-10 md:gap-15 lg:gap-20   xl:flex-row  xl:justify-around w-[360px] md:w-[680px] lg:w-[880px] xl:w-[1250px] 2xl:w-[2200px] py-10 xl:py-12 2xl:py-15 mx-auto border-t border-b border-white  px-7 md:px-12 lg:px-15">
+        <div className=" font-semibold 2xl:h-[420px] text-[60px] md:text-[90px] xl:text-[70px] 2xl:text-[140px] leading-[60px] md:leading-[98px] xl:leading-[80px] 2xl:leading-[130px]  ">
           <p>
             <span className="text-[#9747FF] ">Unique</span> <br />{' '}
-            <span className=" text-[#9747FF]">solutions </span>{' '}
-            <span className="text-white">for</span> <br />
+            <span className=" text-[#9747FF]">solutions </span>
+            <br className="hidden md:block lg:hidden" />
+            <span className="text-white">for</span>{' '}
+            <br className="md:hidden lg:block" />
             <span className="text-white ">your business</span>
           </p>
         </div>
-        <div className="mt-3 xl:mt-1">
-          <p className="text-[40px] md:text-[55px] 2xl:text-[100px] text-white  ">
+        <div className=" h-[160px] md:h-[210px] lg:h-[170px] sm:h-fit xl:w-[450px] xl:h-[220px] 2xl:w-[500px] 2xl:h-[390px]  flex flex-col justify-between xl:justify-end xl:gap-5 2xl:gap-7 ">
+          <p className="text-[25px] md:text-[35px] xl:text-[30px] 2xl:text-[50px] text-white font-semibold  ">
             Our Services
           </p>
-          <p className=" font-light text-[15px] md:text-[22px] xl:text-[17px] 2xl:text-[24px] text-[#E2E2E2] xl:mt-9 w-[90%] xl:w-[450px] 2xl:w-[750px] leading-5 md:leading-8 xl:leading-6 2xl:leading-9">
+          <p className=" font-light text-[12px] md:text-[18px] xl:text-[14px] 2xl:text-[20px] text-[#E2E2E2]   ">
             As we understand that every business is unique, we provide a
             customized service to meet your specific needs. We work closely with
             you to fully understand your needs and goals before developing an
@@ -29,52 +29,51 @@ const ServiceCard = forwardRef((props, ref) => {
           </p>
         </div>
       </div>
-      <hr className="text-white w-[80%] md:w-[95%] xl:w-[90%]    mx-auto " />
-      <div className="xl:mt-14 grid justify-center  lg:justify-normal md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-10 xl:px-[180px] px-10 md:px-[5%] lg:px-5 py-10 xl:py-1 text-white font-normal font-marketing-1 text-[26px] 2xl:text-[34px] leading-8 2xl:leading-12 ">
-        <div className="p-[.8px] w-[330px] md:w-[300px]  lg:w-[280px] xl:w-[230px] 2xl:w-[500px] h-[200px] xl:h-[230px] 2xl:h-[300px] rounded-[8px] animated-gradient-border relative cursor-pointer  ">
-          <div className="glow-box-1 bg-black rounded-[8px] h-full p-9 text-white text-bold flex items-center justify-center text-center  relative overflow-hidden z-1">
+      <div className="w-[360px] md:w-[680px] lg:w-[880px] xl:w-[1100px]  2xl:w-[2200px] px-7 md:px-12 lg:px-15      mx-auto pt-5 md:pt-10 xl:pt-10 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-5 2xl:gap-10  text-white font-normal font-marketing-1 text-[26px] 2xl:text-[34px] leading-8 2xl:leading-12 ">
+        <div className="p-[.8px]  rounded-[8px] animated-gradient-border relative cursor-pointer  ">
+          <div className="glow-box-1 bg-black rounded-[8px] h-[270px] 2xl:h-[350px] text-white text-bold  flex items-center justify-center text-center  relative overflow-hidden z-1 md:p-5 2xl:p-10">
             Interactive Web Platforms & Scalable Applications
           </div>
         </div>
 
-        <div className="p-[.8px] w-[330px] md:w-[300px] lg:w-[280px]  xl:w-[230px] 2xl:w-[500px] h-[200px] xl:h-[230px] 2xl:h-[300px] rounded-[8px] animated-gradient-border   relative  cursor-pointer">
-          <div className=" glow-box-2 overflow-hidden  bg-black rounded-[8px] h-full p-9 text-white flex items-center justify-center text-center  relative z-1">
+        <div className="p-[.8px]  rounded-[8px] animated-gradient-border   relative  cursor-pointer">
+          <div className=" glow-box-2 overflow-hidden  bg-black rounded-[8px] h-[270px]  2xl:h-[350px] text-white  flex items-center justify-center text-center relative z-1 md:p-5 2xl:p-10">
             Next-Gen Mobile Solutions
           </div>
         </div>
 
-        <div className="p-[.8px] w-[330px] md:w-[300px] lg:w-[280px] xl:w-[230px] 2xl:w-[500px] h-[200px] xl:h-[230px] 2xl:h-[300px] rounded-[8px] animated-gradient-border  relative  cursor-pointer">
-          <div className="glow-box-3 bg-black rounded-[8px] h-full p-10 text-white flex items-center justify-center text-center  relative z-1">
+        <div className="p-[.8px]  rounded-[8px] animated-gradient-border  relative  cursor-pointer">
+          <div className="glow-box-3 bg-black rounded-[8px] h-[270px]  2xl:h-[350px] text-white flex items-center justify-center text-center   relative z-1 md:p-5 2xl:p-10">
             Strategic Brand Positioning & Demand Generation
           </div>
         </div>
 
-        <div className="p-[.8px] w-[330px] md:w-[300px] lg:w-[280px]  h-[200px] xl:w-[230px] 2xl:w-[500px] xl:h-[230px] 2xl:h-[300px] rounded-[8px] animated-gradient-border  relative cursor-pointer ">
-          <div className="glow-box-4 bg-black rounded-[8px] h-full p-9 text-white flex items-center justify-center text-center  relative z-1">
+        <div className="p-[.8px]  rounded-[8px] animated-gradient-border   relative cursor-pointer ">
+          <div className="glow-box-4 bg-black rounded-[8px] h-[270px]  2xl:h-[350px] text-white flex items-center justify-center text-center  relative z-1 md:p-5 2xl:p-10">
             Performance Driven SEO Services
           </div>
         </div>
 
-        <div className="p-[.8px] w-[330px] md:w-[300px] lg:w-[280px]  h-[200px] xl:w-[230px] 2xl:w-[500px] xl:h-[230px] 2xl:h-[300px] rounded-[8px] animated-gradient-border-1  relative  cursor-pointer">
-          <div className="glow-box-5 bg-black rounded-[8px] h-full p-9 text-white flex items-center justify-center text-center  relative z-1">
+        <div className="p-[.8px]  rounded-[8px] animated-gradient-border-1  relative  cursor-pointer">
+          <div className="glow-box-5 bg-black rounded-[8px] h-[270px]  2xl:h-[350px] text-white flex items-center justify-center text-center  relative z-1 md:p-5 2xl:p-10">
             Cloud Infrastructure & Migration Solutions
           </div>
         </div>
 
-        <div className="p-[.8px] w-[330px]  md:w-[300px] lg:w-[280px]  h-[200px]  xl:w-[230px] 2xl:w-[500px] xl:h-[230px] 2xl:h-[300px] rounded-[8px] animated-gradient-border-1  relative  cursor-pointer">
-          <div className="glow-box-6 bg-black rounded-[8px] h-full p-9 text-white flex items-center justify-center text-center  relative z-1">
+        <div className="p-[.8px]  rounded-[8px] animated-gradient-border-1  relative  cursor-pointer">
+          <div className="glow-box-6 bg-black rounded-[8px] h-[270px]  2xl:h-[350px] text-white flex items-center justify-center text-center  relative z-1 md:p-5 2xl:p-10">
             Cloud-Based Enterprise Solutions
           </div>
         </div>
 
-        <div className="p-[.8px] w-[330px] md:w-[300px] lg:w-[280px]  h-[200px]  xl:w-[230px] 2xl:w-[500px] xl:h-[230px] 2xl:h-[300px] rounded-[8px] animated-gradient-border-1  relative  cursor-pointer">
-          <div className="glow-box-7 bg-black rounded-[8px] h-full p-9 text-white flex items-center justify-center text-center  relative z-1">
+        <div className="p-[.8px]  rounded-[8px] animated-gradient-border-1  relative  cursor-pointer">
+          <div className="glow-box-7 bg-black rounded-[8px] h-[270px]  2xl:h-[350px] text-white flex items-center justify-center text-center  relative z-1 md:p-5 2xl:p-10">
             Digital Tender Management Systems
           </div>
         </div>
 
-        <div className="p-[.8px] w-[330px] md:w-[300px] lg:w-[280px] h-[200px] xl:w-[230px] 2xl:w-[500px] xl:h-[230px] 2xl:h-[300px] rounded-[8px] animated-gradient-border-1  relative  cursor-pointer">
-          <div className="glow-box-8 bg-black rounded-[8px] h-full p-9 text-white flex items-center justify-center text-center  relative z-1">
+        <div className="p-[.8px]  rounded-[8px] animated-gradient-border-1  relative  cursor-pointer">
+          <div className="glow-box-8 bg-black rounded-[8px] h-[270px]  2xl:h-[350px] text-white flex items-center justify-center text-center  relative z-1 md:p-5 2xl:p-10">
             Identity Verification API Solutions
           </div>
         </div>

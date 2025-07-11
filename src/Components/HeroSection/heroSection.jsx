@@ -5,7 +5,7 @@ const HeroSection = () => {
     <div className="w-full   2xl:h-[800px] bg-black pl-[50px] md:pl-[120px] xl:pl-[200px] 2xl:pl-[250px] py-10 lg:py-15 xl:py-20  z-10 relative  ">
       <img
         src="/images/heroSection-img.png"
-        className="absolute top-[-209px] left-[-83px] xl:top-[-145px] xl:left-0  z-0   "
+        className="absolute top-[-209px] left-[-83px] xl:top-[-145px] xl:left-0   z-0   "
       />
       <p className="text-[#8528FF] leading-none w-fit  ">
         <span className="font-regular font-marketing-1 text-[60px] md:text-[65px] lg:text-[80px] xl:text-[90px]  2xl:text-[140px] ">
@@ -33,7 +33,7 @@ const HeroSection = () => {
         Say Hi
         <img
           src="/images/Bye-img.png"
-          className="h-[20px] w-[20px] xl:h-[25px] xl:w-[25px] opacity-0 translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-in-out absolute right-3"
+          className="h-[25px] w-[25px]  opacity-0 translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-in-out absolute right-3"
         />
       </div>
     </div>
