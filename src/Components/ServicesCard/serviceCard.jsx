@@ -21,7 +21,7 @@ const ServiceCard = forwardRef((props, ref) => {
           <p className="text-[25px] md:text-[35px] xl:text-[30px] 2xl:text-[50px] text-white font-semibold  ">
             Our Services
           </p>
-          <p className=" font-light text-[12px] md:text-[18px] xl:text-[14px] 2xl:text-[20px] text-[#E2E2E2]   ">
+          <p className=" desc-text">
             As we understand that every business is unique, we provide a
             customized service to meet your specific needs. We work closely with
             you to fully understand your needs and goals before developing an

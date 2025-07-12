@@ -16,6 +16,11 @@
   }
 }
 
+/* index.css */
+.desc-text {
+  @apply text-[14px] md:text-[17px] lg:text-[15px] xl:text-[15px] 2xl:text-[22px] text-[#E2E2E2] font-light;
+}
+
 /* Scrolling effcet */
 .marquee-container {
   overflow: hidden;
@@ -497,6 +502,13 @@
   justify-content: center;
 }
 
+@media (min-width: 1536px) {
+  .gradient-color {
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+  }
+}
 .gradient-color i {
   color: white;
   font-size: 18px;
@@ -516,7 +528,7 @@
 }
 
 .footer-image {
-  animation: slideLeftRight 10s ease-in-out infinite alternate;
+  animation: slideLeftRight 15s ease-in-out infinite alternate;
 }
 
 @keyframes slideLeftRight {

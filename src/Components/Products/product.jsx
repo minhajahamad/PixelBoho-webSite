@@ -36,12 +36,12 @@ const Counter = ({ end }) => {
 
 const Product = () => {
   return (
-    <div className="w-full bg-black    flex flex-col  gap-20 xl:gap-20 py-30 xl:py-15">
-      <div className=" text-white w-[330px]  xl:w-[990px] mx-auto 2xl:w-[1300px] flex flex-col gap-10 xl:gap-7 ">
+    <div className="w-full bg-black    flex flex-col  gap-20 xl:gap-20 2xl:gap-35 py-30 xl:py-15 2xl:py-40">
+      <div className=" text-white w-[330px] md:w-[630px] lg:w-[850px]  xl:w-[990px] 2xl:w-[2200px] mx-auto flex flex-col gap-10 xl:gap-7 2xl:gap-20 ">
         <p className="font-semibold text-[60px] 2xl:text-[100px] text-center leading-[60px]  ">
           Products That Inspire
         </p>
-        <p className=" text-center font-light text-[14px] text-[#E2E2E2] xl:text-[14px] 2xl:text-[24px]  ">
+        <p className=" text-center desc-text  ">
           Conducting a comprehensive review and establishing a solid online
           strategy for transforming your business's digital marketing, Software
           Development, Web Desgining and more. An initiative that highlights the
@@ -50,7 +50,7 @@ const Product = () => {
         </p>
       </div>
 
-      <div className="p-[.7px] h-[600px]  xl:h-[200px] 2xl:h-[500px] w-[330px]  xl:w-[990px] 2xl:w-[1400px] mx-auto    rounded-[22px] animated-gradient-border-1">
+      <div className="p-[.7px] h-[600px] md:h-[900px]  xl:h-[200px] 2xl:h-[500px] w-[330px] md:w-[630px] lg:w-[850px]  xl:w-[990px] 2xl:w-[2200px] mx-auto    rounded-[22px] animated-gradient-border-1">
         <div className="bg-[#101010] rounded-[22px] h-full w-full  flex flex-col xl:flex-row items-center justify-around     text-white  ">
           <div className="     flex flex-col items-center text-center justify-center  ">
             <p className="text-[60px] md:text-[80px]  xl:text-[50px] 2xl:text-[100px] font-semibold  ">
@@ -80,7 +80,7 @@ const Product = () => {
               level software solutions
             </p>
           </div>
-          <div className="  flex flex-col items-center text-center justify-between  xl:h-[139px]">
+          <div className="  flex flex-col items-center text-center  xl:h-[139px] 2xl:h-[260px]   ">
             <p className=" text-[60px] md:text-[80px] xl:text-[50px] 2xl:text-[100px] font-semibold text-center">
               <Counter end={15} />
             </p>

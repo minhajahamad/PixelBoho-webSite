@@ -23,7 +23,7 @@ const HeroSection = () => {
           needle
         </span>
       </p>
-      <p className=" w-[88%]  md:w-[69%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] font-light text-[14px]  md:text-[17px] lg:text-[15px] xl:text-[15px] 2xl:text-[22px] text-[#E2E2E2] mt-8 md:mt-10 lg:mt-5  xl:mt-10">
+      <p className=" w-[88%]  md:w-[69%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]  desc-text  mt-8 md:mt-10 lg:mt-5  xl:mt-10">
         We don’t just create campaigns—we engineer impact. At PixelBoho, digital
         marketing is more than metrics. It's strategy, storytelling, and science
         working together to drive real growth.

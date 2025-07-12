@@ -291,142 +291,90 @@ const sections = [
       "We start by listening—closely. To your goals, your market, and your brand's unique DNA. Then we dig deep with research and insights to decode what your audience actually wants.",
     imageRight: '/images/Image 1.png',
   },
-  {
-    title: 'Map & Wireframe',
-    description:
-      'With clarity in hand, we structure intuitive flows and user journeys that put purpose first. Every click, scroll, and interaction is mapped to support your business objectives.',
-    imageRight: '/images/Image 2.png',
-  },
-  {
-    title: 'Design With Intent',
-    description:
-      "Our design process isn't just about looking good—it's about building visual systems that convert. Think bold aesthetics, crisp layouts, and storytelling that moves people. You're involved at every key step.",
-    imageRight: '/images/Image 3.png',
-  },
-  {
-    title: 'Build & Elevate',
-    description:
-      "Once approved, our developers bring everything to life—with precision code, smooth animations, and tech that scales. We don't just develop—we engineer ",
-    imageRight: '/images/Image 4.png',
-  },
-  {
-    title: 'Launch, Learn, and Grow',
-    description:
-      "Your brand doesn't stop at launch. We monitor, analyze, and optimize. From post-launch support to campaign integration, we ensure your digital presence stays sharp, relevant, and growth-driven.",
-    imageRight: '/images/Image 5.png',
-  },
+  // {
+  //   title: 'Map & Wireframe',
+  //   description:
+  //     'With clarity in hand, we structure intuitive flows and user journeys that put purpose first. Every click, scroll, and interaction is mapped to support your business objectives.',
+  //   imageRight: '/images/Image 2.png',
+  // },
+  // {
+  //   title: 'Design With Intent',
+  //   description:
+  //     "Our design process isn't just about looking good—it's about building visual systems that convert. Think bold aesthetics, crisp layouts, and storytelling that moves people. You're involved at every key step.",
+  //   imageRight: '/images/Image 3.png',
+  // },
+  // {
+  //   title: 'Build & Elevate',
+  //   description:
+  //     "Once approved, our developers bring everything to life—with precision code, smooth animations, and tech that scales. We don't just develop—we engineer ",
+  //   imageRight: '/images/Image 4.png',
+  // },
+  // {
+  //   title: 'Launch, Learn, and Grow',
+  //   description:
+  //     "Your brand doesn't stop at launch. We monitor, analyze, and optimize. From post-launch support to campaign integration, we ensure your digital presence stays sharp, relevant, and growth-driven.",
+  //   imageRight: '/images/Image 5.png',
+  // },
 ];
 
 const HowWeWork = () => {
-  const scrollRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const isScrolling = useRef(false);
-  const sectionCount = sections.length;
-
-  // Wheel scroll controller (mouse or trackpad)
-  useEffect(() => {
-    const container = scrollRef.current;
-    let scrollDelta = 0;
-
-    const handleWheel = e => {
-      if (isScrolling.current) return;
-
-      scrollDelta += e.deltaY;
-      const SCROLL_THRESHOLD = 60;
-
-      if (scrollDelta > SCROLL_THRESHOLD && activeIndex < sectionCount - 1) {
-        setActiveIndex(prev => prev + 1);
-        isScrolling.current = true;
-        scrollDelta = 0;
-      } else if (scrollDelta < -SCROLL_THRESHOLD && activeIndex > 0) {
-        setActiveIndex(prev => prev - 1);
-        isScrolling.current = true;
-        scrollDelta = 0;
-      }
-    };
-
-    container.addEventListener('wheel', handleWheel, { passive: false });
-
-    return () => {
-      container.removeEventListener('wheel', handleWheel);
-    };
-  }, [activeIndex]);
-
-  // Scroll to active section
-  useEffect(() => {
-    const container = scrollRef.current;
-    if (container) {
-      container.scrollTo({
-        top: activeIndex * 500,
-        behavior: 'smooth',
-      });
-
-      const timeout = setTimeout(() => {
-        isScrolling.current = false;
-      }, 800);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [activeIndex]);
-
   return (
-    <div className="w-full overflow-hidden bg-black">
-      <div className="h-screen flex flex-col xl:py-20 items-center bg-black sticky top-0 z-10">
-        <p className="text-center font-semibold text-[65px] text-white mb-4">
+    <div className="w-full overflow-x-hidden bg-black pb-5 lg:pb-10  ">
+      <div className=" flex flex-col px-10 md:px-25 lg:px-0 gap-10 lg:gap-0   bg-black relative  z-10">
+        <p className="text-center font-semibold text-[60px] lg:text-[65px] 2xl:text-[80px] text-white xl:py-5 ">
           How We Work
         </p>
         <img
           src="/images/Disc.png"
-          className="xl:h-[210px] lg:h-[210px] absolute xl:left-[-98px] lg:left-[-300px] top-[208px] z-2 hidden lg:block"
+          className="xl:h-[210px] 2xl:h-[300px] lg:h-[210px] absolute xl:left-[-100px] 2xl:left-[-150px] 2xl:top-[140px] lg:left-[-100px] lg:top-[100px] xl:top-[208px] z-2 hidden lg:block"
           alt="Disc"
         />
 
-        <div
-          ref={scrollRef}
-          className="h-[500px] xl:w-[1405px] flex flex-col overflow-y-scroll overflow-x-hidden no-scrollbar snap-y snap-mandatory scroll-smooth"
-        >
+        <div className="flex flex-col overflow-y-scroll overflow-x-hidden no-scrollbar snap-y snap-mandatory scroll-smooth xl:max-h-[90vh]">
           {sections.map((section, index) => (
             <div
               key={index}
-              className="flex h-[500px] xl:w-[1405px] flex-shrink-0 snap-start"
+              className="flex lg:flex-row flex-col gap-5 lg:gap-0   w-full flex-shrink-0 snap-start relative"
             >
-              <div className="h-[500px] w-[55%] bg-black xl:pl-[170px] flex flex-col justify-center relative">
-                {/* <div className="w-[1225px] h-[100px] absolute z-1 top-[0px] left-[180px] pointer-events-none hidden xl:block">
-                  <img
-                    src="/images/Blur Top.png"
-                    className="w-full h-full opacity-90 mix-blend-screen blur-sm"
-                    alt="Top Blur"
-                  />
-                </div>
-                <div className="absolute h-[110px] w-[1225px] bottom-0 z-1 left-[180px] pointer-events-none hidden xl:block">
-                  <img
-                    src="/images/Blur Bottom.png"
-                    className="h-full w-full opacity-90 mix-blend-screen blur-sm"
-                    alt="Bottom Blur"
-                  />
-                </div> */}
+              {/* <div className="w-[1225px] h-[100px] absolute z-1 xl:top-[-10px] xl:left-[180px] 2xl:top-[0px] 2xl:left-[0px] pointer-events-none hidden xl:block">
+                <img
+                  src="/images/Blur Top.png"
+                  className="w-full h-full opacity-90 mix-blend-screen blur-sm"
+                  alt="Top Blur"
+                />
+              </div>
+              <div className="absolute h-[110px] w-[1225px] bottom-0 z-1 left-[180px] pointer-events-none hidden xl:block">
+                <img
+                  src="/images/Blur Bottom.png"
+                  className="h-full w-full opacity-90 mix-blend-screen blur-sm"
+                  alt="Bottom Blur"
+                />
+              </div> */}
 
-                <div>
-                  <p className="font-marketing-1 xl:w-[500px] text-[50px] lg:text-[60px] text-white leading-[60px]">
-                    {section.title}
-                  </p>
-                  <p className="font-light text-[17px] lg:text-[20px] xl:text-[14px] text-[#E2E2E2] mt-6 w-[300px] md:w-[500px] lg:w-[700px] xl:w-[600px]">
-                    {section.description}
-                  </p>
-                </div>
+              {/* Left Part */}
+              <div className="lg:w-[60%]  xl:w-[50%] h-[200px] lg:h-full  flex flex-col xl:gap-10 justify-around lg:pl-[130px] xl:pl-[140px] 2xl:pl-[300px] lg:py-20 xl:py-40">
+                <p className="font-marketing-1 text-[40px] lg:text-[60px] 2xl:text-[90px] text-white leading-[60px] ">
+                  {section.title}
+                </p>
+                <p className="desc-text xl:w-[500px] 2xl:w-[900px] ">
+                  {section.description}
+                </p>
               </div>
 
-              <div className="bg-black w-[60%] xl:w-[45%] h-[500px] overflow-hidden flex items-center justify-center">
-                <div>
-                  <img src={section.imageRight} alt={`Section ${index + 1}`} />
-                </div>
+              {/* Right Image Part */}
+              <div className="lg:w-[40%] xl:w-[50%]  overflow-hidden">
+                <img
+                  src={section.imageRight}
+                  className="object-cover w-full h-full max-h-[500px] xl:max-h-[600px]"
+                  alt={`Section ${index + 1}`}
+                />
               </div>
             </div>
           ))}
         </div>
 
         {/* Pagination Dots & Scroll Text */}
-        <div className="flex flex-col items-center mt-6">
+        {/* <div className="flex flex-col items-center mt-6">
           <div className="flex space-x-2">
             {sections.map((_, index) => (
               <button
@@ -444,7 +392,7 @@ const HowWeWork = () => {
           <p className="text-white text-sm mt-2 opacity-70">
             Scroll to navigate
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

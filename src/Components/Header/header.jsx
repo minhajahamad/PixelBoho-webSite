@@ -28,7 +28,7 @@ const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
   }, [lastScrollY]);
   return (
     <nav
-      className={`w-full h-[100px] xl:h-[100px] 2xl:h-[120px]  bg-black flex  justify-between items-center md:justify-items-normal px-10 md:px-15 lg:px-25 xl:px-35 border-b border-[#d9d9d933]   fixed top-0 left-0  z-50 transition-transform duration-300 ${
+      className={`w-full h-[70px] xl:h-[100px] 2xl:h-[120px]  bg-black flex  justify-between items-center md:justify-items-normal px-10 md:px-15 lg:px-25 xl:px-35 border-b border-[#d9d9d933]   fixed top-0 left-0  z-50 transition-transform duration-300 ${
         showHeader ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
@@ -36,7 +36,7 @@ const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
         <img
           onClick={onLogoClick}
           src="/images/PixelBoho-Logo.svg"
-          className="object-cover cursor-pointer 2xl:w-[150px]"
+          className="object-cover cursor-pointer w-[80px] md:w-[90px] 2xl:w-[150px]"
         />
       </div>
       <div className="text-[#E2E2E2] font-light md:text-[14px] xl:text-[15px] 2xl:text-[17px] sm:flex items-center gap-6 lg:gap-10 2xl:gap-20   hidden ">
