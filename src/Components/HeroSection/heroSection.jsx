@@ -2,7 +2,7 @@ import React from 'react';
 
 const HeroSection = () => {
   return (
-    <div className="w-full  overflow-x-hidden  bg-black pl-[50px] md:pl-[120px] xl:pl-[200px]  py-10 lg:py-15 xl:py-20  z-10 relative  ">
+    <div className="w-full   bg-black pl-[50px] md:pl-[120px] xl:pl-[200px]  py-10 lg:py-15 xl:py-20  z-10 relative  ">
       <img
         src="/images/heroSection-img.png"
         className="absolute top-[-209px] left-[-83px] xl:top-[-145px] xl:left-0   z-0   "

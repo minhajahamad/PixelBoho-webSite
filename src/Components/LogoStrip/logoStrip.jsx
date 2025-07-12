@@ -154,7 +154,7 @@ const LogoStrip = () => {
 
   return (
     <div className="overflow-x-hidden bg-black py-20 xl:py-10    relative overflow-hidden  ">
-      <div className="w-[360px] md:w-[680px] lg:w-[880px] xl:w-[1250px]   overflow-hidden mx-auto">
+      <div className="w-[90%] md:w-[90%] lg:w-[90%] xl:w-[90%]   overflow-hidden mx-auto">
         <div className="marquee-container fade-effect cursor-pointer group">
           <div className="marquee-track flex">
             {columns.map((pair, i) => (

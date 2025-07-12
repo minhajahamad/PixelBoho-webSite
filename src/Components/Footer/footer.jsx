@@ -3,7 +3,7 @@ import { TiSocialFacebook } from 'react-icons/ti';
 import { BsTwitterX } from 'react-icons/bs';
 const Footer = () => {
   return (
-    <div className="overflow-x-hidden bg-black py-10 px-3 md:px-15 lg:px-20  xl:px-30 xl:py-10 flex flex-col relative z-10 overflow-x-hidden">
+    <div className=" bg-black py-10 px-3 md:px-15 lg:px-20  xl:px-30 xl:py-10 flex flex-col relative z-10 overflow-x-hidden">
       <img
         src="/images/Footer-img.png"
         className="absolute top-[0px] z-0 pointer-events-none footer-image "
@@ -30,9 +30,7 @@ const Footer = () => {
             </p>
           </div>
           <div className="text-[12px]  font-light text-[#969696] leading-[25px] ">
-            <p className="font-medium text-[20px]  pb-5 text-white">
-              SERVICES
-            </p>
+            <p className="font-medium text-[20px]  pb-5 text-white">SERVICES</p>
             <p className="hover:text-white transition-colors duration-200 cursor-pointer  ">
               {' '}
               Web & App Platforms
@@ -60,9 +58,7 @@ const Footer = () => {
             </p>
           </div>
           <div className=" flex flex-col gap-2 mt-[-5px]">
-            <p className="font-medium text-[20px]  text-white">
-              To Know More
-            </p>
+            <p className="font-medium text-[20px]  text-white">To Know More</p>
             <div className="text-white text-[14px]   bg-[#8528FF] px-2 py-2 text-center rounded-[4px] border border-black hover:bg-black hover:border-[#999999] trasnition-colors duration-400 cursor-pointer  ">
               <p>Book Meeting</p>
             </div>
