@@ -40,25 +40,25 @@ const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
         />
       </div>
       <div className="text-[#E2E2E2] font-light md:text-[14px] xl:text-[15px]  sm:flex items-center gap-6 lg:gap-10 2xl:gap-20   hidden ">
-        <p className="hover:text-[#8528FF] transition-colors duration-300">
+        <p className="hover:text-[#8528FF] transition-colors duration-300 cursor-pointer">
           ABOUT
         </p>
         <p
-          className="hover:text-[#8528FF] transition-colors duration-300"
+          className="hover:text-[#8528FF] transition-colors duration-300 cursor-pointer"
           onClick={onServiceClick}
         >
           SERVICES
         </p>
-        <p className="hover:text-[#8528FF] transition-colors duration-300">
+        <p className="hover:text-[#8528FF] transition-colors duration-300 cursor-pointer">
           WORKS
         </p>
         <p
-          className="hover:text-[#8528FF] transition-colors duration-300"
+          className="hover:text-[#8528FF] transition-colors duration-300 cursor-pointer"
           onClick={onContactClick}
         >
           CONTACT
         </p>
-        <div className="bg-[#8528FF] w-fit md:px-3 xl:px-5  py-1  text-white rounded-[45px] border border-black hover:border-[#999999]   font-normal hover:bg-black  hover:text-[#8528FF] transition-colors duration-400    ">
+        <div className="bg-[#8528FF] w-fit md:px-3 xl:px-5  py-1  text-white rounded-[45px] border border-black hover:border-[#999999]   font-normal hover:bg-black  hover:text-[#8528FF] transition-colors duration-400 cursor-pointer    ">
           <p>Book Meeting</p>
         </div>
       </div>

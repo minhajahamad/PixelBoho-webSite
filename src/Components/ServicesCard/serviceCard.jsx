@@ -4,9 +4,9 @@ const ServiceCard = forwardRef((props, ref) => {
   return (
     <div
       ref={ref}
-      className="bg-black w-full py-10 md:py-5  lg:py-10 xl:py-15  "
+      className="bg-black w-full py-10 md:py-5  lg:py-10 xl:py-15 xl:px-30  "
     >
-      <div className="flex flex-col gap-10 md:gap-15 lg:gap-20   xl:flex-row  xl:justify-around w-[360px] md:w-[680px] lg:w-[880px] xl:w-[1250px]  py-10 xl:py-12  mx-auto border-t border-b border-white  px-7 md:px-12 lg:px-15">
+      <div className="flex flex-col gap-10 md:gap-15 lg:gap-20   xl:flex-row  xl:justify-around   py-10 xl:py-12   border-t border-b border-white  ">
         <div className=" font-semibold  text-[60px] md:text-[90px] xl:text-[70px]  leading-[60px] md:leading-[98px] xl:leading-[80px]   ">
           <p>
             <span className="text-[#9747FF] ">Unique</span> <br />{' '}
@@ -17,7 +17,7 @@ const ServiceCard = forwardRef((props, ref) => {
             <span className="text-white ">your business</span>
           </p>
         </div>
-        <div className=" h-[160px] md:h-[210px] lg:h-[170px] sm:h-fit xl:w-[450px] xl:h-[220px]    flex flex-col justify-between xl:justify-end xl:gap-5  ">
+        <div className="  xl:w-[450px]     flex flex-col justify-around    ">
           <p className="text-[25px] md:text-[35px] xl:text-[30px]  text-white font-semibold  ">
             Our Services
           </p>

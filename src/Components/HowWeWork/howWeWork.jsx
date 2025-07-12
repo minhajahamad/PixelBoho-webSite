@@ -330,7 +330,7 @@ const HowWeWork = () => {
           alt="Disc"
         />
 
-        <div className="flex flex-col overflow-y-scroll overflow-x-hidden no-scrollbar snap-y snap-mandatory scroll-smooth xl:max-h-[90vh]">
+        <div className="flex flex-col overflow-y-scroll overflow-x-hidden no-scrollbar snap-y snap-mandatory scroll-smooth xl:max-h-[60vh]">
           {sections.map((section, index) => (
             <div
               key={index}
