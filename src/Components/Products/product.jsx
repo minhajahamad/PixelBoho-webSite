@@ -36,9 +36,9 @@ const Counter = ({ end }) => {
 
 const Product = () => {
   return (
-    <div className="w-full bg-black    flex flex-col  gap-20 xl:gap-20 2xl:gap-35 py-30 xl:py-15 2xl:py-40">
-      <div className=" text-white w-[330px] md:w-[630px] lg:w-[850px]  xl:w-[990px] 2xl:w-[2200px] mx-auto flex flex-col gap-10 xl:gap-7 2xl:gap-20 ">
-        <p className="font-semibold text-[60px] 2xl:text-[100px] text-center leading-[60px]  ">
+    <div className="w-full bg-black    flex flex-col  gap-20 xl:gap-20  py-30 xl:py-15 ">
+      <div className=" text-white w-[330px] md:w-[630px] lg:w-[850px]  xl:w-[990px]  mx-auto flex flex-col gap-10 xl:gap-7 ">
+        <p className="font-semibold text-[60px]  text-center leading-[60px]  ">
           Products That Inspire
         </p>
         <p className=" text-center desc-text  ">
@@ -50,41 +50,41 @@ const Product = () => {
         </p>
       </div>
 
-      <div className="p-[.7px] h-[600px] md:h-[900px]  xl:h-[200px] 2xl:h-[500px] w-[330px] md:w-[630px] lg:w-[850px]  xl:w-[990px] 2xl:w-[2200px] mx-auto    rounded-[22px] animated-gradient-border-1">
+      <div className="p-[.7px] h-[600px] md:h-[900px]  xl:h-[200px]  w-[330px] md:w-[630px] lg:w-[850px]  xl:w-[990px]  mx-auto    rounded-[22px] animated-gradient-border-1">
         <div className="bg-[#101010] rounded-[22px] h-full w-full  flex flex-col xl:flex-row items-center justify-around     text-white  ">
           <div className="     flex flex-col items-center text-center justify-center  ">
-            <p className="text-[60px] md:text-[80px]  xl:text-[50px] 2xl:text-[100px] font-semibold  ">
+            <p className="text-[60px] md:text-[80px]  xl:text-[50px]  font-semibold  ">
               <Counter end={200} />
             </p>
-            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px] 2xl:text-[24px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px]  text-[#E2E2E2]">
               Creative Concepts
             </p>
-            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px] 2xl:text-[22px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px]  text-[#E2E2E2]">
               Nourishing creatives which{' '}
             </p>
-            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px] 2xl:text-[22px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px]  text-[#E2E2E2]">
               prospects your brand identity
             </p>
           </div>
           <div className=" flex flex-col items-center text-center justify-center  ">
-            <p className=" text-[60px] md:text-[80px] xl:text-[50px] 2xl:text-[100px] font-semibold text-center ">
+            <p className=" text-[60px] md:text-[80px] xl:text-[50px]  font-semibold text-center ">
               <Counter end={150} />
             </p>
-            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px] 2xl:text-[24px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px]  text-[#E2E2E2]">
               Product Solutions
             </p>
-            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px] 2xl:text-[24px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px]  text-[#E2E2E2]">
               Best in class industrial
             </p>
-            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px] 2xl:text-[24px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px]  text-[#E2E2E2]">
               level software solutions
             </p>
           </div>
-          <div className="  flex flex-col items-center text-center  xl:h-[139px] 2xl:h-[260px]   ">
-            <p className=" text-[60px] md:text-[80px] xl:text-[50px] 2xl:text-[100px] font-semibold text-center">
+          <div className="  flex flex-col items-center text-center  xl:h-[139px]    ">
+            <p className=" text-[60px] md:text-[80px] xl:text-[50px]  font-semibold text-center">
               <Counter end={15} />
             </p>
-            <p className="mx-auto font-light text-[14px] md:text-[22px] xl:text-[14px] 2xl:text-[24px] text-[#E2E2E2]">
+            <p className="mx-auto font-light text-[14px] md:text-[22px] xl:text-[14px]  text-[#E2E2E2]">
               Happy Customers
             </p>
           </div>

@@ -321,12 +321,12 @@ const HowWeWork = () => {
   return (
     <div className="w-full overflow-x-hidden bg-black pb-5 lg:pb-10  ">
       <div className=" flex flex-col px-10 md:px-25 lg:px-0 gap-10 lg:gap-0   bg-black relative  z-10">
-        <p className="text-center font-semibold text-[40px] lg:text-[65px] 2xl:text-[80px] text-white xl:py-5 ">
+        <p className="text-center font-semibold text-[40px] lg:text-[65px]  text-white xl:py-5 ">
           How We Work
         </p>
         <img
           src="/images/Disc.png"
-          className="xl:h-[210px] 2xl:h-[300px] lg:h-[210px] absolute xl:left-[-100px] 2xl:left-[-150px] 2xl:top-[140px] lg:left-[-100px] lg:top-[100px] xl:top-[208px] z-2 hidden lg:block"
+          className="xl:h-[210px]  lg:h-[210px] absolute xl:left-[-100px]   lg:left-[-100px] lg:top-[100px] xl:top-[208px] z-2 hidden lg:block"
           alt="Disc"
         />
 
@@ -352,11 +352,11 @@ const HowWeWork = () => {
               </div> */}
 
               {/* Left Part */}
-              <div className="lg:w-[60%]  xl:w-[50%] h-[200px] lg:h-full  flex flex-col xl:gap-10 justify-around lg:pl-[130px] xl:pl-[140px] 2xl:pl-[300px] lg:py-20 xl:py-40">
-                <p className="font-marketing-1 text-[30px] lg:text-[60px] 2xl:text-[90px] text-white leading-[60px] ">
+              <div className="lg:w-[60%]  xl:w-[50%] h-[200px] lg:h-full  flex flex-col xl:gap-10 justify-around lg:pl-[130px] xl:pl-[140px] lg:py-20 xl:py-40">
+                <p className="font-marketing-1 text-[30px] lg:text-[60px]  text-white leading-[60px] ">
                   {section.title}
                 </p>
-                <p className="desc-text xl:w-[500px] 2xl:w-[900px] ">
+                <p className="desc-text xl:w-[500px]  ">
                   {section.description}
                 </p>
               </div>

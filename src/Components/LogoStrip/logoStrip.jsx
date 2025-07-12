@@ -153,21 +153,21 @@ const LogoStrip = () => {
   }));
 
   return (
-    <div className="bg-black py-20 xl:py-10 2xl:py-15   relative overflow-hidden  ">
-      <div className="w-[360px] md:w-[680px] lg:w-[880px] xl:w-[1250px] 2xl:w-[2200px]  overflow-hidden mx-auto">
+    <div className="bg-black py-20 xl:py-10    relative overflow-hidden  ">
+      <div className="w-[360px] md:w-[680px] lg:w-[880px] xl:w-[1250px]   overflow-hidden mx-auto">
         <div className="marquee-container fade-effect cursor-pointer group">
           <div className="marquee-track flex">
             {columns.map((pair, i) => (
               <div
                 key={`set1-${i}`}
-                className="logo-column flex flex-col items-center gap-10 2xl:gap-20 flex-shrink-0 w-[160px] 2xl:w-[250px]"
+                className="logo-column flex flex-col items-center gap-10  flex-shrink-0 w-[160px] "
               >
                 {[pair.top, pair.bottom].map((src, idx) => (
                   <img
                     key={`${i}-1-${idx}`}
                     src={src}
                     alt={`Top Logo ${i}-${idx}`}
-                    className="2xl:h-30 xl:h-20 h-10 md:h-19 lg:h-22 object-contain transition-all duration-300 transform group-hover:opacity-40 hover:opacity-100 hover:scale-105"
+                    className=" xl:h-20 h-10 md:h-19 lg:h-22 object-contain transition-all duration-300 transform group-hover:opacity-40 hover:opacity-100 hover:scale-105"
                   />
                 ))}
               </div>
@@ -176,14 +176,14 @@ const LogoStrip = () => {
             {columns.map((pair, i) => (
               <div
                 key={`set2-${i}`}
-                className="logo-column flex flex-col items-center gap-10 xl:gap-10 2xl:gap-20 flex-shrink-0 w-[160px] 2xl:w-[250px]"
+                className="logo-column flex flex-col items-center gap-10 xl:gap-10  flex-shrink-0 w-[160px] "
               >
                 {[pair.top, pair.bottom].map((src, idx) => (
                   <img
                     key={`${i}-2-${idx}`}
                     src={src}
                     alt={`Bottom Logo ${i}-${idx}`}
-                    className="2xl:h-30 xl:h-20 h-10 md:h-19 lg:h-22 object-contain transition-all duration-300 transform group-hover:opacity-40 hover:opacity-100 hover:scale-105"
+                    className=" xl:h-20 h-10 md:h-19 lg:h-22 object-contain transition-all duration-300 transform group-hover:opacity-40 hover:opacity-100 hover:scale-105"
                   />
                 ))}
               </div>
