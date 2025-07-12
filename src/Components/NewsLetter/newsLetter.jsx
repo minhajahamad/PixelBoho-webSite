@@ -16,7 +16,7 @@ const NewsLetter = () => {
         <input
           type="email"
           placeholder="name@email.com"
-          className="md:w-[450px] lg:w-[650px] xl:w-[550px] 2xl:w-[800px] bg-white rounded-[2px] mt-6 p-2 "
+          className="w-[200px] md:w-[450px] lg:w-[650px] xl:w-[550px] 2xl:w-[800px] bg-white rounded-[2px] mt-6 p-2 "
         />
         <div className="text-black bg-[#FFBA3A] font-semibold text-[16px] p-[8px] rounded-[2px] mt-6  cursor-pointer hover:bg-[#ffac12] transition-colors duration-300  ">
           <p>Subscribe</p>
