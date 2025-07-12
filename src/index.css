@@ -502,13 +502,6 @@
   justify-content: center;
 }
 
-@media (min-width: 1536px) {
-  .gradient-color {
-    width: 60px;
-    height: 60px;
-    font-size: 30px;
-  }
-}
 .gradient-color i {
   color: white;
   font-size: 18px;
