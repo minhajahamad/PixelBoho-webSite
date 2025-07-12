@@ -4,7 +4,7 @@ const ContactForm = forwardRef((props, ref) => {
   return (
     <div
       ref={ref}
-      className="bg-[url('/images/Contact-Form-img.png')] bg-no-repeat bg-cover bg-center h-[700px] flex justify-end overflow-x-hidden xl:pr-40 xl:pt-25 "
+      className="bg-[url('/images/Contact-Form-img.png')] bg-no-repeat bg-cover bg-center h-[700px] flex justify-end overflow-x-hidden pr-5 pt-15 xl:pr-40  xl:pt-25 "
     >
       <div className="text-white   flex flex-col gap-2 w-[250px] md:w-[300px] lg:w-[350px]  ">
         <div>

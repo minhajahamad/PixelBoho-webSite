@@ -4,7 +4,7 @@ const ServiceCard = forwardRef((props, ref) => {
   return (
     <div
       ref={ref}
-      className="bg-black w-full py-10 md:py-5  lg:py-10 xl:py-15 xl:px-30  "
+      className="bg-black w-full py-10 px-10 md:px-20 md:py-5  lg:py-10 xl:py-15 xl:px-30  "
     >
       <div className="flex flex-col gap-10 md:gap-15 lg:gap-20   xl:flex-row  xl:justify-around   py-10 xl:py-12   border-t border-b border-white  ">
         <div className=" font-semibold  text-[60px] md:text-[90px] xl:text-[70px]  leading-[60px] md:leading-[98px] xl:leading-[80px]   ">
