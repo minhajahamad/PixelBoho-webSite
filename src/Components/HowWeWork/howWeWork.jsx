@@ -321,7 +321,7 @@ const HowWeWork = () => {
   return (
     <div className="w-full overflow-x-hidden bg-black pb-5 lg:pb-10  ">
       <div className=" flex flex-col px-10 md:px-25 lg:px-0 gap-10 lg:gap-0   bg-black relative  z-10">
-        <p className="text-center font-semibold text-[60px] lg:text-[65px] 2xl:text-[80px] text-white xl:py-5 ">
+        <p className="text-center font-semibold text-[40px] lg:text-[65px] 2xl:text-[80px] text-white xl:py-5 ">
           How We Work
         </p>
         <img
@@ -353,7 +353,7 @@ const HowWeWork = () => {
 
               {/* Left Part */}
               <div className="lg:w-[60%]  xl:w-[50%] h-[200px] lg:h-full  flex flex-col xl:gap-10 justify-around lg:pl-[130px] xl:pl-[140px] 2xl:pl-[300px] lg:py-20 xl:py-40">
-                <p className="font-marketing-1 text-[40px] lg:text-[60px] 2xl:text-[90px] text-white leading-[60px] ">
+                <p className="font-marketing-1 text-[30px] lg:text-[60px] 2xl:text-[90px] text-white leading-[60px] ">
                   {section.title}
                 </p>
                 <p className="desc-text xl:w-[500px] 2xl:w-[900px] ">

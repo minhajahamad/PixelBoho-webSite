@@ -87,7 +87,7 @@ const Footer = () => {
             Terms & Conditions
           </p>
         </div>
-        <div className="flex gap-5 items-center absolute md:relative top-[75px] right-[130px] md:top-0 md:left-0">
+        <div className="flex gap-5 items-center absolute md:relative top-[70%] right-[33%] md:top-0 md:left-0">
           <div className=" bg-[#464646]  w-[40px] h-[40px] 2xl:w-[60px] 2xl:h-[60px] rounded-full flex items-center justify-center hover:bg-white transition-colors duration-300 cursor-pointer hover:text-[#1877F2]  ">
             <TiSocialFacebook className="text-[20px] 2xl:text-[30px]" />
           </div>
