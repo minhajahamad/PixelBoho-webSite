@@ -2,7 +2,7 @@ import React from 'react';
 
 const NewsLetter = () => {
   return (
-    <div className=" bg-black px-10 py-5 lg:px-20 lg:py-10 xl:px-25 xl:py-20  flex flex-col gap-5 ">
+    <div className=" bg-black px-10 py-5 overflow-x-hidden lg:px-20 lg:py-10 xl:px-25 xl:py-20  flex flex-col gap-5 ">
       <p className="text-[#A35DFF] font-marketing-1 text-[30px] lg:text-[40px] xl:text-[50px]  ">
         Subscribe to Our Newsletter
       </p>

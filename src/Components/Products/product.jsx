@@ -36,7 +36,7 @@ const Counter = ({ end }) => {
 
 const Product = () => {
   return (
-    <div className="w-full bg-black    flex flex-col  gap-20 xl:gap-20  py-30 xl:py-15 ">
+    <div className="w-full bg-black  overflow-x-hidden  flex flex-col  gap-20 xl:gap-20  py-30 xl:py-15 ">
       <div className=" text-white w-[330px] md:w-[630px] lg:w-[850px]  xl:w-[990px]  mx-auto flex flex-col gap-10 xl:gap-7 ">
         <p className="font-semibold text-[60px]  text-center leading-[60px]  ">
           Products That Inspire

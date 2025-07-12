@@ -3,7 +3,7 @@ import { TiSocialFacebook } from 'react-icons/ti';
 import { BsTwitterX } from 'react-icons/bs';
 const Footer = () => {
   return (
-    <div className=" bg-black py-10 px-3 md:px-15 lg:px-20  xl:px-30 xl:py-10 flex flex-col relative z-10 overflow-x-hidden">
+    <div className="overflow-x-hidden bg-black py-10 px-3 md:px-15 lg:px-20  xl:px-30 xl:py-10 flex flex-col relative z-10 overflow-x-hidden">
       <img
         src="/images/Footer-img.png"
         className="absolute top-[0px] z-0 pointer-events-none footer-image "
