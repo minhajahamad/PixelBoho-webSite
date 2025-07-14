@@ -330,7 +330,7 @@ const HowWeWork = () => {
           alt="Disc"
         />
 
-        <div className="flex flex-col overflow-y-scroll overflow-x-hidden no-scrollbar snap-y snap-mandatory scroll-smooth xl:max-h-[60vh]">
+        <div className="flex flex-col  overflow-hidden no-scrollbar  xl:max-h-[60vh]">
           {sections.map((section, index) => (
             <div
               key={index}
@@ -352,7 +352,7 @@ const HowWeWork = () => {
               </div> */}
 
               {/* Left Part */}
-              <div className="lg:w-[60%]  xl:w-[50%] h-[200px] lg:h-full  flex flex-col xl:gap-10 justify-around lg:pl-[130px] xl:pl-[140px] lg:py-20 xl:py-40">
+              <div className="lg:w-[60%]  xl:w-[50%] h-[200px] lg:h-full  flex flex-col gap-10 justify-around lg:pl-[130px] xl:pl-[140px] lg:py-20 xl:py-40">
                 <p className="font-marketing-1 text-[30px] lg:text-[60px]  text-white leading-[60px] ">
                   {section.title}
                 </p>

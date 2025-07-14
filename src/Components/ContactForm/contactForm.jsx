@@ -4,14 +4,14 @@ const ContactForm = forwardRef((props, ref) => {
   return (
     <div
       ref={ref}
-      className="overflow-x-hidden bg-[url('/images/Contact-Form-img.png')] bg-no-repeat bg-cover bg-center h-[700px] flex justify-end overflow-x-hidden pr-5 pt-15 xl:pr-40  xl:pt-25 "
+      className="overflow-x-hidden bg-[url('/images/Contact-Form-img.png')] bg-no-repeat bg-cover bg-center py-20 flex items-center justify-center md:justify-end overflow-x-hidden md:pr-20   xl:pr-40  xl:pt-25 "
     >
-      <div className="text-white   flex flex-col gap-2 w-[250px] md:w-[300px] lg:w-[350px]  ">
+      <div className="text-white   flex flex-col gap-2 w-[300px] md:w-[350px] lg:w-[400px]  ">
         <div>
-          <p className="font-medium text-[30px] md:text-[40px] lg:text-[50px] xl:text-[60px] ">
+          <p className="font-medium text-center lg:text-left text-[30px] md:text-[40px] lg:text-[50px] xl:text-[60px] ">
             Say Hi!
           </p>
-          <p className=" text-[12px] lg:text-[14px] xl:text-[16px]  font-light xl:w-[380px]  ">
+          <p className=" text-[12px] text-center lg:text-left lg:text-[14px] xl:text-[16px]  font-light xl:w-[380px]  ">
             Book an appointment with us to get started on your{' '}
             <br className="md:hidden" />
             <span className="text-[#9747FF] text-[16px] lg:text-[18px] xl:text-[20px]  xl:ml-2 font-medium ">
@@ -20,7 +20,7 @@ const ContactForm = forwardRef((props, ref) => {
           </p>
         </div>
 
-        <div className="p-[.7px] w-[230px] md:w-[300px] lg:w-[350px]  h-[330px] lg:h-[350px] xl:w-[380px] xl:h-[370px] rounded-[10px]  bg-[linear-gradient(to_bottom_right,#808080,#1A1A1A)] animated-gradient-border-2   ">
+        <div className="p-[.7px] w-[300px] md:w-[350px] lg:w-[400px]  h-[330px] lg:h-[350px] xl:w-[380px] xl:h-[370px] rounded-[10px]  bg-[linear-gradient(to_bottom_right,#808080,#1A1A1A)] animated-gradient-border-2   ">
           <div className="p-4 xl:p-5  w-full h-full  bg-[#101010] rounded-[10px]  ">
             <form className="flex flex-col gap-4 xl:gap-1">
               <div className="flex flex-col gap-1 ">

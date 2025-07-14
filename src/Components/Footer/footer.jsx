@@ -8,7 +8,7 @@ const Footer = () => {
         src="/images/Footer-img.png"
         className="absolute top-[0px] z-0 pointer-events-none footer-image "
       />
-      <div className=" flex flex-col gap-15    lg:flex-row lg:justify-between text-white ">
+      <div className=" flex flex-col gap-10    lg:flex-row lg:justify-between text-white ">
         <div className="flex flex-col gap-5 ">
           <img
             src="/images/PixelBoho-Logo.svg"
@@ -20,7 +20,7 @@ const Footer = () => {
             security.
           </p>
         </div>
-        <div className="flex gap-10 md:gap-20 md:justify-around xl:gap-30 ">
+        <div className="flex gap-10 md:gap-20 md:justify-between xl:gap-25 ">
           <div className="flex flex-col justify-start gap-5  font-medium xl:text-[20px]  ">
             <p className="cursor-pointer hover:text-[#969696] transition-colors duration-300">
               ABOUT
@@ -29,47 +29,47 @@ const Footer = () => {
               WORKS
             </p>
           </div>
-          <div className="text-[12px]  font-light text-[#969696] leading-[25px] ">
+          <div className="text-[12px]  font-light text-[#969696] leading-[25px]  xl:w-[115px]    ">
             <p className="font-medium text-[20px]  pb-5 text-white">SERVICES</p>
-            <p className="hover:text-white transition-colors duration-200 cursor-pointer  ">
+            <p className="hover:text-white hover:ml-[2%] transition-all duration-200 cursor-pointer  ">
               {' '}
-              Web & App Platforms
+              Web & App
             </p>
-            <p className="hover:text-white transition-colors duration-200 cursor-pointer  ">
+            <p className="hover:text-white hover:ml-[2%] transition-all duration-200 cursor-pointer  ">
               Mobile Solutions
             </p>
-            <p className="hover:text-white transition-colors duration-200 cursor-pointer  ">
+            <p className="hover:text-white hover:ml-[2%] transition-all duration-200 cursor-pointer  ">
               Brand Strategy
             </p>
-            <p className="hover:text-white transition-colors duration-200 cursor-pointer  ">
+            <p className="hover:text-white hover:ml-[2%] transition-all duration-200 cursor-pointer  ">
               SEO Services
             </p>
-            <p className="hover:text-white transition-colors duration-200 cursor-pointer  ">
+            <p className="hover:text-white hover:ml-[2%] transition-all duration-200 cursor-pointer  ">
               Cloud Migration
             </p>
-            <p className="hover:text-white transition-colors duration-200 cursor-pointer  ">
+            <p className="hover:text-white hover:ml-[2%] transition-all duration-200 cursor-pointer  ">
               Enterprise Cloud
             </p>
-            <p className="hover:text-white transition-colors duration-200 cursor-pointer  ">
+            <p className="hover:text-white hover:ml-[2%] transition-all duration-200 cursor-pointer  ">
               Tender Systems
             </p>
-            <p className="hover:text-white transition-colors duration-200 cursor-pointer  ">
+            <p className="hover:text-white hover:ml-[2%] transition-all duration-200 cursor-pointer  ">
               ID Verification APIs
             </p>
           </div>
-          <div className=" flex flex-col gap-2 mt-[-5px]">
-            <p className="font-medium text-[20px]  text-white">To Know More</p>
+          <div className=" flex flex-col gap-2 mt-[-5px]  ">
+            <p className="font-medium text-[15px]  text-white ">To Know More</p>
             <div className="text-white text-[14px]   bg-[#8528FF] px-2 py-2 text-center rounded-[4px] border border-black hover:bg-black hover:border-[#999999] trasnition-colors duration-400 cursor-pointer  ">
               <p>Book Meeting</p>
             </div>
           </div>
         </div>
       </div>
-      <hr className="text-white xl:w-[100%] mt-10 " />
+      <hr className="text-[#9e9e9e] xl:w-[100%] mt-10 " />
 
       <div className="text-white flex justify-between items-center py-10 text-[12px] xl:text-[14px]  relative">
         <div>
-          <p className="cursor-pointer hover:text-[#969696] transition-colors duration-300">
+          <p className="cursor-pointer hover:text-[#969696]  transition-colors duration-300">
             ©2020PixelBoho
           </p>
         </div>

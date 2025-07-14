@@ -35,10 +35,6 @@
   will-change: transform;
 }
 
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
 .logo-column {
   width: 160px;
   flex-shrink: 0;
@@ -107,7 +103,7 @@
   filter: blur(40px);
   opacity: 0.6;
   z-index: 0;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .glow-box-1::before {
@@ -124,7 +120,7 @@
 
 .glow-box-1 {
   position: relative;
-  z-index: 1;
+  z-index: 0;
 }
 
 .glow-box-1:hover::before {
@@ -155,7 +151,7 @@
   filter: blur(40px);
   opacity: 0.6;
   z-index: 0;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 .glow-box-2::before {
@@ -172,7 +168,7 @@
 
 .glow-box-2 {
   position: relative;
-  z-index: 1;
+  z-index: 0;
 }
 
 .glow-box-2:hover::before {
@@ -203,7 +199,7 @@
   filter: blur(40px);
   opacity: 0.6;
   z-index: 0;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .glow-box-3::before {
@@ -220,7 +216,7 @@
 
 .glow-box-3 {
   position: relative;
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
 }
 
@@ -252,7 +248,7 @@
   filter: blur(40px);
   opacity: 0.6;
   z-index: 0;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .glow-box-4::before {
@@ -269,7 +265,7 @@
 
 .glow-box-4 {
   position: relative;
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
 }
 
@@ -301,7 +297,7 @@
   filter: blur(40px);
   opacity: 0.6;
   z-index: 0;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .glow-box-5::before {
@@ -318,7 +314,7 @@
 
 .glow-box-5 {
   position: relative;
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
 }
 
@@ -350,7 +346,7 @@
   filter: blur(40px);
   opacity: 0.6;
   z-index: 0;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .glow-box-6::before {
@@ -367,7 +363,7 @@
 
 .glow-box-6 {
   position: relative;
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
 }
 
@@ -399,7 +395,7 @@
   filter: blur(40px);
   opacity: 0.6;
   z-index: 0;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .glow-box-7::before {
@@ -416,7 +412,7 @@
 
 .glow-box-7 {
   position: relative;
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
 }
 
@@ -448,7 +444,7 @@
   filter: blur(40px);
   opacity: 0.6;
   z-index: 0;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .glow-box-8::before {
@@ -465,7 +461,7 @@
 
 .glow-box-8 {
   position: relative;
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
 }
 
