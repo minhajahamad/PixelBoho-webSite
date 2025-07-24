@@ -51,7 +51,7 @@ const AboutJourney = () => (
   <section className="px-4 py-16 bg-black">
     <h2 className="text-[35px] xl:text-[50px] font-poppins font-semibold text-center mb-10 ">
       <span className="text-white">Our</span>{' '}
-      <span className="text-[#552199]   ">Journey</span>
+      <span className="text-[#8528FF]   ">Journey</span>
     </h2>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
       {journey.map(j => (

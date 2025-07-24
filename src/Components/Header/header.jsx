@@ -47,7 +47,7 @@ const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
           onClick={() => navigate('/about')}
           className="hover:text-[#8528FF] transition-colors duration-300 cursor-pointer"
         >
-          ABOUT
+          ABOUT US
         </p>
         <p
           className="hover:text-[#8528FF] transition-colors duration-300 cursor-pointer"

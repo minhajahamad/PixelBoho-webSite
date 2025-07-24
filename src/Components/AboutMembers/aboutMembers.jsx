@@ -24,7 +24,7 @@ const details = [
 const AboutMembers = () => (
   <section className="py-16 px-4 bg-black">
     <h2 className="text-[35px] xl:text-[50px] font-semibold text-center mb-8 text-white font-poppins ">
-      The Minds Behind <span className="text-[#552199]">PixelBoho</span>
+      The Minds Behind <span className="text-[#8528FF]">PixelBoho</span>
     </h2>
     <p className="text-center font-light text-[#e7e7e7] text-[16px] xl:text-[16px] font-rubik leading-tight max-w-xl mx-auto mb-8">
       Our diverse team of creative strategists, developers, and digital
@@ -42,7 +42,7 @@ const AboutMembers = () => (
             className="mx-auto mb-4 w-76 h-76     flex items-center justify-center text-3xl text-white bg-white"
           />
 
-          <p className="text-[#552199] font-regular font-poppins text-[30px] ">
+          <p className="text-[#8528FF] font-regular font-poppins text-[30px] ">
             {detail.Name}
           </p>
           <p className="text-[#c2c2c2] font-medium font-poppins text-[25px] ">
