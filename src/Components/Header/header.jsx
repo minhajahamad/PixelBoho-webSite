@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
+import { useNavigate } from 'react-router-dom';
 
 const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
   const [showHeader, setShowHeader] = useState(true);
@@ -26,6 +27,8 @@ const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
+
+  const navigate = useNavigate();
   return (
     <nav
       className={`w-screen h-[70px] xl:h-[100px] overflow-x-hidden  bg-black flex  justify-between items-center md:justify-items-normal px-10 md:px-15 lg:px-25 xl:px-35 border-b border-[#d9d9d933]   fixed top-0 left-0  z-50 transition-transform duration-300 ${
@@ -40,7 +43,10 @@ const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
         />
       </div>
       <div className="text-[#E2E2E2] font-light md:text-[14px] xl:text-[15px]  sm:flex items-center gap-6 lg:gap-10 2xl:gap-20   hidden ">
-        <p className="hover:text-[#8528FF] transition-colors duration-300 cursor-pointer">
+        <p
+          onClick={() => navigate('/about')}
+          className="hover:text-[#8528FF] transition-colors duration-300 cursor-pointer"
+        >
           ABOUT
         </p>
         <p
