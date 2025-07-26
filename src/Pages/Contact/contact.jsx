@@ -3,6 +3,7 @@ import Header from '../../Components/Header/header';
 import { CiLocationOn } from 'react-icons/ci';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { IoMail } from 'react-icons/io5';
+import Footer from '../../Components/Footer/footer';
 const offices = [
   {
     name: 'Kerala ',
@@ -132,6 +133,7 @@ const ContactPage = () => {
           </div>
         </section>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -6,7 +6,9 @@ const LogoStrip = () => {
     '/images/RLFC.png',
     '/images/Crowd-Works.png',
     '/images/Career-Launching.png',
-    '/images/JCI.png',
+    // '/images/JCI.png',
+    '/images/Godrej.png',
+
   ];
 
   const secondRowLogos = [

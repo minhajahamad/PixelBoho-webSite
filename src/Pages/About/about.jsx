@@ -6,6 +6,7 @@ import AboutJourney from '../../Components/AboutJourney/aboutJourney';
 import AboutMembers from '../../Components/AboutMembers/aboutMembers';
 import AboutWhyChoose from '../../Components/AboutWhyChoose/aboutWhyChoose';
 import AboutReadyToJoin from '../../Components/AboutReadyToJoin/aboutReadyToJoin';
+import Footer from '../../Components/Footer/footer';
 
 const About = () => {
   return (
@@ -17,6 +18,7 @@ const About = () => {
       <AboutMembers />
       <AboutWhyChoose />
       <AboutReadyToJoin />
+      <Footer />
     </div>
   );
 };

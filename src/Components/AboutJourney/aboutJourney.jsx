@@ -38,7 +38,7 @@ const journey = [
   {
     year: '2024',
     title: 'Excellence',
-    desc: 'Recognized as a leading digital agency with 500+ successful projects and growing.',
+    desc: 'Recognized as a leading digital agency with 250+ successful projects and growing.',
     icon: (
       <div className="bg-gradient-yellow w-[45px] h-[45px] flex items-center justify-center rounded-full">
         <PiMedal className="text-white  text-[25px] " />

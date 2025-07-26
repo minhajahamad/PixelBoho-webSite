@@ -54,7 +54,7 @@ const Product = () => {
         <div className="bg-[#101010] rounded-[22px] h-full w-full  flex flex-col xl:flex-row items-center justify-around     text-white  ">
           <div className="     flex flex-col items-center text-center justify-center  ">
             <p className="text-[60px] md:text-[80px]  xl:text-[50px]  font-semibold  ">
-              <Counter end={200} />
+              <Counter end={1000} />
             </p>
             <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px]  text-[#E2E2E2]">
               Creative Concepts
@@ -68,7 +68,7 @@ const Product = () => {
           </div>
           <div className=" flex flex-col items-center text-center justify-center  ">
             <p className=" text-[60px] md:text-[80px] xl:text-[50px]  font-semibold text-center ">
-              <Counter end={150} />
+              <Counter end={500} />
             </p>
             <p className="mx-auto font-light text-[14px] md:text-[22px]  xl:text-[14px]  text-[#E2E2E2]">
               Product Solutions
@@ -82,7 +82,7 @@ const Product = () => {
           </div>
           <div className="  flex flex-col items-center text-center  xl:h-[139px]    ">
             <p className=" text-[60px] md:text-[80px] xl:text-[50px]  font-semibold text-center">
-              <Counter end={15} />
+              <Counter end={250} />
             </p>
             <p className="mx-auto font-light text-[14px] md:text-[22px] xl:text-[14px]  text-[#E2E2E2]">
               Happy Customers
