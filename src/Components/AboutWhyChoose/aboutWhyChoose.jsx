@@ -36,7 +36,7 @@ const AboutWhyChoose = () => (
       {features.map((f, i) => (
         <div
           key={i}
-          className="bg-[#101010] border border-[#dedede33] rounded-xl px-6 py-6  shadow-2xl   flex flex-col gap-2  "
+          className="bg-[#101010] border border-[#dedede33] rounded-xl px-5 py-5  shadow-2xl w-[300px]  flex flex-col gap-2  "
         >
           <div className="flex gap-3  w-full items-center justify-start">
             <div className="text-4xl mb-2">{f.icon}</div>
