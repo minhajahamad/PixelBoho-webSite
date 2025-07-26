@@ -84,11 +84,14 @@
 
 // export default ServiceCard;
 
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-const ServiceCard = () => {
+const ServiceCard = forwardRef((props, ref) => {
   return (
-    <div className="w-full overflow-hidden border flex flex-col px-10 md:px-15  xl:px-20 ">
+    <div
+      ref={ref}
+      className="w-full overflow-hidden border flex flex-col px-10 md:px-15  xl:px-20 "
+    >
       <div className="w-full border-t border-b border-[#9e9e9e] flex flex-col gap-10 md:gap-15 xl:flex-row xl:justify-between px-5 py-5 md:px-10   xl:px-20  xl:py-10 ">
         <div className="text-[60px] md:text-[70px] xl:text-[70px] font-semibold leading-none ">
           <p>
@@ -163,6 +166,6 @@ const ServiceCard = () => {
       </div>
     </div>
   );
-};
+});
 
 export default ServiceCard;

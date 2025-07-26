@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from '../../Components/Header/header';
 import HeroSection from '../../Components/HeroSection/heroSection';
 import LogoStrip from '../../Components/LogoStrip/logoStrip';
@@ -15,6 +16,7 @@ const Home = () => {
   const howWeWorkRef = useRef(null);
   const productRef = useRef(null);
   const heroRef = useRef(null);
+  const location = useLocation();
 
   const smoothScrollTo = ref => {
     const element = ref.current;
@@ -73,6 +75,23 @@ const Home = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (location.state?.scrollTo === 'services') {
+      setTimeout(() => {
+        servicesRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100); // delay to ensure DOM is rendered
+    }
+  }, [location]);
+
+
+  useEffect(() => {
+    if (location.state?.scrollTo === 'contact') {
+      setTimeout(() => {
+        contactRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100); // slight delay ensures DOM is ready
+    }
+  }, [location.state]);
+
   return (
     <div className="pt-[100px] bg-black">
       <Header
@@ -87,7 +106,7 @@ const Home = () => {
       <ServiceCard ref={servicesRef} />
       <Product ref={productRef} />
       <HowWeWork ref={howWeWorkRef} />
-      <ContactForm ref={contactRef} />
+      <ContactForm ref={contactRef}  />
       <NewsLetter />
       <Footer />
     </div>

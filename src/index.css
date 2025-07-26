@@ -21,11 +21,6 @@
   @apply text-[14px] md:text-[17px] lg:text-[15px] xl:text-[15px]  text-[#E2E2E2] font-light;
 }
 
-/*
-  desc-text is used in AboutHeroSection for scroll-based horizontal color fill effect.
-  The color is controlled via inline style (background-clip: text, gradient) in the component.
-*/
-
 /* Scrolling effcet */
 .marquee-container {
   overflow: hidden;
@@ -521,18 +516,23 @@
   color: transparent;
 }
 
-.footer-image {
-  animation: slideLeftRight 15s ease-in-out infinite alternate;
-}
+@media (min-width: 1280px){
 
-@keyframes slideLeftRight {
-  0% {
-    transform: translateX(70px);
+  .footer-image {
+    animation: slideLeftRight 15s ease-in-out infinite alternate;
   }
-  100% {
-    transform: translateX(-800px); /* adjust the distance you want it to move */
+  
+  @keyframes slideLeftRight {
+    0% {
+      transform: translateX(70px);
+    }
+    100% {
+      transform: translateX(-800px); /* adjust the distance you want it to move */
+    }
   }
-}
+
+
+} 
 
 /* About Text Gradient */
 .text-gradient {
@@ -609,6 +609,43 @@
     135deg,
     #eb9916 0%,
     #ed7a27 50%,
-    #EE6234  100%
+    #ee6234 100%
   );
+}
+
+/* Hide scrollbar globally */
+html {
+  overflow: -moz-scrollbars-none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* Chrome/Safari/Webkit */
+}
+
+/* Menu Underline animation */
+.menu-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.menu-underline::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: -4px; /* adjust as needed */
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  background: #8528ff; /* Set your underline color */
+  height: 2px;
+  width: 90%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+}
+
+.menu-underline:hover::after {
+  transform: translateX(-50%) scaleX(1);
 }

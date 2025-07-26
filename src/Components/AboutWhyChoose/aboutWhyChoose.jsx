@@ -32,7 +32,7 @@ const AboutWhyChoose = () => (
     <h2 className="text-[35px] xl:text-[50px] font-semibold text-center mb-10 text-white ">
       Why Choose <span className="text-[#8528FF]">PixelBoho?</span>
     </h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full  mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 w-full  mx-auto">
       {features.map((f, i) => (
         <div
           key={i}

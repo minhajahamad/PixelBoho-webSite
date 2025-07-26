@@ -47,8 +47,8 @@ const ContactForm = forwardRef((props, ref) => {
                 </label>
                 <select className=" border border-[#5B5B5B]  rounded-[6px] bg-[#353535] focus:border-[#E2E2E2] focus:outline-none  " />
               </div>
-              <div className="w-[200px] xl:w-[330px]  bg-[#FFBA3A] mx-auto text-black font-semibold text-[13px] lg:text-[16px] rounded-[10px] p-1 text-center mt-3 xl:mt-8 cursor-pointer hover:bg-[#ffac12] transition-colors duration-300 ">
-                Book a Meeting
+              <div className="px-5  bg-[#FFBA3A] mx-auto text-black font-semibold text-[13px] lg:text-[16px] rounded-[5px] p-1 text-center mt-3 xl:mt-8 cursor-pointer hover:bg-[#ffac12] transition-colors duration-300 ">
+                Submit
               </div>
             </form>
           </div>

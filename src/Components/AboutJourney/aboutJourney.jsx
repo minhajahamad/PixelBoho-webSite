@@ -71,7 +71,7 @@ const AboutJourney = () => (
           <p className="font-light text-[#e7e7e7] text-[16px] xl:text-[16px] font-rubik leading-tight">
             {j.desc}
           </p>
-          <div className="w-full h-2 rounded-xl bg-gray-600"></div>
+          {/* <div className="w-full h-2 rounded-xl bg-gray-600"></div> */}
         </div>
       ))}
     </div>

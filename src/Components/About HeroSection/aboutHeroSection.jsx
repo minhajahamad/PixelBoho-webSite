@@ -180,7 +180,7 @@ const AboutHeroSection = () => {
   //   }, []);
 
   return (
-    <div className="xl:h-screen bg-black flex flex-col justify-center gap-10  xl:flex-row items-center text-white pt-[100px] xl:pt-[100px] px-10 lg:px-20 lg:py-30 py-20 xl:px-20 ">
+    <div className=" bg-black flex flex-col justify-center gap-10  xl:flex-row items-center text-white pt-[100px] xl:pt-[200px] px-10 lg:px-20 lg:py-30 py-20 xl:px-20 ">
       <div className="xl:w-[45%] leading-tight  ">
         <p className="text-[55px] xl:text-[100px]  font-poppins text-gradient  ">
           PixelBoho
@@ -189,7 +189,7 @@ const AboutHeroSection = () => {
           We're Creative Digital Agency
         </p> */}
       </div>
-      <div className="xl:w-[55%] hidden xl:block font-light text-[#E2E2E2]  xl:text-[18px] text-center xl:text-left  ">
+      <div className="xl:w-[55%] hidden xl:block font-light leading-tight text-[#E2E2E2]  xl:text-[16px] text-center xl:text-left  ">
         <p className="scroll-gradient-text">
           We are a full-service digital agency dedicated to transforming brands
           through the perfect blend of creative innovation and data-driven
