@@ -65,7 +65,7 @@ const ContactPage = () => {
         {/* Section 1: Header */}
         <section className="flex flex-col items-center py-16">
           <h1 className="text-4xl md:text-5xl font-semibold text-[#8528FF] mb-2">
-            Contact PixelBoho
+            <span className="text-white">Contact</span> PixelBoho
           </h1>
           <p className="font-light text-[#E2E2E2]  xl:text-[18px] text-center max-w-2xl">
             Connect with our teams across India. We're here to help bring your
