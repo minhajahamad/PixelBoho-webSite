@@ -14,15 +14,19 @@ const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // Add inside useEffect for route change
-    if (location.pathname === '/about') {
+    const path = location.pathname;
+  
+    if (path === '/about') {
       setActive('about');
-    } else if (location.pathname === '/contact') {
+    } else if (path === '/contact') {
       setActive('contact');
-    } else {
+    } else if (path === '/') {
       setActive('home');
+    } else {
+      setActive(''); // No active tab for unmatched routes like /career
     }
-  });
+  }, [location.pathname]);
+  
 
   useEffect(() => {
     const handleScroll = () => {
