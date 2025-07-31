@@ -2,7 +2,6 @@ const Application = require('../db/models/applicationSchema');
 
 module.exports.postApplication = async (req, res) => {
   try {
-    // const { name, email, phone, message } = req.body;
     // const resumeUrl = req.file ? `/uploads/${req.file.filename}` : '';
 
     const dbResponse = await Application.create(req.body);

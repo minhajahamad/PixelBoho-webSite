@@ -1,28 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { IoIosClose } from 'react-icons/io';
 
 import axios from 'axios';
 
 const CareerJobCard = ({ job }) => {
-  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
 
+    if (!job._id) {
+      console.error('Missing job._id!');
+      alert('Application failed: Job ID missing');
+      return;
+    }
+  
     try {
-      const res = await axios.post(
-        'http://localhost:9000/applications',
-        formData
-      ); //request to server with formData
-      alert(res.data.message || 'Application submitted successfully');
-      setShowModal(false); // Close modal on success
-      setFormData({ name: '', email: '', phone: '', message: '' }); // Optional: clear form
+      const res = await axios.post('http://localhost:9000/applications', {
+        jobId: job._id,
+        ...formData,
+      });
+  
+  
+      console.log(res.data); // success
+      alert('Application Submitted');
+      setShowModal(false); // Close modal
+      setFormData({ name: '', email: '', phone: '', message: '' }); // Reset
     } catch (err) {
       console.error(err);
-      alert('Submission failed!');
+      alert('Submission failed');
     }
   };
 
@@ -36,7 +43,7 @@ const CareerJobCard = ({ job }) => {
     return () => document.body.classList.remove('overflow-hidden');
   }, [showModal]);
 
-  // State for formData
+  //State For Posting
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -45,8 +52,7 @@ const CareerJobCard = ({ job }) => {
   });
 
   const handleChange = e => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
     console.log(e.target.value);
   };
 
@@ -119,8 +125,9 @@ const CareerJobCard = ({ job }) => {
               <div>
                 <label className="block mb-1 text-sm font-medium ">Name:</label>
                 <input
-                  name="name"
                   onChange={handleChange}
+                  value={formData.name}
+                  name="name"
                   type="text"
                   placeholder="Your Name"
                   required
@@ -134,8 +141,9 @@ const CareerJobCard = ({ job }) => {
                   Email:
                 </label>
                 <input
-                  name="email"
                   onChange={handleChange}
+                  value={formData.email}
+                  name="email"
                   type="email"
                   placeholder="Email Address"
                   required
@@ -149,8 +157,9 @@ const CareerJobCard = ({ job }) => {
                   Phone No:
                 </label>
                 <input
-                  name="phone"
                   onChange={handleChange}
+                  value={formData.phone}
+                  name="phone"
                   type="tel"
                   placeholder="Phone Number"
                   required
@@ -177,8 +186,9 @@ const CareerJobCard = ({ job }) => {
                   Message:
                 </label>
                 <textarea
-                  name="message"
                   onChange={handleChange}
+                  value={formData.message}
+                  name="message"
                   placeholder="Your Message"
                   rows="4"
                   className="w-full rounded-md border border-[#dedede33] p-3 text-white placeholder-gray-400 bg-transparent focus:outline-none focus:ring-2 focus:ring-[#4d4c4c33]"
