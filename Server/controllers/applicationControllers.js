@@ -1,6 +1,6 @@
 const Application = require('../db/models/applicationSchema');
 
-module.exports.submitApplication = async (req, res) => {
+module.exports.postApplication = async (req, res) => {
   try {
     // const { name, email, phone, message } = req.body;
     // const resumeUrl = req.file ? `/uploads/${req.file.filename}` : '';

@@ -1,13 +1,12 @@
 const express = require('express');
 const {
-  submitApplication,
+  postApplication,
   getApplication,
 } = require('../controllers/applicationControllers');
-const { getOpenings } = require('../controllers/jobOpeningsControllers');
 
 const router = express.Router();
 
-router.post('/', submitApplication);
+router.post('/', postApplication);
 router.get('/', getApplication);
 
 module.exports = router;
