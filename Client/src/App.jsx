@@ -1,0 +1,28 @@
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+
+import Home from './Pages/Home/home';
+import About from './Pages/About/about';
+import CareerPage from './Pages/Career/careerPage';
+import ContactPage from './Pages/Contact/contact';
+import ScrollToTop from './Components/ScrollToTop/scrollToTop';
+import PrivacyPolicy from './Pages/Privacy Policy/privacyPolicy';
+import TermsConditions from './Pages/Terms and Condition/terms-condition';
+
+const App = () => {
+  return (
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/career" element={<CareerPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
+      </Routes>
+    </>
+  );
+};
+
+export default App;
