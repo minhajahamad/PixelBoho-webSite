@@ -22,3 +22,14 @@ module.exports.getApplication = async (req, res) => {
     res.status(500).json({ message: e.message, error: true });
   }
 };
+
+module.exports.deleteApplication = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const dbResonse = await Application.findByIdAndDelete(id);
+    res.status(201).json({ message: 'Application deleted successfully' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message, error: true });
+  }
+};

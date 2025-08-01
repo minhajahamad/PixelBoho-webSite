@@ -17,13 +17,13 @@ import axios from 'axios';
 //     ],
 //   },
 //   {
-//     title: 'Full Stack Developer',
-//     category: 'Development',
+//     "title": 'Full Stack Developer',
+//     "category": 'Development',
 //     type: 'Internship',
-//     experience: '0-1 year',
-//     subtitle:
+//     "experience": '0-1 year',
+//     "subtitle":
 //       'Support development of scalable web applications. Work on both frontend and backend tasks using modern technologies and collaborative workflows.',
-//     requirements: [
+//     "requirements": [
 //       'Familiarity with front-end (HTML, CSS, JavaScript, React/Vue)',
 //       'Basic knowledge of back-end (Node.js/PHP, Express, MongoDB/MySQL)',
 //       'Understanding of RESTful APIs and Git version control',

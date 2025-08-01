@@ -1,0 +1,242 @@
+"use client"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Search, Download, Eye, Mail, Phone } from "lucide-react"
+
+const mockApplications = [
+  {
+    id: 1,
+    name: "Sarah Johnson",
+    email: "sarah.johnson@email.com",
+    phone: "+1 (555) 123-4567",
+    jobTitle: "Senior Frontend Developer",
+    jobId: 1,
+    message: "I'm excited about this opportunity and believe my 5 years of React experience would be valuable.",
+    dateSubmitted: "2024-01-15",
+    status: "pending",
+    resume: "sarah_johnson_resume.pdf",
+  },
+  {
+    id: 2,
+    name: "Mike Chen",
+    email: "mike.chen@email.com",
+    phone: "+1 (555) 234-5678",
+    jobTitle: "UI/UX Designer",
+    jobId: 2,
+    message: "I have a strong portfolio in user-centered design and would love to contribute to your team.",
+    dateSubmitted: "2024-01-14",
+    status: "reviewed",
+    resume: "mike_chen_resume.pdf",
+  },
+  {
+    id: 3,
+    name: "Emily Davis",
+    email: "emily.davis@email.com",
+    phone: "+1 (555) 345-6789",
+    jobTitle: "Backend Developer Intern",
+    jobId: 3,
+    message: "As a recent computer science graduate, I'm eager to start my career in backend development.",
+    dateSubmitted: "2024-01-13",
+    status: "pending",
+    resume: "emily_davis_resume.pdf",
+  },
+  {
+    id: 4,
+    name: "Alex Rodriguez",
+    email: "alex.rodriguez@email.com",
+    phone: "+1 (555) 456-7890",
+    jobTitle: "Product Manager",
+    jobId: 4,
+    message: "With 7 years of product management experience, I'm ready to take on new challenges.",
+    dateSubmitted: "2024-01-12",
+    status: "interviewed",
+    resume: "alex_rodriguez_resume.pdf",
+  },
+  {
+    id: 5,
+    name: "Jessica Wong",
+    email: "jessica.wong@email.com",
+    phone: "+1 (555) 567-8901",
+    jobTitle: "Senior Frontend Developer",
+    jobId: 1,
+    message: "I specialize in modern JavaScript frameworks and have led multiple successful projects.",
+    dateSubmitted: "2024-01-11",
+    status: "rejected",
+    resume: "jessica_wong_resume.pdf",
+  },
+]
+
+export function Applications() {
+  const [searchTerm, setSearchTerm] = useState("")
+  const [statusFilter, setStatusFilter] = useState("all")
+  const [jobFilter, setJobFilter] = useState("all")
+
+  const filteredApplications = mockApplications.filter((application) => {
+    const matchesSearch =
+      application.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      application.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      application.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
+
+    const matchesStatus = statusFilter === "all" || application.status === statusFilter
+    const matchesJob = jobFilter === "all" || application.jobId.toString() === jobFilter
+
+    return matchesSearch && matchesStatus && matchesJob
+  })
+
+  const getStatusBadge = (status) => {
+    const variants = {
+      pending: "bg-yellow-100 text-yellow-800",
+      reviewed: "bg-blue-100 text-blue-800",
+      interviewed: "bg-purple-100 text-purple-800",
+      rejected: "bg-red-100 text-red-800",
+      hired: "bg-green-100 text-green-800",
+    }
+    return variants[status] || "bg-gray-100 text-gray-800"
+  }
+
+  const exportApplications = () => {
+    // Mock export functionality
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      "Name,Email,Phone,Job Title,Status,Date Submitted\n" +
+      filteredApplications
+        .map((app) => `${app.name},${app.email},${app.phone},${app.jobTitle},${app.status},${app.dateSubmitted}`)
+        .join("\n")
+
+    const encodedUri = encodeURI(csvContent)
+    const link = document.createElement("a")
+    link.setAttribute("href", encodedUri)
+    link.setAttribute("download", "applications.csv")
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  return (
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Applications</h1>
+          <p className="text-gray-600">Review and manage job applications</p>
+        </div>
+        <Button onClick={exportApplications} variant="outline">
+          <Download className="mr-2 h-4 w-4" />
+          Export CSV
+        </Button>
+      </div>
+
+      {/* Filters */}
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex space-x-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                placeholder="Search by name, email, or job title..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="reviewed">Reviewed</SelectItem>
+                <SelectItem value="interviewed">Interviewed</SelectItem>
+                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="hired">Hired</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={jobFilter} onValueChange={setJobFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filter by job" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Jobs</SelectItem>
+                <SelectItem value="1">Senior Frontend Developer</SelectItem>
+                <SelectItem value="2">UI/UX Designer</SelectItem>
+                <SelectItem value="3">Backend Developer Intern</SelectItem>
+                <SelectItem value="4">Product Manager</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Applications Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>All Applications ({filteredApplications.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Candidate</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>Job Title</TableHead>
+                <TableHead>Message Preview</TableHead>
+                <TableHead>Date Submitted</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredApplications.map((application) => (
+                <TableRow key={application.id}>
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">{application.name}</div>
+                      <div className="text-sm text-gray-500">{application.resume}</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <div className="flex items-center text-sm">
+                        <Mail className="h-3 w-3 mr-1 text-gray-400" />
+                        {application.email}
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <Phone className="h-3 w-3 mr-1 text-gray-400" />
+                        {application.phone}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="font-medium">{application.jobTitle}</TableCell>
+                  <TableCell>
+                    <div className="max-w-xs truncate text-sm text-gray-600">{application.message}</div>
+                  </TableCell>
+                  <TableCell>{application.dateSubmitted}</TableCell>
+                  <TableCell>
+                    <Badge className={getStatusBadge(application.status)}>{application.status}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      <Button variant="ghost" size="sm">
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

@@ -15,14 +15,13 @@ const CareerJobCard = ({ job }) => {
       alert('Application failed: Job ID missing');
       return;
     }
-  
+
     try {
       const res = await axios.post('http://localhost:9000/applications', {
         jobId: job._id,
         ...formData,
       });
-  
-  
+
       console.log(res.data); // success
       alert('Application Submitted');
       setShowModal(false); // Close modal
@@ -72,7 +71,7 @@ const CareerJobCard = ({ job }) => {
             <span className="bg-gray-800 px-2 py-1 rounded">
               {job.category}
             </span>
-            <span className="bg-gray-800 px-2 py-1 rounded">{job.type}</span>
+            <span className="bg-gray-800 px-2 py-1 rounded">Full Time</span>
             <span className="bg-gray-800 px-2 py-1 rounded">
               {job.experience}
             </span>

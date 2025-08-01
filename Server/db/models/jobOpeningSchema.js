@@ -10,6 +10,7 @@ const jobOpeningSchema = Schema(
       type: String,
       required: true,
     },
+
     experience: {
       type: String,
       required: true,
