@@ -86,11 +86,15 @@ const CareerJobCard = ({ job }) => {
           <span className="text-[25px] font-medium text-white">
             Requirements:
           </span>
-          <ul className="list-disc list-inside text-[#E2E2E2] xl:text-[16px] font-rubik mt-1 mb-3">
-            {job.requirements.map((req, idx) => (
-              <li key={idx}>{req}</li>
-            ))}
-          </ul>
+          {Array.isArray(job.requirements) && job.requirements.length > 0 ? (
+            <ul className="list-disc list-inside text-[#E2E2E2] xl:text-[16px] font-rubik mt-1 mb-3">
+              {job.requirements.map((req, idx) => (
+                <li key={idx}>{req}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-[#E2E2E2] mt-1 mb-3">No requirements listed.</p>
+          )}
         </div>
 
         <div

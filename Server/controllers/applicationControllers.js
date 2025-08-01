@@ -15,7 +15,7 @@ module.exports.postApplication = async (req, res) => {
 
 module.exports.getApplication = async (req, res) => {
   try {
-    const dbResonse = await Application.find().populate('jobId');
+    const dbResonse = await Application.find().populate('jobId','title');
     res.status(201).json(dbResonse);
   } catch (e) {
     console.error(e);
