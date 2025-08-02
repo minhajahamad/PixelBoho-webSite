@@ -23,6 +23,8 @@ import {
   X,
 } from 'lucide-react';
 
+import axios from 'axios';
+
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'jobs', label: 'Post Jobs', icon: Briefcase },
@@ -31,8 +33,24 @@ const menuItems = [
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
-export function Navbar({ activeTab, setActiveTab }) {
+export function Navbar({ activeTab, setActiveTab, unreadCount }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // const [unreadCount, setUnreadCount] = useState(0);
+
+  // useEffect(() => {
+  //   const fetchUnreadCount = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         'http://localhost:9000/messages/unread-count'
+  //       );
+  //       setUnreadCount(res.data.unreadCount);
+  //     } catch (err) {
+  //       console.error('Failed to fetch unread count', err);
+  //     }
+  //   };
+  //   fetchUnreadCount();
+  // }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-sm">
@@ -67,12 +85,12 @@ export function Navbar({ activeTab, setActiveTab }) {
                 >
                   <Icon className="mr-2 h-4 w-4" />
                   {item.label}
-                  {item.id === 'messages' && (
+                  {item.id === 'messages' && unreadCount > 0 && (
                     <Badge
                       variant="secondary"
                       className="ml-2 bg-red-100 text-red-800 text-xs px-1.5 py-0.5"
                     >
-                      3
+                      {unreadCount}
                     </Badge>
                   )}
                 </Button>

@@ -66,11 +66,10 @@ const CareerOpenings = () => {
   const getOpenings = async () => {
     try {
       const response = await axios.get('http://localhost:9000/openings');
-      setJobs(response.data); // Make sure response.data is an array of jobs
+      setJobs(response.data.openings || []); // Make sure response.data is an array of jobs
     } catch (error) {
       console.error('Error fetching openings:', error);
     }
-  
   };
 
   useEffect(() => {
@@ -86,10 +85,10 @@ const CareerOpenings = () => {
         </p>
       </div>
       <div className="space-y-8  mx-auto ">
-      {jobs.length === 0 ? (
+        {jobs.length === 0 ? (
           <p className="text-center">No openings found.</p>
         ) : (
-          jobs.map((job) => <CareerJobCard key={job._id} job={job} />)
+          jobs.map(job => <CareerJobCard key={job._id} job={job} />)
         )}
       </div>
     </section>

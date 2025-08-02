@@ -20,10 +20,10 @@ const applicationSchema = Schema(
       required: [true, 'Phone number is required'],
     },
     message: String,
-    // resumeUrl: {
-    //   type: String,
-    //   required: [true, 'Resume is required'],
-    // },
+    resume: {
+      type: String,
+      required: [true, 'Resume is required'],
+    },
   },
   { timestamps: true }
 );

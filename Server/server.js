@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-// const path = require('path');
+const path = require('path');
 
 dotenv.config();
 
@@ -9,17 +9,12 @@ const db = require('./db/db');
 
 const app = express();
 
-
 //middlewares
 app.use(cors());
 app.use(express.json());
 
-
 // Serve uploaded resume files publicly
-// app.use(
-//   '/uploads/resumes',
-//   express.static(path.join(__dirname, 'uploads/resumes'))
-// );
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 //routes
 const routes = require('./routes/index');

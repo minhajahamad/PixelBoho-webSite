@@ -7,30 +7,40 @@ import axios from 'axios';
 const CareerJobCard = ({ job }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!job._id) {
       console.error('Missing job._id!');
       alert('Application failed: Job ID missing');
       return;
     }
-
+  
     try {
-      const res = await axios.post('http://localhost:9000/applications', {
-        jobId: job._id,
-        ...formData,
+      const submissionData = new FormData();
+      submissionData.append('jobId', job._id);
+      submissionData.append('name', formData.name);
+      submissionData.append('email', formData.email);
+      submissionData.append('phone', formData.phone);
+      submissionData.append('message', formData.message);
+      if (formData.resume) {
+        submissionData.append('resume', formData.resume);
+      }
+  
+      const res = await axios.post('http://localhost:9000/applications', submissionData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
-
-      console.log(res.data); // success
+  
+      console.log(res.data);
       alert('Application Submitted');
-      setShowModal(false); // Close modal
-      setFormData({ name: '', email: '', phone: '', message: '' }); // Reset
+      setShowModal(false);
+      setFormData({ name: '', email: '', phone: '', message: '', resume: null });
     } catch (err) {
       console.error(err);
       alert('Submission failed');
     }
   };
+  
 
   useEffect(() => {
     if (showModal) {
@@ -48,11 +58,16 @@ const CareerJobCard = ({ job }) => {
     email: '',
     phone: '',
     message: '',
+    resume: null,
   });
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     console.log(e.target.value);
+  };
+
+  const handleFileChange = e => {
+    setFormData({ ...formData, resume: e.target.files[0] });
   };
 
   return (
@@ -171,17 +186,18 @@ const CareerJobCard = ({ job }) => {
               </div>
 
               {/* Resume Upload */}
-              {/* <div>
+              <div>
                 <label className="block mb-1 text-sm font-medium ">
                   Upload Resume:
                 </label>
                 <input
                   type="file"
                   accept=".pdf,.doc,.docx"
+                  onChange={handleFileChange}
                   required
-                  className="w-full rounded-md border border-[#dedede33] p-2 file:bg-[#393939] file:text-white file:border-0 file:py-2 file:px-4 file:rounded-sm bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-[#4d4c4c33]"
+                  className="w-full cursor-pointer rounded-md border border-[#dedede33] p-2 file:bg-[#393939] file:text-white file:border-0 file:py-2 file:px-4 file:rounded-sm bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-[#4d4c4c33]"
                 />
-              </div> */}
+              </div>
 
               {/* Message */}
               <div>

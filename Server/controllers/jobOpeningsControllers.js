@@ -1,4 +1,5 @@
 const Openings = require('../db/models/jobOpeningSchema');
+const Application = require('../db/models/applicationSchema');
 
 module.exports.postOpenings = async (req, res) => {
   try {
@@ -12,8 +13,34 @@ module.exports.postOpenings = async (req, res) => {
 
 module.exports.getOpenings = async (req, res) => {
   try {
-    const dbResponse = await Openings.find();
-    res.status(201).json(dbResponse);
+    // Fetch jobs
+    const openings = await Openings.find();
+
+    // Count applications for each job
+    const applicationsCount = await Application.aggregate([
+      {
+        $group: {
+          _id: '$jobId',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Map counts to jobs
+    const openingsWithCounts = openings.map(job => {
+      const countObj = applicationsCount.find(
+        c => c._id.toString() === job._id.toString()
+      );
+      return {
+        ...job.toObject(),
+        applications: countObj ? countObj.count : 0,
+      };
+    });
+
+    res.status(200).json({
+      totalCount: openings.length,
+      openings: openingsWithCounts,
+    });
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: e.message, error: true });

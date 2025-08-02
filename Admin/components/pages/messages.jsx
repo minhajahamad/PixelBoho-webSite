@@ -33,7 +33,7 @@ import {
 
 import axios from 'axios';
 
-export function Messages() {
+export function Messages({ setUnreadCount, unreadCount }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [messages, setMessages] = useState([]);
   const [selectedMessage, setSelectedMessage] = useState(null);
@@ -69,24 +69,22 @@ export function Messages() {
       message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       message.subject.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
   const toggleReadStatus = async (id, currentStatus) => {
     try {
       const res = await axios.patch(
         `http://localhost:9000/messages/${id}/read`,
-        {
-          isRead: !currentStatus,
-        }
+        { isRead: !currentStatus }
       );
-      // Update local state with new message data
       setMessages(messages.map(msg => (msg._id === id ? res.data : msg)));
+
+      // ✅ Update unread count instantly
+      setUnreadCount(prev => (currentStatus ? prev + 1 : prev - 1));
     } catch (error) {
-      console.error('Failed to update read status:', error);
-      alert('Error updating read status');
+      console.error('Failed to update read status', error);
     }
   };
 
-  const unreadCount = messages.filter(msg => !msg.isRead).length;
+  // const unreadCount = messages.filter(msg => !msg.isRead).length;
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
@@ -174,13 +172,19 @@ export function Messages() {
                   </TableCell>
 
                   <TableCell className="text-sm">
-                    {message.submittedAt}
+                    {new Date(message.createdAt).toLocaleDateString('en-IN', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
                   </TableCell>
+
                   <TableCell>
                     <div className="flex space-x-2">
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button
+                            className="cursor-pointer hover:text-[#8528FF]"
                             variant="ghost"
                             size="sm"
                             onClick={() => setSelectedMessage(message)}

@@ -25,6 +25,7 @@ import {
   Cell,
 } from 'recharts';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const chartData = [
   { name: 'Jan', applications: 65, jobs: 12 },
@@ -106,10 +107,30 @@ export function Dashboard({ setActiveTab }) {
   const [isVisible, setIsVisible] = useState(false);
   const [animateChart, setAnimateChart] = useState(false);
 
+  const [totalJobs, setTotalJobs] = useState(0);
+  const [totalApplications, setTotalApplications] = useState(0);
+
   useEffect(() => {
     // Trigger animations when component mounts
     const timer1 = setTimeout(() => setIsVisible(true), 100);
     const timer2 = setTimeout(() => setAnimateChart(true), 800);
+
+    // Fetch stats
+    const fetchStats = async () => {
+      try {
+        // Fetch Jobs
+        const jobsRes = await axios.get('http://localhost:9000/openings');
+        setTotalJobs(jobsRes.data.totalCount || 0);
+
+        // Fetch Applications
+        const appsRes = await axios.get('http://localhost:9000/applications');
+        setTotalApplications(appsRes.data.length || 0);
+      } catch (error) {
+        console.error('Failed to fetch stats:', error);
+      }
+    };
+
+    fetchStats();
 
     return () => {
       clearTimeout(timer1);
@@ -133,7 +154,8 @@ export function Dashboard({ setActiveTab }) {
             Welcome back! Here's what's happening with your job postings.
           </p>
         </div>
-        {setActiveTab && <QuickActionsDropdown setActiveTab={setActiveTab} />}
+        {/* {setActiveTab && <QuickActionsDropdown setActiveTab={setActiveTab} />} */}
+        <span className="text-gray-400 text-sm">Coming Soon...</span>
       </div>
 
       {/* Stats Cards */}
@@ -141,29 +163,44 @@ export function Dashboard({ setActiveTab }) {
         {[
           {
             title: 'Total Job Posts',
-            value: 24,
+            value: totalJobs,
             change: '+12% from last month',
             icon: Briefcase,
             delay: 100,
           },
           {
             title: 'Total Applications',
-            value: 342,
+            value: totalApplications,
             change: '+18% from last month',
             icon: FileText,
             delay: 200,
           },
+          // {
+          //   title: 'Active Candidates',
+          //   value: 156,
+          //   change: '+8% from last month',
+          //   icon: Users,
+          //   delay: 300,
+          // },
+          // {
+          //   title: 'Interviews Scheduled',
+          //   value: 28,
+          //   change: '+5% from last month',
+          //   icon: Calendar,
+          //   delay: 400,
+          // },
+
           {
             title: 'Active Candidates',
-            value: 156,
-            change: '+8% from last month',
+            value: 'Coming Soon...',
+            change: '',
             icon: Users,
             delay: 300,
           },
           {
             title: 'Interviews Scheduled',
-            value: 28,
-            change: '+5% from last month',
+            value: 'Coming Soon...',
+            change: '',
             icon: Calendar,
             delay: 400,
           },
@@ -207,7 +244,7 @@ export function Dashboard({ setActiveTab }) {
             <div className="flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-8">
               {/* Donut Chart - Larger with Animation */}
               <div className="relative flex-shrink-0">
-                <ResponsiveContainer width={320} height={320}>
+                {/* <ResponsiveContainer width={320} height={320}>
                   <PieChart>
                     <Pie
                       data={departmentData}
@@ -244,10 +281,13 @@ export function Dashboard({ setActiveTab }) {
                       }}
                     />
                   </PieChart>
-                </ResponsiveContainer>
+                </ResponsiveContainer> */}
+                <div className="flex items-center justify-center w-[320px] h-[320px] text-3xl text-center text-gray-400">
+                  Coming Soon...
+                </div>
 
                 {/* Center Text with Animation */}
-                <div
+                {/* <div
                   className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 ease-out ${
                     animateChart
                       ? 'opacity-100 scale-100'
@@ -259,11 +299,11 @@ export function Dashboard({ setActiveTab }) {
                   <div className="text-sm text-gray-500 font-medium">
                     Total Applications
                   </div>
-                </div>
+                </div> */}
               </div>
 
               {/* Legend - Better Layout with Animation */}
-              <div
+              {/* <div
                 className={`flex-1 space-y-4 transition-all duration-1000 ease-out ${
                   animateChart
                     ? 'opacity-100 translate-x-0'
@@ -305,7 +345,7 @@ export function Dashboard({ setActiveTab }) {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
           </CardContent>
         </Card>
@@ -324,7 +364,7 @@ export function Dashboard({ setActiveTab }) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={280}>
+            {/* <ResponsiveContainer width="100%" height={280}>
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
@@ -341,7 +381,10 @@ export function Dashboard({ setActiveTab }) {
                   animationEasing="ease-in-out"
                 />
               </LineChart>
-            </ResponsiveContainer>
+            </ResponsiveContainer> */}
+            <div className="flex items-center justify-center text-3xl w-full h-[280px] text-gray-400">
+              Coming Soon...
+            </div>
           </CardContent>
         </Card>
       </div>

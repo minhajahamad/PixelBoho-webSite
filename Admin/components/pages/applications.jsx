@@ -20,7 +20,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Search, Download, Eye, Mail, Phone, Trash2 } from 'lucide-react';
+import {
+  Search,
+  Download,
+  Eye,
+  Mail,
+  Phone,
+  Trash2,
+  FileText,
+} from 'lucide-react';
 
 import axios from 'axios';
 
@@ -94,6 +102,7 @@ export function Applications() {
 
   // Fetch Application from database and store into state
   const [applications, setApplications] = useState([]);
+  const [jobs, setJobs] = useState([]); // ✅ New state for job list
 
   const getApplication = async () => {
     try {
@@ -104,54 +113,67 @@ export function Applications() {
     }
   };
 
+  // ✅ Fetch Jobs
+  const getJobs = async () => {
+    try {
+      const res = await axios.get('http://localhost:9000/openings');
+      setJobs(res.data.openings || []); // Assuming backend returns array of job objects
+    } catch (error) {
+      console.error('Failed to fetch jobs:', error);
+    }
+  };
+
   useEffect(() => {
     getApplication();
+    getJobs();
   }, []);
+
   const filteredApplications = applications.filter(application => {
     const matchesSearch =
-      application.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      application.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      application.jobTitle.toLowerCase().includes(searchTerm.toLowerCase());
+      application.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      application.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      application.jobId?.title
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase());
 
     const matchesStatus =
       statusFilter === 'all' || application.status === statusFilter;
     const matchesJob =
-      jobFilter === 'all' || application.jobId.toString() === jobFilter;
+      jobFilter === 'all' || application.jobId?._id === jobFilter;
 
     return matchesSearch && matchesStatus && matchesJob;
   });
 
-  const getStatusBadge = status => {
-    const variants = {
-      pending: 'bg-yellow-100 text-yellow-800',
-      reviewed: 'bg-blue-100 text-blue-800',
-      interviewed: 'bg-purple-100 text-purple-800',
-      rejected: 'bg-red-100 text-red-800',
-      hired: 'bg-green-100 text-green-800',
-    };
-    return variants[status] || 'bg-gray-100 text-gray-800';
-  };
+  // const getStatusBadge = status => {
+  //   const variants = {
+  //     pending: 'bg-yellow-100 text-yellow-800',
+  //     reviewed: 'bg-blue-100 text-blue-800',
+  //     interviewed: 'bg-purple-100 text-purple-800',
+  //     rejected: 'bg-red-100 text-red-800',
+  //     hired: 'bg-green-100 text-green-800',
+  //   };
+  //   return variants[status] || 'bg-gray-100 text-gray-800';
+  // };
 
-  const exportApplications = () => {
-    // Mock export functionality
-    const csvContent =
-      'data:text/csv;charset=utf-8,' +
-      'Name,Email,Phone,Job Title,Status,Date Submitted\n' +
-      filteredApplications
-        .map(
-          app =>
-            `${app.name},${app.email},${app.phone},${app.jobTitle},${app.status},${app.dateSubmitted}`
-        )
-        .join('\n');
+  // const exportApplications = () => {
+  //   const csvContent =
+  //     'data:text/csv;charset=utf-8,' +
+  //     'Name,Email,Phone,Job Title,Status,Date Submitted\n' +
+  //     filteredApplications
+  //       .map(
+  //         app =>
+  //           `${app.name},${app.email},${app.phone},${app.jobTitle},${app.status},${app.dateSubmitted}`
+  //       )
+  //       .join('\n');
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'applications.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  //   const encodedUri = encodeURI(csvContent);
+  //   const link = document.createElement('a');
+  //   link.setAttribute('href', encodedUri);
+  //   link.setAttribute('download', 'applications.csv');
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // };
 
   //For  Deleting appliacation
   const handleDeleteJob = async id => {
@@ -192,7 +214,7 @@ export function Applications() {
             className="pl-10"
           />
         </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        {/* <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-48">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
@@ -204,17 +226,21 @@ export function Applications() {
             <SelectItem value="rejected">Rejected</SelectItem>
             <SelectItem value="hired">Hired</SelectItem>
           </SelectContent>
-        </Select>
+        </Select> */}
+
+        {/* Dropdown for jobs */}
         <Select value={jobFilter} onValueChange={setJobFilter}>
           <SelectTrigger className="w-48">
             <SelectValue placeholder="Filter by job" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Jobs</SelectItem>
-            <SelectItem value="1">Senior Frontend Developer</SelectItem>
-            <SelectItem value="2">UI/UX Designer</SelectItem>
-            <SelectItem value="3">Backend Developer Intern</SelectItem>
-            <SelectItem value="4">Product Manager</SelectItem>
+            {Array.isArray(jobs) &&
+              jobs.map(job => (
+                <SelectItem key={job._id} value={job._id}>
+                  {job.title}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
       </div>
@@ -233,10 +259,8 @@ export function Applications() {
                 <TableHead>Candidate Name</TableHead>
                 <TableHead>Contact</TableHead>
                 <TableHead>Job Title</TableHead>
-                {/* <TableHead>Message Preview</TableHead> */}
                 <TableHead>Date Submitted</TableHead>
-                {/* <TableHead>Resume</TableHead> */}
-                {/* <TableHead>Status</TableHead> */}
+                <TableHead>Resume</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -246,9 +270,6 @@ export function Applications() {
                   <TableCell>
                     <div>
                       <div className="font-medium">{application.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {application.resume}
-                      </div>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -266,11 +287,7 @@ export function Applications() {
                   <TableCell className="font-medium">
                     {application.jobId?.title || 'No Title'}
                   </TableCell>
-                  {/* <TableCell>
-                    <div className="max-w-xs truncate text-sm text-gray-600">
-                      {application.message}
-                    </div>
-                  </TableCell> */}
+
                   <TableCell>
                     {new Date(application.createdAt).toLocaleDateString(
                       'en-IN',
@@ -281,11 +298,20 @@ export function Applications() {
                       }
                     )}
                   </TableCell>
-                  {/* <TableCell>
-                    <Badge className={getStatusBadge(application.status)}>
-                      {application.status}
-                    </Badge>
-                  </TableCell> */}
+                  <TableCell>
+                    {application.resume ? (
+                      <a
+                        href={application.resume}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline flex items-center"
+                      >
+                        <FileText className="h-4 w-4 mr-1" /> Resume
+                      </a>
+                    ) : (
+                      'No Resume'
+                    )}
+                  </TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
                       <Button
@@ -295,13 +321,13 @@ export function Applications() {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      <Button
+                      {/* <Button
                         variant="ghost"
                         size="sm"
                         className="cursor-pointer hover:text-[#8528FF]"
                       >
                         <Download className="h-4 w-4" />
-                      </Button>
+                      </Button> */}
                       <Button
                         onClick={() => handleDeleteJob(application._id)}
                         variant="ghost"

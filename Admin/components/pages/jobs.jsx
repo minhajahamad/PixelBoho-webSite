@@ -39,14 +39,16 @@ export function Jobs() {
   const [editingJob, setEditingJob] = useState(null); //state for edit jobs
 
   //Fetch job
+  const [totalJobCount, setTotalJobCount] = useState(0);
+
   const getJobOpenings = async () => {
     try {
       const res = await axios.get('http://localhost:9000/openings');
-      const fetchedJobs = (res.data || []).map(job => ({
+      setTotalJobCount(res.data.totalCount);
+      const fetchedJobs = (res.data.openings || []).map(job => ({
         ...job,
         id: job._id,
         postedDate: new Date(job.createdAt).toISOString().split('T')[0],
-        applications: 0,
         // status: 'Active',
       }));
       setJobs(fetchedJobs);
@@ -148,8 +150,17 @@ export function Jobs() {
                 <SelectItem value="Development">Development</SelectItem>
                 <SelectItem value="Design">Design</SelectItem>
                 <SelectItem value="Product">Product</SelectItem>
-                <SelectItem value="Marketing">Marketing</SelectItem>
+                <SelectItem value="DevOps & Infrastructure">
+                  DevOps & Infrastructure
+                </SelectItem>
+                <SelectItem value="Quality Assurance">
+                  Quality Assurance
+                </SelectItem>
+                <SelectItem value="Data & AI">Data & AI</SelectItem>
+                <SelectItem value="Cybersecurity">Cybersecurity</SelectItem>
+                <SelectItem value="Marketing"> Marketing </SelectItem>
                 <SelectItem value="Sales">Sales</SelectItem>
+                <SelectItem value="IT Support">IT Support</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -269,13 +280,12 @@ export function Jobs() {
             className="pl-10 "
           />
         </div>
-        
       </div>
 
       {/* Table */}
       <Card className="max-h-[65vh] overflow-y-scroll">
         <CardHeader>
-          <CardTitle>All Job Openings ({filteredJobs.length})</CardTitle>
+          <CardTitle>All Job Openings ({totalJobCount})</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -309,13 +319,18 @@ export function Jobs() {
                   </TableCell> */}
                   <TableCell>
                     <div className="flex space-x-2">
-                      <Button variant="ghost" size="sm">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="cursor-pointer hover:text-[#8528FF]"
+                      >
                         <Eye className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => setEditingJob(job)}
+                        className="cursor-pointer hover:text-[#8528FF]"
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
@@ -324,7 +339,7 @@ export function Jobs() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDeleteJob(job.id)}
-                        className="text-red-600 hover:text-red-700"
+                        className="text-red-600 hover:text-red-700 cursor-pointer"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

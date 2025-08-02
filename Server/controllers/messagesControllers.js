@@ -32,7 +32,7 @@ module.exports.deleteMessage = async (req, res) => {
   }
 };
 
-// PATCH - Update read/unread status
+// PATCH - Update read status
 module.exports.updateReadStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -42,6 +42,17 @@ module.exports.updateReadStatus = async (req, res) => {
       { new: true }
     );
     res.status(200).json(updatedMessage);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// GET - Unread messages count
+module.exports.getUnreadCount = async (req, res) => {
+  try {
+    const count = await Message.countDocuments({ isRead: false });
+    res.status(200).json({ unreadCount: count });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });

@@ -19,16 +19,16 @@ const messageSchema = Schema(
     requirement: {
       type: String,
       required: [true, 'Requirement is required'],
-      enum: [
-        'Web & App',
-        'Mobile Solutions',
-        'Brand Strategy',
-        'SEO Services',
-        'Cloud Migration',
-        'Enterprise Cloud',
-        'Tender Systems',
-        'ID Verification APIs',
-      ],
+      //   enum: [
+      //     'Web & App',
+      //     'Mobile Solutions',
+      //     'Brand Strategy',
+      //     'SEO Services',
+      //     'Cloud Migration',
+      //     'Enterprise Cloud',
+      //     'Tender Systems',
+      //     'ID Verification APIs',
+      //   ],
     },
     isRead: {
       type: Boolean,
