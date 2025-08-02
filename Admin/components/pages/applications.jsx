@@ -181,46 +181,43 @@ export function Applications() {
       </div>
 
       {/* Filters */}
-      {/* <Card> */}
-      <CardContent className="">
-        <div className="flex space-x-5">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Search by name, email, or job title..."
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="reviewed">Reviewed</SelectItem>
-              <SelectItem value="interviewed">Interviewed</SelectItem>
-              <SelectItem value="rejected">Rejected</SelectItem>
-              <SelectItem value="hired">Hired</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={jobFilter} onValueChange={setJobFilter}>
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="Filter by job" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Jobs</SelectItem>
-              <SelectItem value="1">Senior Frontend Developer</SelectItem>
-              <SelectItem value="2">UI/UX Designer</SelectItem>
-              <SelectItem value="3">Backend Developer Intern</SelectItem>
-              <SelectItem value="4">Product Manager</SelectItem>
-            </SelectContent>
-          </Select>
+
+      <div className="flex space-x-5">
+        <div className="flex-1 relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Input
+            placeholder="Search by name, email, or job title..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
         </div>
-      </CardContent>
-      {/* </Card> */}
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="Filter by status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Statuses</SelectItem>
+            <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="reviewed">Reviewed</SelectItem>
+            <SelectItem value="interviewed">Interviewed</SelectItem>
+            <SelectItem value="rejected">Rejected</SelectItem>
+            <SelectItem value="hired">Hired</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={jobFilter} onValueChange={setJobFilter}>
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="Filter by job" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Jobs</SelectItem>
+            <SelectItem value="1">Senior Frontend Developer</SelectItem>
+            <SelectItem value="2">UI/UX Designer</SelectItem>
+            <SelectItem value="3">Backend Developer Intern</SelectItem>
+            <SelectItem value="4">Product Manager</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
       {/* Applications Table */}
       <Card className="max-h-[65vh] overflow-y-scroll">

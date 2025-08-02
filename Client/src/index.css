@@ -664,3 +664,36 @@ html::-webkit-scrollbar {
 .menu-underline:hover::after {
   transform: translateX(-50%) scaleX(1);
 }
+
+/* Sleect Style */
+.custom-select .ant-select-selector {
+  background-color: #101010 !important;
+  color: white !important;
+  border: 1px solid #dedede33 !important;
+}
+
+.custom-select .ant-select-selection-placeholder {
+  color: #888 !important; /* Placeholder color */
+}
+
+.custom-select .ant-select-arrow {
+  color: white !important;
+}
+/* Target the dropdown items globally */
+.ant-select-dropdown {
+  background-color: #101010 !important;
+}
+
+.ant-select-item-option {
+  background-color: #101010 !important;
+}
+
+.ant-select-item-option-content {
+  color: white !important;
+}
+
+/* Hover state */
+.ant-select-item-option-active,
+.ant-select-item-option-selected {
+  background-color: #1a1a1a !important;
+}
