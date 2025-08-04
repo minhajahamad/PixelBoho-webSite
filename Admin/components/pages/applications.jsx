@@ -128,13 +128,22 @@ export function Applications() {
     getJobs();
   }, []);
 
+  // ✅ Helper to search deeply in all string values (including nested objects)
+  const deepSearch = (obj, search) => {
+    return Object.values(obj).some(value => {
+      if (typeof value === 'string') {
+        return value.toLowerCase().includes(search);
+      }
+      if (value && typeof value === 'object') {
+        return deepSearch(value, search);
+      }
+      return false;
+    });
+  };
+
   const filteredApplications = applications.filter(application => {
-    const matchesSearch =
-      application.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      application.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      application.jobId?.title
-        ?.toLowerCase()
-        .includes(searchTerm.toLowerCase());
+    const search = searchTerm.toLowerCase();
+    const matchesSearch = deepSearch(application, search);
 
     const matchesStatus =
       statusFilter === 'all' || application.status === statusFilter;
@@ -265,81 +274,85 @@ export function Applications() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredApplications.map(application => (
-                <TableRow key={application.id}>
-                  <TableCell>
-                    <div>
-                      <div className="font-medium">{application.name}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="flex items-center text-sm">
-                        <Mail className="h-3 w-3 mr-1 text-gray-400" />
-                        {application.email}
+              {filteredApplications.length > 0 ? (
+                filteredApplications.map(application => (
+                  <TableRow key={application.id}>
+                    <TableCell>
+                      <div>
+                        <div className="font-medium">{application.name}</div>
                       </div>
-                      <div className="flex items-center text-sm">
-                        <Phone className="h-3 w-3 mr-1 text-gray-400" />
-                        {application.phone}
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="flex items-center text-sm">
+                          <Mail className="h-3 w-3 mr-1 text-gray-400" />
+                          {application.email}
+                        </div>
+                        <div className="flex items-center text-sm">
+                          <Phone className="h-3 w-3 mr-1 text-gray-400" />
+                          {application.phone}
+                        </div>
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {application.jobId?.title || 'No Title'}
-                  </TableCell>
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {application.jobId?.title || 'No Title'}
+                    </TableCell>
 
-                  <TableCell>
-                    {new Date(application.createdAt).toLocaleDateString(
-                      'en-IN',
-                      {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                      }
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {application.resume ? (
-                      <a
-                        href={application.resume}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:underline flex items-center"
-                      >
-                        <FileText className="h-4 w-4 mr-1" /> Resume
-                      </a>
-                    ) : (
-                      'No Resume'
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="cursor-pointer hover:text-[#8528FF]"
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      {/* <Button
-                        variant="ghost"
-                        size="sm"
-                        className="cursor-pointer hover:text-[#8528FF]"
-                      >
-                        <Download className="h-4 w-4" />
-                      </Button> */}
-                      <Button
-                        onClick={() => handleDeleteJob(application._id)}
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-600 hover:text-red-700 cursor-pointer"
-                      >
-                        <Trash2 className="h-4 w-4 " />
-                      </Button>
-                    </div>
+                    <TableCell>
+                      {new Date(application.createdAt).toLocaleDateString(
+                        'en-IN',
+                        {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        }
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {application.resume ? (
+                        <a
+                          href={application.resume}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:underline flex items-center"
+                        >
+                          <FileText className="h-4 w-4 mr-1" /> Resume
+                        </a>
+                      ) : (
+                        'No Resume'
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="cursor-pointer hover:text-[#8528FF]"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          onClick={() => handleDeleteJob(application._id)}
+                          variant="ghost"
+                          size="sm"
+                          className="text-red-600 hover:text-red-700 cursor-pointer"
+                        >
+                          <Trash2 className="h-4 w-4 " />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center py-6 text-gray-500"
+                  >
+                    No applications found
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </CardContent>

@@ -7,15 +7,15 @@ import axios from 'axios';
 const CareerJobCard = ({ job }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-  
+
     if (!job._id) {
       console.error('Missing job._id!');
       alert('Application failed: Job ID missing');
       return;
     }
-  
+
     try {
       const submissionData = new FormData();
       submissionData.append('jobId', job._id);
@@ -26,21 +26,30 @@ const CareerJobCard = ({ job }) => {
       if (formData.resume) {
         submissionData.append('resume', formData.resume);
       }
-  
-      const res = await axios.post('http://localhost:9000/applications', submissionData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-  
+
+      const res = await axios.post(
+        'http://localhost:9000/applications',
+        submissionData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+
       console.log(res.data);
       alert('Application Submitted');
       setShowModal(false);
-      setFormData({ name: '', email: '', phone: '', message: '', resume: null });
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+        resume: null,
+      });
     } catch (err) {
       console.error(err);
       alert('Submission failed');
     }
   };
-  
 
   useEffect(() => {
     if (showModal) {

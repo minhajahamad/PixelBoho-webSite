@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,25 +21,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Search,
-  Eye,
-  Reply,
-  Mail,
-  CheckCircle,
-  Circle,
-  Trash2,
-} from 'lucide-react';
-
-import axios from 'axios';
+import { Search, Eye, CheckCircle, Circle, Trash2 } from 'lucide-react';
 
 export function Messages({ setUnreadCount, unreadCount }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [messages, setMessages] = useState([]);
   const [selectedMessage, setSelectedMessage] = useState(null);
 
-  // Fetch Message
+  // ✅ Fetch all messages
   const getMessages = async () => {
     try {
       const res = await axios.get('http://localhost:9000/messages');
@@ -52,7 +42,7 @@ export function Messages({ setUnreadCount, unreadCount }) {
     getMessages();
   }, []);
 
-  // Delete Message
+  // ✅ Delete Message
   const handleDeleteMessage = async id => {
     try {
       await axios.delete(`http://localhost:9000/messages/${id}`);
@@ -63,12 +53,7 @@ export function Messages({ setUnreadCount, unreadCount }) {
     }
   };
 
-  const filteredMessages = messages.filter(
-    message =>
-      message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      message.subject.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // ✅ Toggle Read Status + update unread instantly
   const toggleReadStatus = async (id, currentStatus) => {
     try {
       const res = await axios.patch(
@@ -77,14 +62,24 @@ export function Messages({ setUnreadCount, unreadCount }) {
       );
       setMessages(messages.map(msg => (msg._id === id ? res.data : msg)));
 
-      // ✅ Update unread count instantly
-      setUnreadCount(prev => (currentStatus ? prev + 1 : prev - 1));
+      // Update unread instantly
+      setUnreadCount(prev => {
+        if (currentStatus) return prev + 1; // was read, now unread
+        return Math.max(prev - 1, 0); // was unread, now read
+      });
     } catch (error) {
       console.error('Failed to update read status', error);
     }
   };
 
-  // const unreadCount = messages.filter(msg => !msg.isRead).length;
+  // ✅ Filter for search
+  const filteredMessages = messages.filter(message =>
+    Object.values(message).some(
+      value =>
+        typeof value === 'string' &&
+        value.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
@@ -104,11 +99,10 @@ export function Messages({ setUnreadCount, unreadCount }) {
       </div>
 
       {/* Search */}
-
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
         <Input
-          placeholder="Search messages by name, email, or subject..."
+          placeholder="Search messages by name, email, or requirement..."
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
           className="pl-10"
@@ -124,92 +118,101 @@ export function Messages({ setUnreadCount, unreadCount }) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-12">Status</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>From</TableHead>
                 <TableHead>Requirement</TableHead>
-
                 <TableHead>Submitted At</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredMessages.map(message => (
-                <TableRow
-                  key={message._id}
-                  className={!message.isRead ? 'bg-blue-50' : ''}
-                >
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() =>
-                        toggleReadStatus(message._id, message.isRead)
-                      }
-                    >
-                      {message.isRead ? (
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                      ) : (
-                        <Circle className="h-4 w-4 text-blue-600" />
-                      )}
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <div
-                        className={`font-medium ${
-                          !message.isRead ? 'font-bold' : ''
-                        }`}
-                      >
-                        {message.name}
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {message.email}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className={!message.isRead ? 'font-semibold' : ''}>
-                    {message.requirement}
-                  </TableCell>
-
-                  <TableCell className="text-sm">
-                    {new Date(message.createdAt).toLocaleDateString('en-IN', {
-                      day: '2-digit',
-                      month: 'short',
-                      year: 'numeric',
-                    })}
-                  </TableCell>
-
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            className="cursor-pointer hover:text-[#8528FF]"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setSelectedMessage(message)}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-2xl">
-                          <DialogHeader>
-                            <DialogTitle>Message Details</DialogTitle>
-                          </DialogHeader>
-                        </DialogContent>
-                      </Dialog>
+              {filteredMessages.length > 0 ? (
+                filteredMessages.map(message => (
+                  <TableRow
+                    key={message._id}
+                    className={!message.isRead ? 'bg-blue-50' : ''}
+                  >
+                    <TableCell>
                       <Button
-                        onClick={() => handleDeleteMessage(message._id)}
                         variant="ghost"
                         size="sm"
-                        className="text-red-600 hover:text-red-700 cursor-pointer"
+                        onClick={() =>
+                          toggleReadStatus(message._id, message.isRead)
+                        }
                       >
-                        <Trash2 className="h-4 w-4" />
+                        {message.isRead ? (
+                          <CheckCircle className="h-4 w-4 text-green-600" />
+                        ) : (
+                          <Circle className="h-4 w-4 text-blue-600" />
+                        )}
                       </Button>
-                    </div>
+                    </TableCell>
+                    <TableCell>
+                      <div>
+                        <div
+                          className={`font-medium ${
+                            !message.isRead ? 'font-bold' : ''
+                          }`}
+                        >
+                          {message.name}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {message.email}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell
+                      className={!message.isRead ? 'font-semibold' : ''}
+                    >
+                      {message.requirement}
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      {new Date(message.createdAt).toLocaleDateString('en-IN', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setSelectedMessage(message)}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-2xl">
+                            <DialogHeader>
+                              <DialogTitle>Message Details</DialogTitle>
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
+                        <Button
+                          onClick={() => handleDeleteMessage(message._id)}
+                          variant="ghost"
+                          size="sm"
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    className="text-center py-6 text-gray-500"
+                  >
+                    No messages found
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </CardContent>

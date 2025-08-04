@@ -62,11 +62,22 @@ export function Jobs() {
   }, []);
 
   //filter job
-  const filteredJobs = jobs.filter(
-    job =>
-      job.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.category?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const deepSearch = (obj, search) => {
+    return Object.values(obj).some(value => {
+      if (typeof value === 'string') {
+        return value.toLowerCase().includes(search);
+      }
+      if (value && typeof value === 'object') {
+        return deepSearch(value, search);
+      }
+      return false;
+    });
+  };
+
+  const filteredJobs = jobs.filter(job => {
+    const search = searchTerm.toLowerCase();
+    return deepSearch(job, search);
+  });
 
   // Delete
   const handleDeleteJob = async id => {
@@ -301,52 +312,53 @@ export function Jobs() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredJobs.map(job => (
-                <TableRow key={job.id}>
-                  <TableCell className="font-medium">{job.title}</TableCell>
-                  <TableCell>{job.category}</TableCell>
-                  <TableCell>{job.experience}</TableCell>
-                  <TableCell>{job.postedDate}</TableCell>
-                  <TableCell>{job.applications}</TableCell>
-                  {/* <TableCell>
-                    <Badge
-                      variant={
-                        job.status === 'Active' ? 'default' : 'secondary'
-                      }
-                    >
-                      {job.status}
-                    </Badge>
-                  </TableCell> */}
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="cursor-pointer hover:text-[#8528FF]"
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setEditingJob(job)}
-                        className="cursor-pointer hover:text-[#8528FF]"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteJob(job.id)}
-                        className="text-red-600 hover:text-red-700 cursor-pointer"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
+              {filteredJobs.length > 0 ? (
+                filteredJobs.map(job => (
+                  <TableRow key={job.id}>
+                    <TableCell className="font-medium">{job.title}</TableCell>
+                    <TableCell>{job.category}</TableCell>
+                    <TableCell>{job.experience}</TableCell>
+                    <TableCell>{job.postedDate}</TableCell>
+                    <TableCell>{job.applications}</TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="cursor-pointer hover:text-[#8528FF]"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setEditingJob(job)}
+                          className="cursor-pointer hover:text-[#8528FF]"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteJob(job.id)}
+                          className="text-red-600 hover:text-red-700 cursor-pointer"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center py-6 text-gray-500"
+                  >
+                    No jobs found
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </CardContent>

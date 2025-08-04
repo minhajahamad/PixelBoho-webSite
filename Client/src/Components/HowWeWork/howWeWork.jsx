@@ -22,19 +22,19 @@ const sections = [
   {
     title: 'Design With Intent',
     description:
-      'Our design process isn’t just about looking good—it’s about building visual systems that convert. Think bold aesthetics, crisp layouts, and storytelling that moves people. You’re involved at every key step.',
+      "Our design process isn't just about looking good—it's about building visual systems that convert. Think bold aesthetics, crisp layouts, and storytelling that moves people. You're involved at every key step.",
     imageRight: '/images/Image 3.png',
   },
   {
     title: 'Build & Elevate',
     description:
-      'Once approved, our developers bring everything to life—with precision code, smooth animations, and tech that scales. We don’t just develop—we engineer ',
+      "Once approved, our developers bring everything to life—with precision code, smooth animations, and tech that scales. We don't just develop—we engineer ",
     imageRight: '/images/Image 4.png',
   },
   {
     title: 'Launch, Learn, and Grow',
     description:
-      'Your brand doesn’t stop at launch. We monitor, analyze, and optimize. From post-launch support to campaign integration, we ensure your digital presence stays sharp, relevant, and growth-driven.',
+      "Your brand doesn't stop at launch. We monitor, analyze, and optimize. From post-launch support to campaign integration, we ensure your digital presence stays sharp, relevant, and growth-driven.",
     imageRight: '/images/Image 5.png',
   },
 ];
@@ -114,7 +114,7 @@ const HowWeWork = () => {
         How We Work
       </p>
 
-      <div className="relative w-full min-h-[400px] flex items-center justify-center">
+      <div className="relative w-full h-[500px] flex items-center justify-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
@@ -122,7 +122,7 @@ const HowWeWork = () => {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="w-full flex flex-col lg:flex-row items-center justify-between gap-10"
+            className="absolute inset-0 flex flex-col lg:flex-row items-center justify-between gap-10 px-4"
           >
             {/* Text Section */}
             <div className="w-full lg:w-1/2 flex flex-col justify-center gap-6 text-center lg:text-left">
@@ -146,7 +146,7 @@ const HowWeWork = () => {
         </AnimatePresence>
       </div>
 
-      {/* Dots */}
+      {/* Dots - Completely separate from animated content */}
       <div className="mt-6 flex gap-3 z-30">
         {sections.map((_, index) => (
           <button

@@ -139,10 +139,10 @@ export function Dashboard({ setActiveTab }) {
   }, []);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-8 ">
       {/* Header with Quick Actions */}
       <div
-        className={`flex justify-between items-start transition-all duration-700 ease-out ${
+        className={`flex justify-between items-start transition-all duration-700 ease-out pt-5 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
         }`}
       >

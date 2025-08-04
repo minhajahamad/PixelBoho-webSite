@@ -39,7 +39,7 @@ const HeroSection = () => {
         </div>
       </div>
       <div>
-        <img src="/images/MainHero-img.png" className="hidden  lg:block" />
+        <img src="/images/MainHero-img.png" className="hidden  lg:block " />
       </div>
     </div>
   );

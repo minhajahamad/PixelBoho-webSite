@@ -29,7 +29,7 @@ const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'jobs', label: 'Post Jobs', icon: Briefcase },
   { id: 'applications', label: 'Applications', icon: FileText },
-  { id: 'messages', label: "Let's Connect", icon: MessageSquare },
+  { id: 'messages', label: 'Messages', icon: MessageSquare },
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
@@ -53,9 +53,9 @@ export function Navbar({ activeTab, setActiveTab, unreadCount }) {
   // }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-sm">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-white/20 ">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 ">
+        <div className="flex justify-between items-center h-20 ">
           {/* Logo */}
           <div className="flex items-center space-x-3">
             {/* <div className="w-10 h-10 bg-[#8528FF] rounded-2xl flex items-center justify-center shadow-lg">
@@ -76,7 +76,7 @@ export function Navbar({ activeTab, setActiveTab, unreadCount }) {
                 <Button
                   key={item.id}
                   variant="ghost"
-                  className={`h-10 px-4 rounded-full transition-all duration-200 ${
+                  className={`h-10 px-4 rounded-full transition-all duration-200 cursor-pointer ${
                     activeTab === item.id
                       ? 'bg-[#8528FF] text-white shadow-lg hover:bg-[#8528FF]/90'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
@@ -101,20 +101,20 @@ export function Navbar({ activeTab, setActiveTab, unreadCount }) {
           {/* Right Side */}
           <div className="flex items-center space-x-4">
             {/* Logout Button */}
-            <Button
+            {/* <Button
               variant="ghost"
               className="text-red-600 hover:text-red-700 hover:bg-red-50/80 rounded-full px-4"
             >
               <LogOut className="mr-2 h-4 w-4" />
               Logout
-            </Button>
+            </Button> */}
 
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="relative h-10 w-10 rounded-full hover:bg-white/50"
+                  className="relative h-10 w-10 rounded-full hover:scale-105 cursor-pointer"
                 >
                   <Avatar className="h-10 w-10">
                     <AvatarImage src="/placeholder.svg?height=40&width=40" />
@@ -143,7 +143,13 @@ export function Navbar({ activeTab, setActiveTab, unreadCount }) {
                   Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
+                <DropdownMenuItem
+                  className="text-red-600"
+                  onClick={() => {
+                    localStorage.removeItem('token'); // remove token
+                    window.location.href = '/login'; // redirect
+                  }}
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>

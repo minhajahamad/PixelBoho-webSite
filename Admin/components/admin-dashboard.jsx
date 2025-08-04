@@ -1,6 +1,7 @@
 'use client';
 
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Navbar } from '@/components/navbar';
 import { Dashboard } from '@/components/pages/dashboard';
 import { Jobs } from '@/components/pages/jobs';
@@ -10,21 +11,23 @@ import { Settings } from '@/components/pages/settings';
 
 export function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
-
   const [unreadCount, setUnreadCount] = useState(0);
 
+  // ✅ Fetch unread count function
+  const fetchUnreadCount = async () => {
+    try {
+      const res = await axios.get('http://localhost:9000/messages/unread-count');
+      setUnreadCount(res.data.unreadCount || 0);
+    } catch (error) {
+      console.error('Failed to fetch unread count', error);
+    }
+  };
+
+  // ✅ Initial fetch + polling every 15s
   useEffect(() => {
-    const fetchUnreadCount = async () => {
-      try {
-        const res = await axios.get(
-          'http://localhost:9000/messages/unread-count'
-        );
-        setUnreadCount(res.data.unreadCount || 0);
-      } catch (error) {
-        console.error('Failed to fetch unread count', error);
-      }
-    };
     fetchUnreadCount();
+    const interval = setInterval(fetchUnreadCount, 15000); // every 15s
+    return () => clearInterval(interval);
   }, []);
 
   const renderContent = () => {
@@ -37,7 +40,10 @@ export function AdminDashboard() {
         return <Applications />;
       case 'messages':
         return (
-          <Messages setUnreadCount={setUnreadCount} unreadCount={unreadCount} />
+          <Messages
+            setUnreadCount={setUnreadCount}
+            unreadCount={unreadCount}
+          />
         );
       case 'settings':
         return <Settings />;
@@ -47,7 +53,7 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 ">
+    <div className="min-h-screen bg-gray-50">
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
