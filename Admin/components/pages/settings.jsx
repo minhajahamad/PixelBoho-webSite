@@ -81,11 +81,13 @@ export function Settings() {
 
   // Slug setup
   const [seoData, setSeoData] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
 
   const getSlugs = async () => {
     try {
       const res = await axios.get('http://localhost:9000/seo');
-      setSeoData(res.data);
+      setSeoData(res.data.seoEntries);
+      setTotalCount(res.data.totalCount);
     } catch (error) {
       console.error('Failed to fetch slugs:', error);
     }
@@ -97,55 +99,154 @@ export function Settings() {
 
   // Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingSeo, setEditingSeo] = useState(null); // null for add, object for edit
 
-  const SEOForm = ({ onClose }) => {
-    const [formData, setFormData] = useState({
-      title: '',
-      slug: '',
-      metaDescription: '',
-      metaKeywords: '',
-      canonicalUrl: '',
-      h1Tag: '',
-      robots: '',
-      locale: '',
-      sitemapPriority: '',
-      changeFrequency: '',
-      ogTitle: '',
-      ogDescription: '',
-      ogImage: '',
-      ogUrl: '',
-      twitterCard: '',
-      twitterTitle: '',
-      twitterDescription: '',
-      twitterImageUrl: '',
-      images: [{ url: '', alt: '', filename: '' }],
-      links: [{ url: '', anchorText: '' }],
-      structuredData: '',
-    });
+  // Open add modal
+  const openAddModal = () => {
+    setEditingSeo(null);
+    setIsModalOpen(true);
+  };
 
+  // Open edit modal
+  const handleEditSeo = seo => {
+    setEditingSeo(seo);
+    setIsModalOpen(true);
+  };
+
+  // Handler for updating SEO in UI
+  const handleSeoUpdated = updatedSeo => {
+    setSeoData(prev =>
+      prev.map(seo => (seo._id === updatedSeo._id ? updatedSeo : seo))
+    );
+  };
+
+  // Add handler for deleting SEO
+  const handleDeleteSeo = async slug => {
+    // Optimistically remove from UI
+    const prevSeoData = [...seoData];
+    const prevCount = totalCount;
+    setSeoData(prev => prev.filter(seo => seo.slug !== slug));
+    setTotalCount(prev => prev - 1);
+    try {
+      await axios.delete(`http://localhost:9000/seo/${slug}`);
+      await getSlugs();
+    } catch (error) {
+      alert('Failed to delete SEO entry. Reverting UI.');
+      setSeoData(prevSeoData);
+    }
+  };
+
+  // Handler for adding SEO in UI
+  const handleSeoCreated = newSeo => {
+    setSeoData(prev => [newSeo, ...prev]);
+    setTotalCount(prev => prev + 1);
+  };
+
+  // State for viewing SEO
+  const [viewingSeo, setViewingSeo] = useState(null);
+
+  // Handler to open view modal
+  const handleViewSeo = seo => {
+    setViewingSeo(seo);
+  };
+
+  // Handler to close view modal
+  const handleCloseViewSeo = () => {
+    setViewingSeo(null);
+  };
+
+  // Unified SEOForm for add/edit
+  const SEOForm = ({ onClose, onSeoCreated, onSeoUpdated, seo, mode }) => {
+    const [formData, setFormData] = useState(() =>
+      seo
+        ? {
+            title: seo.title || '',
+            slug: seo.slug || '',
+            metaDescription: seo.metaDescription || '',
+            metaKeywords: seo.metaKeywords || '',
+            canonicalUrl: seo.canonicalUrl || '',
+            h1Tag: seo.h1Tag || '',
+            robots: seo.robots || '',
+            locale: seo.locale || '',
+            sitemapPriority: seo.sitemapPriority || '',
+            changeFrequency: seo.changeFrequency || '',
+            ogTitle: seo.ogTitle || '',
+            ogDescription: seo.ogDescription || '',
+            ogImage: seo.ogImage || '',
+            ogUrl: seo.ogUrl || '',
+            twitterCard: seo.twitterCard || '',
+            twitterTitle: seo.twitterTitle || '',
+            twitterDescription: seo.twitterDescription || '',
+            twitterImageUrl: seo.twitterImageUrl || '',
+            images:
+              seo.images && seo.images.length > 0
+                ? seo.images
+                : [{ url: '', alt: '', filename: '' }],
+            links:
+              seo.links && seo.links.length > 0
+                ? seo.links
+                : [{ url: '', anchorText: '' }],
+            structuredData: seo.structuredData || '',
+          }
+        : {
+            title: '',
+            slug: '',
+            metaDescription: '',
+            metaKeywords: '',
+            canonicalUrl: '',
+            h1Tag: '',
+            robots: '',
+            locale: '',
+            sitemapPriority: '',
+            changeFrequency: '',
+            ogTitle: '',
+            ogDescription: '',
+            ogImage: '',
+            ogUrl: '',
+            twitterCard: '',
+            twitterTitle: '',
+            twitterDescription: '',
+            twitterImageUrl: '',
+            images: [{ url: '', alt: '', filename: '' }],
+            links: [{ url: '', anchorText: '' }],
+            structuredData: '',
+          }
+    );
+    const [loading, setLoading] = useState(false);
     const handleChange = (field, value) => {
       setFormData(prev => ({ ...prev, [field]: value }));
     };
-
     const handleSubmit = async e => {
       e.preventDefault();
+      setLoading(true);
       try {
-        await axios.post('http://localhost:9000/seo', formData);
-        console.log('Submitting form data:', formData);
+        if (mode === 'edit') {
+          const res = await axios.patch(
+            `http://localhost:9000/seo/${seo.slug}`,
+            formData
+          );
 
+          onSeoUpdated(res.data.data);
+        } else {
+          const res = await axios.post('http://localhost:9000/seo', formData);
+          onSeoCreated(res.data.data);
+        }
         onClose();
       } catch (error) {
-        console.error(
-          'Failed to save SEO data:',
-          error.response?.data || error.message
+        alert(
+          `Failed to ${
+            mode === 'edit' ? 'update' : 'create'
+          } SEO entry. Please fix errors and try again.`
         );
-        alert(`Error: ${error.response?.data?.message || error.message}`);
+      } finally {
+        setLoading(false);
       }
     };
-
+    // Helper: should fields be disabled?
+    const isReadOnly = mode === 'view';
     return (
       <form
-        onSubmit={handleSubmit}
+        onSubmit={mode === 'view' ? e => e.preventDefault() : handleSubmit}
         className="space-y-4 max-h-[70vh] overflow-y-auto pr-2"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -155,29 +256,37 @@ export function Settings() {
               id="title"
               value={formData.title}
               onChange={e => handleChange('title', e.target.value)}
+              disabled={isReadOnly}
             />
           </div>
           <div>
             <Label htmlFor="slug">Slug</Label>
-            <Select onValueChange={value => handleChange('slug', value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a slug" />
-              </SelectTrigger>
-              <SelectContent>
-                {[
-                  'home',
-                  'about',
-                  'contact',
-                  'career',
-                  'privacy-policy',
-                  'terms-conditions',
-                ].map(slug => (
-                  <SelectItem key={slug} value={slug}>
-                    {slug}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {mode === 'edit' || mode === 'view' ? (
+              <Input id="slug" value={formData.slug} disabled />
+            ) : (
+              <Select
+                value={formData.slug}
+                onValueChange={value => handleChange('slug', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a slug" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[
+                    'home',
+                    'about',
+                    'contact',
+                    'career',
+                    'privacy-policy',
+                    'terms-conditions',
+                  ].map(slug => (
+                    <SelectItem key={slug} value={slug}>
+                      {slug}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
           <div className="md:col-span-2">
             <Label>Meta Description</Label>
@@ -185,6 +294,7 @@ export function Settings() {
               rows={3}
               value={formData.metaDescription}
               onChange={e => handleChange('metaDescription', e.target.value)}
+              disabled={isReadOnly}
             />
           </div>
           <div className="md:col-span-2">
@@ -192,6 +302,7 @@ export function Settings() {
             <Input
               value={formData.metaKeywords}
               onChange={e => handleChange('metaKeywords', e.target.value)}
+              disabled={isReadOnly}
             />
           </div>
           <div className="md:col-span-2">
@@ -199,6 +310,7 @@ export function Settings() {
             <Input
               value={formData.canonicalUrl}
               onChange={e => handleChange('canonicalUrl', e.target.value)}
+              disabled={isReadOnly}
             />
           </div>
           <div className="md:col-span-2">
@@ -206,6 +318,7 @@ export function Settings() {
             <Input
               value={formData.h1Tag}
               onChange={e => handleChange('h1Tag', e.target.value)}
+              disabled={isReadOnly}
             />
           </div>
           <div>
@@ -213,6 +326,7 @@ export function Settings() {
             <Input
               value={formData.robots}
               onChange={e => handleChange('robots', e.target.value)}
+              disabled={isReadOnly}
             />
           </div>
           <div>
@@ -220,22 +334,9 @@ export function Settings() {
             <Input
               value={formData.locale}
               onChange={e => handleChange('locale', e.target.value)}
+              disabled={isReadOnly}
             />
           </div>
-          {/* <div>
-            <Label>Author</Label>
-            <Input
-              value={formData.author}
-              onChange={e => handleChange('author', e.target.value)}
-            />
-          </div>
-          <div>
-            <Label>Publisher</Label>
-            <Input
-              value={formData.publisher}
-              onChange={e => handleChange('publisher', e.target.value)}
-            />
-          </div> */}
           <div>
             <Label>Sitemap Priority (0-1)</Label>
             <Input
@@ -245,32 +346,38 @@ export function Settings() {
               max="1"
               value={formData.sitemapPriority}
               onChange={e => handleChange('sitemapPriority', e.target.value)}
+              disabled={isReadOnly}
             />
           </div>
           <div>
             <Label>Change Frequency</Label>
-            <Select
-              onValueChange={value => handleChange('changeFrequency', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select frequency" />
-              </SelectTrigger>
-              <SelectContent>
-                {[
-                  'always',
-                  'hourly',
-                  'daily',
-                  'weekly',
-                  'monthly',
-                  'yearly',
-                  'never',
-                ].map(freq => (
-                  <SelectItem key={freq} value={freq}>
-                    {freq}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {isReadOnly ? (
+              <Input value={formData.changeFrequency} disabled />
+            ) : (
+              <Select
+                value={formData.changeFrequency}
+                onValueChange={value => handleChange('changeFrequency', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select frequency" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[
+                    'always',
+                    'hourly',
+                    'daily',
+                    'weekly',
+                    'monthly',
+                    'yearly',
+                    'never',
+                  ].map(freq => (
+                    <SelectItem key={freq} value={freq}>
+                      {freq}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
           {/* Open Graph Section */}
           <div className="md:col-span-2 border-t pt-4">
@@ -279,6 +386,7 @@ export function Settings() {
           <div>
             <Label>OG Title</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.ogTitle}
               onChange={e => handleChange('ogTitle', e.target.value)}
             />
@@ -286,6 +394,7 @@ export function Settings() {
           <div>
             <Label>OG Description</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.ogDescription}
               onChange={e => handleChange('ogDescription', e.target.value)}
             />
@@ -293,6 +402,7 @@ export function Settings() {
           <div>
             <Label>OG Image URL</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.ogImage}
               onChange={e => handleChange('ogImage', e.target.value)}
             />
@@ -300,6 +410,7 @@ export function Settings() {
           <div>
             <Label>OG URL</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.ogUrl}
               onChange={e => handleChange('ogUrl', e.target.value)}
             />
@@ -312,6 +423,7 @@ export function Settings() {
           <div>
             <Label>Card Type</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.twitterCard}
               onChange={e => handleChange('twitterCard', e.target.value)}
             />
@@ -319,6 +431,7 @@ export function Settings() {
           <div>
             <Label>Title</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.twitterTitle}
               onChange={e => handleChange('twitterTitle', e.target.value)}
             />
@@ -326,6 +439,7 @@ export function Settings() {
           <div>
             <Label>Description</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.twitterDescription}
               onChange={e => handleChange('twitterDescription', e.target.value)}
             />
@@ -333,6 +447,7 @@ export function Settings() {
           <div>
             <Label>Image URL</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.twitterImageUrl}
               onChange={e => handleChange('twitterImageUrl', e.target.value)}
             />
@@ -344,6 +459,7 @@ export function Settings() {
           <div>
             <Label>Image URL</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.images[0].url}
               onChange={e =>
                 handleChange('images', [
@@ -360,6 +476,7 @@ export function Settings() {
           <div>
             <Label>Alt Text</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.images[0].alt}
               onChange={e =>
                 handleChange('images', [
@@ -376,6 +493,7 @@ export function Settings() {
           <div>
             <Label>Filename</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.images[0].filename}
               onChange={e =>
                 handleChange('images', [
@@ -397,6 +515,7 @@ export function Settings() {
           <div>
             <Label>Link URL</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.links[0].url}
               onChange={e =>
                 handleChange('links', [
@@ -413,6 +532,7 @@ export function Settings() {
           <div>
             <Label>Anchor Text</Label>
             <Input
+              disabled={isReadOnly}
               value={formData.links[0].anchorText}
               onChange={e =>
                 handleChange('links', [
@@ -450,6 +570,7 @@ export function Settings() {
               value={formData.structuredData}
               onChange={e => handleChange('structuredData', e.target.value)}
               placeholder="Paste JSON-LD here"
+              disabled={isReadOnly}
             />
           </div>
 
@@ -479,20 +600,34 @@ export function Settings() {
               rows={4}
               value={formData.seoContent}
               onChange={e => handleChange('seoContent', e.target.value)}
+              disabled={isReadOnly}
             />
           </div>
         </div>
 
-        <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button type="submit" className="bg-[#8528FF] hover:bg-[#8528FF]/90">
-            Create SEO
-          </Button>
-        </div>
+        {mode !== 'view' && (
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="bg-[#8528FF] hover:bg-[#8528FF]/90"
+            >
+              {mode === 'edit' ? 'Edit SEO' : 'Create SEO'}
+            </Button>
+          </div>
+        )}
       </form>
     );
+  };
+
+  // Helper to truncate meta description
+  const truncateMetaDescription = (desc, maxWords = 10) => {
+    if (!desc) return '';
+    const words = desc.split(' ');
+    if (words.length <= maxWords) return desc;
+    return words.slice(0, maxWords).join(' ') + ' ';
   };
 
   return (
@@ -506,7 +641,7 @@ export function Settings() {
       </div>
 
       <Tabs defaultValue="profile" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-2 ">
           <TabsTrigger value="profile" className="flex items-center gap-2">
             <User className="h-4 w-4" />
             Profile
@@ -679,23 +814,34 @@ export function Settings() {
         <TabsContent value="seo">
           <Card className="max-h-[65vh] overflow-y-scroll">
             <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <CardTitle>All SEO's</CardTitle>
+              <CardTitle>All SEO's ({totalCount})</CardTitle>
               <Dialog
                 open={isModalOpen}
                 onOpenChange={setIsModalOpen}
                 className="overflow-y-auto hide-scrollbar"
               >
                 <DialogTrigger asChild>
-                  <Button className="bg-[#8528FF] hover:bg-[#8528FF]/90 w-full md:w-auto">
+                  <Button
+                    className="bg-[#8528FF] hover:bg-[#8528FF]/90 w-full md:w-auto"
+                    onClick={openAddModal}
+                  >
                     <Plus className="mr-2 h-4 w-4" />
                     Add New SEO
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-4xl max-h-[85vh]  ">
                   <DialogHeader>
-                    <DialogTitle>Create New SEO Entry</DialogTitle>
+                    <DialogTitle>
+                      {editingSeo ? 'Edit SEO' : 'Create New SEO Entry'}
+                    </DialogTitle>
                   </DialogHeader>
-                  <SEOForm onClose={() => setIsModalOpen(false)} />
+                  <SEOForm
+                    onClose={() => setIsModalOpen(false)}
+                    onSeoCreated={handleSeoCreated}
+                    onSeoUpdated={handleSeoUpdated}
+                    seo={editingSeo}
+                    mode={editingSeo ? 'edit' : 'add'}
+                  />
                 </DialogContent>
               </Dialog>
             </CardHeader>
@@ -726,7 +872,23 @@ export function Settings() {
                         </TableCell>
 
                         <TableCell className="font-medium">
-                          {seo.metaDescription}
+                          {truncateMetaDescription(seo.metaDescription)}
+                          {seo.metaDescription &&
+                            seo.metaDescription.split(' ').length > 10 && (
+                              <button
+                                style={{
+                                  color: '#2563eb',
+                                  cursor: 'pointer',
+                                  background: 'none',
+                                  border: 'none',
+                                  padding: 0,
+                                  marginLeft: 2,
+                                }}
+                                onClick={() => handleViewSeo(seo)}
+                              >
+                                ...
+                              </button>
+                            )}
                         </TableCell>
 
                         <TableCell className="font-medium">
@@ -747,6 +909,7 @@ export function Settings() {
                               variant="ghost"
                               size="sm"
                               className="cursor-pointer hover:text-[#8528FF]"
+                              onClick={() => handleViewSeo(seo)}
                             >
                               <Eye className="h-4 w-4" />
                             </Button>
@@ -754,6 +917,7 @@ export function Settings() {
                               variant="ghost"
                               size="sm"
                               className="cursor-pointer hover:text-[#8528FF]"
+                              onClick={() => handleEditSeo(seo)}
                             >
                               <Edit className="h-4 w-4 " />
                             </Button>
@@ -761,6 +925,7 @@ export function Settings() {
                               variant="ghost"
                               size="sm"
                               className="text-red-600 hover:text-red-700 cursor-pointer"
+                              onClick={() => handleDeleteSeo(seo.slug)}
                             >
                               <Trash2 className="h-4 w-4 " />
                             </Button>
@@ -784,6 +949,26 @@ export function Settings() {
           </Card>
         </TabsContent>
       </Tabs>
+      {/* View SEO Modal */}
+      <Dialog
+        open={!!viewingSeo}
+        onOpenChange={open => {
+          if (!open) handleCloseViewSeo();
+        }}
+      >
+        <DialogContent className="max-w-4xl max-h-[85vh]">
+          <DialogHeader>
+            <DialogTitle>View SEO Entry</DialogTitle>
+          </DialogHeader>
+          {viewingSeo && (
+            <SEOForm
+              onClose={handleCloseViewSeo}
+              seo={viewingSeo}
+              mode="view"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

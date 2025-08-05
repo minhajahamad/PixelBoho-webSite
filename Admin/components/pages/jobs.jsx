@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-// import { Badge } from '@/components/ui/badge';
 import {
   Table,
   TableBody,
@@ -37,6 +36,7 @@ export function Jobs() {
   const [jobs, setJobs] = useState([]); //state for storing job
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null); //state for edit jobs
+  const [viewingJob, setViewingJob] = useState(null); //state for viewing job
 
   //Fetch job
   const [totalJobCount, setTotalJobCount] = useState(0);
@@ -90,7 +90,17 @@ export function Jobs() {
     }
   };
 
-  const JobForm = ({ job, onClose }) => {
+  // Handler to open view modal
+  const handleViewJob = job => {
+    setViewingJob(job);
+  };
+
+  // Handler to close view modal
+  const handleCloseViewJob = () => {
+    setViewingJob(null);
+  };
+
+  const JobForm = ({ job, onClose, mode = 'edit' }) => {
     const [formData, setFormData] = useState({
       title: job?.title || '',
       category: job?.category || '',
@@ -99,7 +109,14 @@ export function Jobs() {
       requirements: job?.requirements || '',
     });
 
+    // Helper: should fields be disabled?
+    const isReadOnly = mode === 'view';
+
     const handleSubmit = async e => {
+      if (mode === 'view') {
+        e.preventDefault();
+        return;
+      }
       e.preventDefault();
 
       const jobData = {
@@ -143,59 +160,68 @@ export function Jobs() {
               onChange={e =>
                 setFormData({ ...formData, title: e.target.value })
               }
-              required
+              required={mode !== 'view'}
+              disabled={isReadOnly}
             />
           </div>
           <div>
             <Label htmlFor="category">Category</Label>
-            <Select
-              value={formData.category}
-              onValueChange={value =>
-                setFormData({ ...formData, category: value })
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Development">Development</SelectItem>
-                <SelectItem value="Design">Design</SelectItem>
-                <SelectItem value="Product">Product</SelectItem>
-                <SelectItem value="DevOps & Infrastructure">
-                  DevOps & Infrastructure
-                </SelectItem>
-                <SelectItem value="Quality Assurance">
-                  Quality Assurance
-                </SelectItem>
-                <SelectItem value="Data & AI">Data & AI</SelectItem>
-                <SelectItem value="Cybersecurity">Cybersecurity</SelectItem>
-                <SelectItem value="Marketing"> Marketing </SelectItem>
-                <SelectItem value="Sales">Sales</SelectItem>
-                <SelectItem value="IT Support">IT Support</SelectItem>
-              </SelectContent>
-            </Select>
+            {isReadOnly ? (
+              <Input value={formData.category} disabled />
+            ) : (
+              <Select
+                value={formData.category}
+                onValueChange={value =>
+                  setFormData({ ...formData, category: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Development">Development</SelectItem>
+                  <SelectItem value="Design">Design</SelectItem>
+                  <SelectItem value="Product">Product</SelectItem>
+                  <SelectItem value="DevOps & Infrastructure">
+                    DevOps & Infrastructure
+                  </SelectItem>
+                  <SelectItem value="Quality Assurance">
+                    Quality Assurance
+                  </SelectItem>
+                  <SelectItem value="Data & AI">Data & AI</SelectItem>
+                  <SelectItem value="Cybersecurity">Cybersecurity</SelectItem>
+                  <SelectItem value="Marketing"> Marketing </SelectItem>
+                  <SelectItem value="Sales">Sales</SelectItem>
+                  <SelectItem value="IT Support">IT Support</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
             <Label htmlFor="experience">Experience</Label>
-            <Select
-              value={formData.experience}
-              onValueChange={value =>
-                setFormData({ ...formData, experience: value })
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select experience" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="0-1 years">0-1 years</SelectItem>
-                <SelectItem value="2-4 years">2-4 years</SelectItem>
-                <SelectItem value="3-5 years">3-5 years</SelectItem>
-                <SelectItem value="5+ years">5+ years</SelectItem>
-              </SelectContent>
-            </Select>
+            {isReadOnly ? (
+              <Input value={formData.experience} disabled />
+            ) : (
+              <Select
+                value={formData.experience}
+                onValueChange={value =>
+                  setFormData({ ...formData, experience: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select experience" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0-1 years">0-1 years</SelectItem>
+                  <SelectItem value="2-4 years">2-4 years</SelectItem>
+                  <SelectItem value="3-5 years">3-5 years</SelectItem>
+                  <SelectItem value="5+ years">5+ years</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
           </div>
         </div>
 
@@ -208,6 +234,7 @@ export function Jobs() {
               setFormData({ ...formData, subtitle: e.target.value })
             }
             placeholder="Brief description of the role"
+            disabled={isReadOnly}
           />
         </div>
 
@@ -225,17 +252,23 @@ export function Jobs() {
             }
             placeholder="Enter one requirement per line..."
             rows={5}
+            disabled={isReadOnly}
           />
         </div>
 
-        <div className="flex justify-end space-x-2 pt-4">
-          <Button type="button" variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button type="submit" className="bg-[#8528FF] hover:bg-[#8528FF]/90">
-            {job ? 'Update Job' : 'Create Job'}
-          </Button>
-        </div>
+        {mode !== 'view' && (
+          <div className="flex justify-end space-x-2 pt-4">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="bg-[#8528FF] hover:bg-[#8528FF]/90"
+            >
+              {job ? 'Update Job' : 'Create Job'}
+            </Button>
+          </div>
+        )}
       </form>
     );
   };
@@ -326,6 +359,7 @@ export function Jobs() {
                           variant="ghost"
                           size="sm"
                           className="cursor-pointer hover:text-[#8528FF]"
+                          onClick={() => handleViewJob(job)}
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
@@ -363,6 +397,27 @@ export function Jobs() {
           </Table>
         </CardContent>
       </Card>
+
+      {/* View Job Modal */}
+      <Dialog
+        open={!!viewingJob}
+        onOpenChange={open => {
+          if (!open) handleCloseViewJob();
+        }}
+      >
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>View Job Opening</DialogTitle>
+          </DialogHeader>
+          {viewingJob && (
+            <JobForm
+              job={viewingJob}
+              onClose={handleCloseViewJob}
+              mode="view"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

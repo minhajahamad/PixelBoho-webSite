@@ -1,15 +1,20 @@
 const SeoMeta = require('../db/models/seoSchema');
 //get seo
 
-
 module.exports.getAllSeo = async (req, res) => {
     try {
-      const allSeo = await SeoMeta.find(); // fetch full documents
-      res.json(allSeo);
+      const allSeo = await SeoMeta.find(); // fetch all SEO documents
+      const totalCount = allSeo.length;
+  
+      res.status(200).json({
+        totalCount,
+        seoEntries: allSeo,
+      });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   };
+  
 
 module.exports.getSeoBySlug = async (req, res) => {
   try {
