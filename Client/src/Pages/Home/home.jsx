@@ -10,7 +10,12 @@ import ContactForm from '../../Components/ContactForm/contactForm';
 import NewsLetter from '../../Components/NewsLetter/newsLetter';
 import Footer from '../../Components/Footer/footer';
 
+import HelmetSEO from '../../Components/SEO/HelmetSeo';
+import useSeoData from '../../Hooks/useSeoData';
+
 const Home = () => {
+  const seoData = useSeoData('home');
+
   const servicesRef = useRef(null);
   const contactRef = useRef(null);
   const howWeWorkRef = useRef(null);
@@ -83,7 +88,6 @@ const Home = () => {
     }
   }, [location]);
 
-
   useEffect(() => {
     if (location.state?.scrollTo === 'contact') {
       setTimeout(() => {
@@ -93,23 +97,26 @@ const Home = () => {
   }, [location.state]);
 
   return (
-    <div className="pt-[100px] bg-black">
-      <Header
-        onServiceClick={scrollToServices}
-        onContactClick={scrollToContact}
-        onLogoClick={scrollToHero}
-      />
-      <div ref={heroRef}>
-        <HeroSection />
+    <>
+      <HelmetSEO seo={seoData} />
+      <div className="pt-[100px] bg-black">
+        <Header
+          onServiceClick={scrollToServices}
+          onContactClick={scrollToContact}
+          onLogoClick={scrollToHero}
+        />
+        <div ref={heroRef}>
+          <HeroSection />
+        </div>
+        <LogoStrip />
+        <ServiceCard ref={servicesRef} />
+        <Product ref={productRef} />
+        <HowWeWork ref={howWeWorkRef} />
+        <ContactForm ref={contactRef} />
+        <NewsLetter />
+        <Footer />
       </div>
-      <LogoStrip />
-      <ServiceCard ref={servicesRef} />
-      <Product ref={productRef} />
-      <HowWeWork ref={howWeWorkRef} />
-      <ContactForm ref={contactRef}  />
-      <NewsLetter />
-      <Footer />
-    </div>
+    </>
   );
 };
 

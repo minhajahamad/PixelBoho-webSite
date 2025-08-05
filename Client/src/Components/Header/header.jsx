@@ -69,6 +69,7 @@ const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
               navigate('/');
             }}
             src="/images/PixelBoho-Logo.svg"
+            alt='pixelboho'
             className="object-cover cursor-pointer w-[80px] md:w-[90px]"
           />
         </div>

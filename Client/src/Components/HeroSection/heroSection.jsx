@@ -6,6 +6,7 @@ const HeroSection = () => {
       <div className="w-full   bg-black pl-[50px] md:pl-[120px] xl:pl-[200px]  pt-10 lg:pt-30 xl:pt-35  z-10 relative  ">
         <img
           src="/images/heroSection-img.png"
+          alt='hero'
           className="absolute top-[-209px] left-[-83px] xl:top-[-145px] xl:left-0   z-0   "
         />
         <p className="text-[#8528FF] leading-none w-fit  ">
@@ -34,12 +35,13 @@ const HeroSection = () => {
           Say Hi
           <img
             src="/images/Bye-img.png"
+            alt='bye'
             className="h-[25px] w-[25px]  opacity-0 translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-in-out absolute right-3"
           />
         </div>
       </div>
       <div>
-        <img src="/images/MainHero-img.png" className="hidden  lg:block " />
+        <img src="/images/MainHero-img.png" alt='mainhero' className="hidden  lg:block " />
       </div>
     </div>
   );

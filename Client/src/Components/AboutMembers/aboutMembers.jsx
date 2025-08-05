@@ -102,6 +102,7 @@ const AboutMembers = () => (
           <div>
             <img
               src={detail.image}
+              alt={`${detail.Name.trim()} - ${detail.title}`}
               className={`mx-auto mb-4 w-36 h-46 rounded-full object-cover object-top border-5 border-[#E5DEFF] group-hover:border-[#A392FF] group-hover:scale-105  flex items-center justify-center text-3xl text-white bg-white transition-all duration-400 ease-in-out`}
             />
 

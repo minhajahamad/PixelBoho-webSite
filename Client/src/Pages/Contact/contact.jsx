@@ -4,6 +4,10 @@ import { CiLocationOn } from 'react-icons/ci';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { IoMail } from 'react-icons/io5';
 import Footer from '../../Components/Footer/footer';
+
+import HelmetSEO from '../../Components/SEO/HelmetSeo';
+import useSeoData from '../../Hooks/useSeoData';
+
 const offices = [
   {
     name: 'Kerala ',
@@ -58,8 +62,12 @@ const offices = [
 ];
 
 const ContactPage = () => {
+  const seoData = useSeoData('contact');
+
   return (
-    <div>
+    <>
+      <HelmetSEO seo={seoData} />
+
       <Header />
       <div className="min-h-screen bg-black text-white pt-[100px] font-poppins ">
         {/* Section 1: Header */}
@@ -134,7 +142,7 @@ const ContactPage = () => {
         </section>
       </div>
       <Footer />
-    </div>
+    </>
   );
 };
 

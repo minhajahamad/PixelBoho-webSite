@@ -32,69 +32,6 @@ import {
 
 import axios from 'axios';
 
-// const mockApplications = [
-//   {
-//     id: 1,
-//     name: "Sarah Johnson",
-//     email: "sarah.johnson@email.com",
-//     phone: "+1 (555) 123-4567",
-//     jobTitle: "Senior Frontend Developer",
-//     jobId: 1,
-//     message: "I'm excited about this opportunity and believe my 5 years of React experience would be valuable.",
-//     dateSubmitted: "2024-01-15",
-//     status: "pending",
-//     resume: "sarah_johnson_resume.pdf",
-//   },
-//   {
-//     id: 2,
-//     name: "Mike Chen",
-//     email: "mike.chen@email.com",
-//     phone: "+1 (555) 234-5678",
-//     jobTitle: "UI/UX Designer",
-//     jobId: 2,
-//     message: "I have a strong portfolio in user-centered design and would love to contribute to your team.",
-//     dateSubmitted: "2024-01-14",
-//     status: "reviewed",
-//     resume: "mike_chen_resume.pdf",
-//   },
-//   {
-//     id: 3,
-//     name: "Emily Davis",
-//     email: "emily.davis@email.com",
-//     phone: "+1 (555) 345-6789",
-//     jobTitle: "Backend Developer Intern",
-//     jobId: 3,
-//     message: "As a recent computer science graduate, I'm eager to start my career in backend development.",
-//     dateSubmitted: "2024-01-13",
-//     status: "pending",
-//     resume: "emily_davis_resume.pdf",
-//   },
-//   {
-//     id: 4,
-//     name: "Alex Rodriguez",
-//     email: "alex.rodriguez@email.com",
-//     phone: "+1 (555) 456-7890",
-//     jobTitle: "Product Manager",
-//     jobId: 4,
-//     message: "With 7 years of product management experience, I'm ready to take on new challenges.",
-//     dateSubmitted: "2024-01-12",
-//     status: "interviewed",
-//     resume: "alex_rodriguez_resume.pdf",
-//   },
-//   {
-//     id: 5,
-//     name: "Jessica Wong",
-//     email: "jessica.wong@email.com",
-//     phone: "+1 (555) 567-8901",
-//     jobTitle: "Senior Frontend Developer",
-//     jobId: 1,
-//     message: "I specialize in modern JavaScript frameworks and have led multiple successful projects.",
-//     dateSubmitted: "2024-01-11",
-//     status: "rejected",
-//     resume: "jessica_wong_resume.pdf",
-//   },
-// ]
-
 export function Applications() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');

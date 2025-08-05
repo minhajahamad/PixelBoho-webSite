@@ -2,6 +2,9 @@ import React from 'react';
 import Header from '../../Components/Header/header';
 import Footer from '../../Components/Footer/footer';
 
+import HelmetSEO from '../../Components/SEO/HelmetSeo';
+import useSeoData from '../../Hooks/useSeoData';
+
 const termsSections = [
   {
     title: '1. Company Information',
@@ -279,8 +282,12 @@ const termsSections = [
 ];
 
 const TermsConditions = () => {
+  const seoData = useSeoData('terms-conditions');
+
   return (
-    <div>
+    <>
+      <HelmetSEO seo={seoData} />
+
       <Header />
       <div className="bg-black min-h-screen desc-text px-5 py-12 md:px-10 pt-[100px] xl:pt-[150px] tracking-wide">
         <div className="mx-auto bg-[#101010] rounded-xl shadow-md border border-[#dedede33] p-8">
@@ -314,7 +321,7 @@ const TermsConditions = () => {
         </div>
       </div>
       <Footer />
-    </div>
+    </>
   );
 };
 
