@@ -29,6 +29,14 @@ import {
   Trash2,
   FileText,
 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 import axios from 'axios';
 
@@ -40,6 +48,7 @@ export function Applications() {
   // Fetch Application from database and store into state
   const [applications, setApplications] = useState([]);
   const [jobs, setJobs] = useState([]); // ✅ New state for job list
+  const [viewingApplication, setViewingApplication] = useState(null); //state for viewing application
 
   const getApplication = async () => {
     try {
@@ -132,6 +141,108 @@ export function Applications() {
       console.error('Failed to delete application:', error);
       alert('Error deleting application');
     }
+  };
+
+  // Handler to open view modal
+  const handleViewApplication = application => {
+    setViewingApplication(application);
+  };
+
+  // Handler to close view modal
+  const handleCloseViewApplication = () => {
+    setViewingApplication(null);
+  };
+
+  // Application Form Component for viewing
+  const ApplicationForm = ({ application, onClose, mode = 'view' }) => {
+    const [formData, setFormData] = useState({
+      name: application?.name || '',
+      email: application?.email || '',
+      phone: application?.phone || '',
+      message: application?.message || '',
+      resume: application?.resume || '',
+      jobTitle: application?.jobId?.title || '',
+      createdAt: application?.createdAt || '',
+    });
+
+    // Helper: should fields be disabled?
+    const isReadOnly = mode === 'view';
+
+    return (
+      <form className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="name">Candidate Name</Label>
+            <Input id="name" value={formData.name} disabled={isReadOnly} />
+          </div>
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              value={formData.email}
+              disabled={isReadOnly}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="phone">Phone Number</Label>
+            <Input id="phone" value={formData.phone} disabled={isReadOnly} />
+          </div>
+          <div>
+            <Label htmlFor="jobTitle">Job Title</Label>
+            <Input
+              id="jobTitle"
+              value={formData.jobTitle}
+              disabled={isReadOnly}
+            />
+          </div>
+        </div>
+
+        <div>
+          <Label htmlFor="message">Message</Label>
+          <Textarea
+            id="message"
+            value={formData.message}
+            rows={4}
+            disabled={isReadOnly}
+            placeholder="No message provided"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="createdAt">Date Submitted</Label>
+          <Input
+            id="createdAt"
+            value={new Date(formData.createdAt).toLocaleDateString('en-IN', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+            disabled
+          />
+        </div>
+
+        {/* Only show action buttons if not view mode */}
+        {mode !== 'view' && (
+          <div className="flex justify-end space-x-2 pt-4">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="bg-[#8528FF] hover:bg-[#8528FF]/90"
+            >
+              Save Changes
+            </Button>
+          </div>
+        )}
+      </form>
+    );
   };
 
   return (
@@ -265,6 +376,7 @@ export function Applications() {
                           variant="ghost"
                           size="sm"
                           className="cursor-pointer hover:text-[#8528FF]"
+                          onClick={() => handleViewApplication(application)}
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
@@ -294,6 +406,26 @@ export function Applications() {
           </Table>
         </CardContent>
       </Card>
+      {/* View Application Modal */}
+      <Dialog
+        open={!!viewingApplication}
+        onOpenChange={open => {
+          if (!open) handleCloseViewApplication();
+        }}
+      >
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>View Application Details</DialogTitle>
+          </DialogHeader>
+          {viewingApplication && (
+            <ApplicationForm
+              application={viewingApplication}
+              onClose={handleCloseViewApplication}
+              mode="view"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

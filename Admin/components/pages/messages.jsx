@@ -22,11 +22,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Search, Eye, CheckCircle, Circle, Trash2 } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 export function Messages({ setUnreadCount, unreadCount }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [messages, setMessages] = useState([]);
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [viewingMessage, setViewingMessage] = useState(null);
 
   // ✅ Fetch all messages
   const getMessages = async () => {
@@ -80,6 +83,81 @@ export function Messages({ setUnreadCount, unreadCount }) {
         value.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
+
+  // Handler to open view modal
+  const handleViewMessage = message => {
+    setViewingMessage(message);
+  };
+
+  // Handler to close view modal
+  const handleCloseViewMessage = () => {
+    setViewingMessage(null);
+  };
+
+  // Message Form Component for viewing
+  const MessageForm = ({ message, onClose, mode = 'view' }) => {
+    const [formData] = useState({
+      name: message?.name || '',
+      email: message?.email || '',
+      phone: message?.phone || '',
+      requirement: message?.requirement || '',
+      isRead: message?.isRead || false,
+      createdAt: message?.createdAt || '',
+    });
+    const isReadOnly = mode === 'view';
+    return (
+      <form className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" value={formData.name} disabled={isReadOnly} />
+          </div>
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" value={formData.email} disabled={isReadOnly} />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="phone">Phone</Label>
+            <Input id="phone" value={formData.phone} disabled={isReadOnly} />
+          </div>
+          <div>
+            <Label htmlFor="requirement">Requirement</Label>
+            <Input
+              id="requirement"
+              value={formData.requirement}
+              disabled={isReadOnly}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="isRead">Status</Label>
+            <Input
+              id="isRead"
+              value={formData.isRead ? 'Read' : 'Unread'}
+              disabled
+            />
+          </div>
+          <div>
+            <Label htmlFor="createdAt">Submitted At</Label>
+            <Input
+              id="createdAt"
+              value={new Date(formData.createdAt).toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+              disabled
+            />
+          </div>
+        </div>
+      </form>
+    );
+  };
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
@@ -180,7 +258,7 @@ export function Messages({ setUnreadCount, unreadCount }) {
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => setSelectedMessage(message)}
+                              onClick={() => handleViewMessage(message)}
                             >
                               <Eye className="h-4 w-4" />
                             </Button>
@@ -189,6 +267,13 @@ export function Messages({ setUnreadCount, unreadCount }) {
                             <DialogHeader>
                               <DialogTitle>Message Details</DialogTitle>
                             </DialogHeader>
+                            {viewingMessage && (
+                              <MessageForm
+                                message={viewingMessage}
+                                onClose={handleCloseViewMessage}
+                                mode="view"
+                              />
+                            )}
                           </DialogContent>
                         </Dialog>
                         <Button

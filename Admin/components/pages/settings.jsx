@@ -656,6 +656,15 @@ export function Settings() {
           <Card>
             <CardHeader>
               <CardTitle>Profile Information</CardTitle>
+              <div className="flex justify-end">
+                <Button
+                  onClick={handleProfileSave}
+                  className="bg-[#8528FF] hover:bg-[#8528FF]/90"
+                >
+                  <Edit className=" h-4 w-4" />
+                  Edit Profile
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Avatar Section */}
@@ -795,16 +804,6 @@ export function Settings() {
                 </Button>
               </div> */}
                 </div>
-              </div>
-
-              <div className="flex justify-end">
-                <Button
-                  onClick={handleProfileSave}
-                  className="bg-[#8528FF] hover:bg-[#8528FF]/90"
-                >
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Changes
-                </Button>
               </div>
             </CardContent>
           </Card>
