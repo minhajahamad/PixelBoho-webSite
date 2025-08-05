@@ -50,13 +50,38 @@ import axios from 'axios';
 
 export function Settings() {
   const [profile, setProfile] = useState({
-    name: 'John Doe',
-    email: 'john.doe@company.com',
-    phone: '+1 (555) 123-4567',
-    bio: 'Experienced administrator with a passion for efficient team management and process optimization.',
-    company: 'Tech Solutions Inc.',
-    position: 'HR Manager',
+    fullname: '',
+    phone: '',
+    email: '',
+    company: '',
+    position: '',
   });
+  // const [admin, setAdmin] = useState({ email: '' });
+  // const getAdmin = async () => {
+  //   try {
+  //     const res = await axios.get('http://localhost:9000/admin');
+  //     if (res.data.length > 0) {
+  //       setProfile(res.data[0]);
+  //     }
+  //   } catch (error) {
+  //     console.error('error fetching admin', error);
+  //   }
+  // };
+  const getProfile = async () => {
+    try {
+      const res = await axios.get('http://localhost:9000/profile');
+      console.log(profile);
+
+      setProfile(res.data);
+    } catch (error) {
+      console.error('error fetching profile', error);
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+    // getAdmin();
+  }, []);
 
   const [security, setSecurity] = useState({
     currentPassword: '',
@@ -672,10 +697,10 @@ export function Settings() {
                 <Avatar className="h-24 w-24">
                   <AvatarImage src="/placeholder.svg?height=96&width=96" />
                   <AvatarFallback className="bg-[#8528FF] text-white text-2xl">
-                    {profile.name
+                    {/* {profile.name
                       .split(' ')
                       .map(n => n[0])
-                      .join('')}
+                      .join('')} */}
                   </AvatarFallback>
                 </Avatar>
                 <div>
@@ -692,21 +717,23 @@ export function Settings() {
               {/* Profile Form */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="fullname">Full Name</Label>
                   <Input
-                    id="name"
-                    value={profile.name}
+                    // readOnly
+                    name="fullname"
+                    value={profile.fullname || ''}
                     onChange={e =>
-                      setProfile({ ...profile, name: e.target.value })
+                      setProfile({ ...profile, fullname: e.target.value })
                     }
                   />
                 </div>
                 <div>
                   <Label htmlFor="email">Email Address</Label>
                   <Input
-                    id="email"
-                    type="email"
-                    value={profile.email}
+                    readOnly
+                    // name="email"
+                    // type="email"
+                    // value={profile.email}
                     onChange={e =>
                       setProfile({ ...profile, email: e.target.value })
                     }
@@ -715,6 +742,7 @@ export function Settings() {
                 <div>
                   <Label htmlFor="phone">Phone Number</Label>
                   <Input
+                    readOnly
                     id="phone"
                     value={profile.phone}
                     onChange={e =>
@@ -725,6 +753,7 @@ export function Settings() {
                 <div>
                   <Label htmlFor="position">Position</Label>
                   <Input
+                    readOnly
                     id="position"
                     value={profile.position}
                     onChange={e =>
@@ -735,6 +764,7 @@ export function Settings() {
                 <div className="md:col-span-2">
                   <Label htmlFor="company">Company</Label>
                   <Input
+                    readOnly
                     id="company"
                     value={profile.company}
                     onChange={e =>
