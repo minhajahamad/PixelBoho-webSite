@@ -1,83 +1,155 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Plus, FileText, MessageSquare, Download, Zap, ChevronDown, AlertCircle, CheckCircle } from "lucide-react"
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Plus,
+  FileText,
+  MessageSquare,
+  // Download,
+  Zap,
+  ChevronDown,
+  // AlertCircle,
+  CheckCircle,
+  Menu,
+} from 'lucide-react';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 export function QuickActionsDropdown({ setActiveTab }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [reviewCount, setReviewCount] = useState(0);
+  // const [totalApplications, setTotalApplications] = useState(0);
+  const [latestUnreadMessageTime, setLatestUnreadMessageTime] = useState('');
+  const [latestJobTime, setLatestJobTime] = useState('');
 
+  // Fetch live stats
+  const fetchStats = async () => {
+    try {
+      // Fetch all messages (to compute unread count and latest unread message)
+      const messagesRes = await axios.get('http://localhost:9000/messages');
+      const messages = messagesRes.data || [];
+      const unreadMessages = messages.filter(m => !m.isRead);
+      setUnreadCount(unreadMessages.length);
+      // Latest unread message
+      if (unreadMessages.length > 0) {
+        const latestMsg = unreadMessages.reduce((a, b) =>
+          new Date(a.createdAt) > new Date(b.createdAt) ? a : b
+        );
+        setLatestUnreadMessageTime(dayjs(latestMsg.createdAt).fromNow());
+      } else {
+        setLatestUnreadMessageTime('No unread');
+      }
+
+      // Fetch all applications, filter to status 'review'
+      const appsRes = await axios.get('http://localhost:9000/applications');
+      const applications = appsRes.data || [];
+      const reviewApps = applications.filter(a => a.status === 'review');
+      setReviewCount(reviewApps.length);
+
+      // Fetch jobs, display latest post time
+      const jobsRes = await axios.get('http://localhost:9000/job-openings');
+      const jobs = jobsRes.data.openings || [];
+      if (jobs.length > 0) {
+        const latestJob = jobs.reduce((a, b) =>
+          new Date(a.createdAt) > new Date(b.createdAt) ? a : b
+        );
+        setLatestJobTime(dayjs(latestJob.createdAt).fromNow());
+      } else {
+        setLatestJobTime('No jobs');
+      }
+    } catch (err) {
+      setUnreadCount(0);
+      setReviewCount(0);
+      setLatestUnreadMessageTime('Error');
+      setLatestJobTime('Error');
+    }
+  };
+
+  // Refetch data whenever dropdown is opened
+  useEffect(() => {
+    if (isOpen) fetchStats();
+  }, [isOpen]);
+
+  // Quick stats
   const quickStats = [
-    { label: "Pending", count: 12, color: "text-red-600", urgent: true },
-    { label: "Messages", count: 3, color: "text-blue-600", urgent: true },
-    { label: "Interviews", count: 5, color: "text-green-600", urgent: false },
-  ]
+    {
+      label: 'Messages',
+      count: unreadCount,
+      color: 'text-blue-600',
+      urgent: unreadCount > 0,
+    },
+    {
+      label: 'Applications',
+      // count: totalApplications,
+      color: 'text-green-600',
+      urgent: false,
+    },
+  ];
 
+  // Quick actions
   const quickActions = [
     {
-      title: "Add New Job",
+      title: 'Add New Job',
       icon: Plus,
-      action: () => setActiveTab("jobs"),
-      color: "text-[#8528FF]",
+      action: () => setActiveTab('jobs'),
+      color: 'text-[#8528FF]',
     },
     {
-      title: "Review Applications",
+      title: 'Review Applications',
       icon: FileText,
-      action: () => setActiveTab("applications"),
-      color: "text-blue-600",
-      badge: 12,
+      action: () => setActiveTab('applications'),
+      color: 'text-blue-600',
+      badge: reviewCount,
     },
     {
-      title: "View Messages",
+      title: 'View Messages',
       icon: MessageSquare,
-      action: () => setActiveTab("messages"),
-      color: "text-green-600",
-      badge: 3,
+      action: () => setActiveTab('messages'),
+      color: 'text-green-600',
+      badge: unreadCount,
     },
-    {
-      title: "Generate Report",
-      icon: Download,
-      action: () => console.log("Generate report"),
-      color: "text-gray-600",
-    },
-  ]
+  ];
 
+  // Recent alerts
   const recentAlerts = [
     {
-      message: "12 applications need review",
-      time: "2h ago",
-      icon: AlertCircle,
-      color: "text-red-600",
-    },
-    {
-      message: "New message received",
-      time: "4h ago",
+      message: 'New message received',
+      time: latestUnreadMessageTime,
       icon: MessageSquare,
-      color: "text-blue-600",
+      color: 'text-blue-600',
     },
     {
-      message: "Job posting published",
-      time: "6h ago",
+      message: 'Job posting published',
+      time: latestJobTime,
       icon: CheckCircle,
-      color: "text-green-600",
+      color: 'text-green-600',
     },
-  ]
+  ];
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="bg-white/80 backdrop-blur-sm border-[#8528FF]/20 hover:bg-[#8528FF]/5 hover:scale-105 transition-all duration-300 hover:shadow-lg"
+          className="hidden sm:flex bg-white/80 backdrop-blur-sm border-[#8528FF]/20 hover:bg-[#8528FF]/5
+          hover:scale-105 transition-all duration-300 hover:shadow-lg"
         >
           <Zap className="mr-2 h-4 w-4 text-[#8528FF] animate-pulse" />
           Quick Actions
           <div className="flex items-center ml-2 space-x-1">
             {quickStats
-              .filter((stat) => stat.urgent)
+              .filter(stat => stat.urgent)
               .map((stat, index) => (
                 <Badge
                   key={index}
@@ -89,26 +161,37 @@ export function QuickActionsDropdown({ setActiveTab }) {
                 </Badge>
               ))}
           </div>
-          <ChevronDown className={`ml-2 h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+          <ChevronDown
+            className={`ml-2 h-4 w-4 transition-transform duration-200 ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+          />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-80 bg-white/95 backdrop-blur-xl border-white/20 shadow-xl" align="start">
+      <DropdownMenuContent
+        className="w-80 bg-white/95 backdrop-blur-xl border-white/20 shadow-xl"
+        align="start"
+      >
         <Card className="border-0 shadow-none bg-transparent">
           <CardContent className="p-4 space-y-4">
             {/* Quick Stats with stagger animation */}
             <div>
-              <h4 className="font-semibold text-sm text-gray-700 mb-2">Overview</h4>
+              <h4 className="font-semibold text-sm text-gray-700 mb-2">
+                Overview
+              </h4>
               <div className="grid grid-cols-3 gap-2">
                 {quickStats.map((stat, index) => (
                   <div
                     key={index}
                     className={`p-2 rounded-lg border text-center transition-all duration-500 hover:scale-105 hover:shadow-md ${
                       stat.urgent
-                        ? "border-red-200 bg-red-50 hover:bg-red-100"
-                        : "border-gray-200 bg-gray-50 hover:bg-gray-100"
+                        ? 'border-red-200 bg-red-50 hover:bg-red-100'
+                        : 'border-gray-200 bg-gray-50 hover:bg-gray-100'
                     }`}
                   >
-                    <div className={`text-lg font-bold ${stat.color} transition-all duration-300 hover:scale-110`}>
+                    <div
+                      className={`text-lg font-bold ${stat.color} transition-all duration-300 hover:scale-110`}
+                    >
                       {stat.count}
                     </div>
                     <div className="text-xs text-gray-600">{stat.label}</div>
@@ -119,18 +202,20 @@ export function QuickActionsDropdown({ setActiveTab }) {
 
             {/* Quick Actions with hover effects */}
             <div>
-              <h4 className="font-semibold text-sm text-gray-700 mb-2">Actions</h4>
+              <h4 className="font-semibold text-sm text-gray-700 mb-2">
+                Actions
+              </h4>
               <div className="space-y-1">
                 {quickActions.map((action, index) => {
-                  const Icon = action.icon
+                  const Icon = action.icon;
                   return (
                     <Button
                       key={index}
                       variant="ghost"
                       className="w-full justify-start h-10 hover:bg-gray-100 hover:scale-[1.02] transition-all duration-200 group"
                       onClick={() => {
-                        action.action()
-                        setIsOpen(false)
+                        action.action();
+                        setIsOpen(false);
                       }}
                     >
                       <Icon
@@ -139,7 +224,7 @@ export function QuickActionsDropdown({ setActiveTab }) {
                       <span className="flex-1 text-left group-hover:font-medium transition-all duration-200">
                         {action.title}
                       </span>
-                      {action.badge && (
+                      {action.badge !== undefined && (
                         <Badge
                           variant="secondary"
                           className="bg-gray-200 text-gray-800 text-xs group-hover:bg-[#8528FF] group-hover:text-white transition-all duration-200"
@@ -148,17 +233,19 @@ export function QuickActionsDropdown({ setActiveTab }) {
                         </Badge>
                       )}
                     </Button>
-                  )
+                  );
                 })}
               </div>
             </div>
 
             {/* Recent Alerts with smooth animations */}
             <div>
-              <h4 className="font-semibold text-sm text-gray-700 mb-2">Recent Alerts</h4>
+              <h4 className="font-semibold text-sm text-gray-700 mb-2">
+                Recent Alerts
+              </h4>
               <div className="space-y-2">
                 {recentAlerts.map((alert, index) => {
-                  const Icon = alert.icon
+                  const Icon = alert.icon;
                   return (
                     <div
                       key={index}
@@ -176,7 +263,7 @@ export function QuickActionsDropdown({ setActiveTab }) {
                         </p>
                       </div>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </div>
@@ -184,5 +271,5 @@ export function QuickActionsDropdown({ setActiveTab }) {
         </Card>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

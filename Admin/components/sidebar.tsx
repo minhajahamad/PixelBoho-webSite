@@ -1,21 +1,29 @@
-"use client"
+'use client';
 
-import { LayoutDashboard, Briefcase, FileText, MessageSquare, Settings, LogOut, User } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  LayoutDashboard,
+  Briefcase,
+  FileText,
+  MessageSquare,
+  Settings,
+  LogOut,
+  User,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface SidebarProps {
-  activeTab: string
-  setActiveTab: (tab: string) => void
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
 }
 
 const menuItems = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "jobs", label: "Job Openings", icon: Briefcase },
-  { id: "applications", label: "Applications", icon: FileText },
-  { id: "messages", label: "Messages", icon: MessageSquare },
-  { id: "settings", label: "Settings", icon: Settings },
-]
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'jobs', label: 'Job Openings', icon: Briefcase },
+  { id: 'applications', label: 'Applications', icon: FileText },
+  { id: 'messages', label: 'Messages', icon: MessageSquare },
+  { id: 'settings', label: 'Settings', icon: Settings },
+];
 
 export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
   return (
@@ -52,16 +60,16 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
       {/* Navigation */}
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
-          {menuItems.map((item) => {
-            const Icon = item.icon
+          {menuItems.map(item => {
+            const Icon = item.icon;
             return (
               <li key={item.id}>
                 <Button
-                  variant={activeTab === item.id ? "default" : "ghost"}
+                  variant={activeTab === item.id ? 'default' : 'ghost'}
                   className={`w-full justify-start h-12 ${
                     activeTab === item.id
-                      ? "bg-primary text-white hover:bg-primary/90"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                      ? 'bg-primary text-white hover:bg-primary/90'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                   }`}
                   onClick={() => setActiveTab(item.id)}
                 >
@@ -69,18 +77,21 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
                   {item.label}
                 </Button>
               </li>
-            )
+            );
           })}
         </ul>
       </nav>
 
       {/* Logout */}
       <div className="p-4 border-t border-gray-200">
-        <Button variant="ghost" className="w-full justify-start h-12 text-red-600 hover:text-red-700 hover:bg-red-50">
+        <Button
+          variant="ghost"
+          className="w-full justify-start h-12 text-red-600 hover:text-red-700 hover:bg-red-50"
+        >
           <LogOut className="mr-3 h-5 w-5" />
           Logout
         </Button>
       </div>
     </div>
-  )
+  );
 }

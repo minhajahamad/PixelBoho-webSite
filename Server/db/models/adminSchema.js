@@ -10,6 +10,11 @@ const adminSechma = Schema({
     type: String,
     required: true,
   },
+  fullName: String,
+  phone: String,
+  company: String,
+  position: String,
+  profilePicture: { type: String, default: '' },
 });
 
 const Admin = model('admins', adminSechma);

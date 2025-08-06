@@ -154,8 +154,8 @@ export function Dashboard({ setActiveTab }) {
             Welcome back! Here's what's happening with your job postings.
           </p>
         </div>
-        {/* {setActiveTab && <QuickActionsDropdown setActiveTab={setActiveTab} />} */}
-        <span className="text-gray-400 text-sm">Coming Soon...</span>
+        {setActiveTab && <QuickActionsDropdown setActiveTab={setActiveTab} />}
+        {/* <span className="text-gray-400 text-sm">Coming Soon...</span> */}
       </div>
 
       {/* Stats Cards */}

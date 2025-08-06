@@ -45,64 +45,87 @@ import {
   Eye,
   Trash2,
   Edit,
+  X,
 } from 'lucide-react';
 import axios from 'axios';
 
 export function Settings() {
+  const [loading, setLoading] = useState(false);
+  // State
   const [profile, setProfile] = useState({
-    fullname: '',
+    fullName: '',
     phone: '',
-    email: '',
     company: '',
     position: '',
+    email: '',
   });
-  // const [admin, setAdmin] = useState({ email: '' });
-  // const getAdmin = async () => {
-  //   try {
-  //     const res = await axios.get('http://localhost:9000/admin');
-  //     if (res.data.length > 0) {
-  //       setProfile(res.data[0]);
-  //     }
-  //   } catch (error) {
-  //     console.error('error fetching admin', error);
-  //   }
-  // };
-  const getProfile = async () => {
-    try {
-      const res = await axios.get('http://localhost:9000/profile');
-      console.log(profile);
 
-      setProfile(res.data);
-    } catch (error) {
-      console.error('error fetching profile', error);
-    }
+  const [isEditing, setIsEditing] = useState(false);
+  const [origProfile, setOrigProfile] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [uploadingPicture, setUploadingPicture] = useState(false);
+
+  // Function to trigger sidebar refresh
+  const triggerSidebarRefresh = () => {
+    // Dispatch a custom event that sidebar can listen to
+    window.dispatchEvent(new CustomEvent('profileUpdated'));
   };
 
   useEffect(() => {
-    getProfile();
-    // getAdmin();
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem('token');
+        console.log('token in localStorage:', token);
+        const res = await axios.get(`http://localhost:9000/admin/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setProfile(res.data);
+      } catch (err) {
+        console.error('Error fetching profile', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
   }, []);
+
+  // Handle form change
+  const handleChange = e => {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+  };
+
+  // Submit updated profile
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('adminToken');
+      await axios.patch(`http://localhost:9000/admin/profile`, profile, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert('Profile updated successfully!');
+      setIsEditing(false);
+      setOrigProfile(profile);
+    } catch (err) {
+      console.error('Error updating profile', err);
+      alert('Failed to update profile');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const [security, setSecurity] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
-
-  const handleProfileSave = () => {
-    // Mock save functionality
-    console.log('Profile saved:', profile);
-  };
-
-  const handlePasswordChange = () => {
-    // Mock password change functionality
-    if (security.newPassword !== security.confirmPassword) {
-      alert("Passwords don't match!");
-      return;
-    }
-    console.log('Password changed');
-    setSecurity({ currentPassword: '', newPassword: '', confirmPassword: '' });
-  };
 
   // Slug setup
   const [seoData, setSeoData] = useState([]);
@@ -655,6 +678,84 @@ export function Settings() {
     return words.slice(0, maxWords).join(' ') + ' ';
   };
 
+  // Handle profile picture upload
+  const handleProfilePictureUpload = async file => {
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file (JPG, PNG, etc.)');
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size must be less than 5MB');
+      return;
+    }
+
+    try {
+      setUploadingPicture(true);
+      const formData = new FormData();
+      formData.append('profilePicture', file);
+
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        'http://localhost:9000/admin/profile/upload-picture',
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      // Update profile with new picture URL
+      setProfile(prev => ({
+        ...prev,
+        profilePicture: response.data.profilePicture,
+      }));
+
+      alert('Profile picture updated successfully!');
+      setProfilePicture(null);
+      setPreviewUrl('');
+
+      // Trigger sidebar refresh
+      triggerSidebarRefresh();
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
+      alert('Failed to upload profile picture. Please try again.');
+    } finally {
+      setUploadingPicture(false);
+    }
+  };
+
+  // Handle file selection
+  const handleFileSelect = event => {
+    const file = event.target.files[0];
+    if (file) {
+      setProfilePicture(file);
+      // Create preview URL
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
+
+  // Cleanup preview URL on unmount or when component updates
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+  // Handle profile picture upload button click
+  const handleUploadClick = () => {
+    document.getElementById('profile-picture-input').click();
+  };
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       {/* Header */}
@@ -682,97 +783,156 @@ export function Settings() {
             <CardHeader>
               <CardTitle>Profile Information</CardTitle>
               <div className="flex justify-end">
-                <Button
-                  onClick={handleProfileSave}
-                  className="bg-[#8528FF] hover:bg-[#8528FF]/90"
-                >
-                  <Edit className=" h-4 w-4" />
-                  Edit Profile
-                </Button>
+                {!isEditing ? (
+                  <Button
+                    className="bg-[#8528FF] hover:bg-[#8528FF]/90"
+                    onClick={() => {
+                      setIsEditing(true);
+                      setOrigProfile(profile);
+                    }}
+                  >
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit Profile
+                  </Button>
+                ) : (
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setIsEditing(false);
+                        setProfile(origProfile);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      className="bg-[#8528FF] hover:bg-[#8528FF]/90"
+                      form="profile-form"
+                      type="submit"
+                    >
+                      Update Profile
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Avatar Section */}
               <div className="flex items-center space-x-6">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src="/placeholder.svg?height=96&width=96" />
+                  <AvatarImage
+                    src={
+                      profile.profilePicture ||
+                      previewUrl ||
+                      '/placeholder.svg?height=96&width=96'
+                    }
+                    alt="Profile Picture"
+                  />
                   <AvatarFallback className="bg-[#8528FF] text-white text-2xl">
-                    {/* {profile.name
-                      .split(' ')
-                      .map(n => n[0])
-                      .join('')} */}
+                    {profile.fullName
+                      ? profile.fullName
+                          .split(' ')
+                          .map(n => n[0])
+                          .join('')
+                      : 'A'}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <Button variant="outline" className="mb-2 bg-transparent">
+                  <input
+                    id="profile-picture-input"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+                  <Button
+                    variant="outline"
+                    className="mb-2 bg-transparent"
+                    onClick={handleUploadClick}
+                    disabled={uploadingPicture}
+                  >
                     <Upload className="mr-2 h-4 w-4" />
-                    Change Avatar
+                    {uploadingPicture ? 'Uploading...' : 'Change Avatar'}
                   </Button>
-                  <p className="text-sm text-gray-500">
-                    JPG, GIF or PNG. 1MB max.
-                  </p>
+                  {profilePicture && (
+                    <div className="space-y-2">
+                      <Button
+                        size="sm"
+                        className="bg-[#8528FF] hover:bg-[#8528FF]/90"
+                        onClick={() =>
+                          handleProfilePictureUpload(profilePicture)
+                        }
+                        disabled={uploadingPicture}
+                      >
+                        {uploadingPicture ? 'Uploading...' : 'Save Picture'}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setProfilePicture(null);
+                          setPreviewUrl('');
+                        }}
+                        disabled={uploadingPicture}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  )}
+                  <p className="text-sm text-gray-500">JPG, PNG. Max 5MB.</p>
                 </div>
               </div>
 
               {/* Profile Form */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="fullname">Full Name</Label>
-                  <Input
-                    // readOnly
-                    name="fullname"
-                    value={profile.fullname || ''}
-                    onChange={e =>
-                      setProfile({ ...profile, fullname: e.target.value })
-                    }
-                  />
+              <form onSubmit={handleSubmit} id="profile-form">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="fullName">Full Name</Label>
+                    <Input
+                      readOnly={!isEditing}
+                      name="fullName"
+                      value={profile.fullName || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="email">Email Address</Label>
+                    <Input
+                      readOnly
+                      name="email"
+                      type="email"
+                      value={profile.email || ''}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input
+                      readOnly={!isEditing}
+                      name="phone"
+                      value={profile.phone || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="position">Position</Label>
+                    <Input
+                      readOnly={!isEditing}
+                      name="position"
+                      value={profile.position || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label htmlFor="company">Company</Label>
+                    <Input
+                      readOnly={!isEditing}
+                      name="company"
+                      value={profile.company || ''}
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input
-                    readOnly
-                    // name="email"
-                    // type="email"
-                    // value={profile.email}
-                    onChange={e =>
-                      setProfile({ ...profile, email: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    readOnly
-                    id="phone"
-                    value={profile.phone}
-                    onChange={e =>
-                      setProfile({ ...profile, phone: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="position">Position</Label>
-                  <Input
-                    readOnly
-                    id="position"
-                    value={profile.position}
-                    onChange={e =>
-                      setProfile({ ...profile, position: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <Label htmlFor="company">Company</Label>
-                  <Input
-                    readOnly
-                    id="company"
-                    value={profile.company}
-                    onChange={e =>
-                      setProfile({ ...profile, company: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
+              </form>
 
               {/* Security Section */}
               <div className="border-t pt-3 flex flex-col gap-5">

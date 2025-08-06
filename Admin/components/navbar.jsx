@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -36,21 +36,42 @@ const menuItems = [
 export function Navbar({ activeTab, setActiveTab, unreadCount }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // const [unreadCount, setUnreadCount] = useState(0);
+  // Admin profile state
+  const [adminProfile, setAdminProfile] = useState({
+    fullName: '',
+    email: '',
+    profilePicture: '',
+  });
 
-  // useEffect(() => {
-  //   const fetchUnreadCount = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         'http://localhost:9000/messages/unread-count'
-  //       );
-  //       setUnreadCount(res.data.unreadCount);
-  //     } catch (err) {
-  //       console.error('Failed to fetch unread count', err);
-  //     }
-  //   };
-  //   fetchUnreadCount();
-  // }, []);
+  useEffect(() => {
+    const fetchAdminProfile = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const response = await axios.get(
+            'http://localhost:9000/admin/profile',
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setAdminProfile(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching admin profile:', error);
+      }
+    };
+    fetchAdminProfile();
+    // Listen for profile updates from settings
+    const handleProfileUpdate = () => {
+      fetchAdminProfile();
+    };
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+    return () => {
+      window.removeEventListener('profileUpdated', handleProfileUpdate);
+    };
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-white/20 ">
@@ -117,9 +138,21 @@ export function Navbar({ activeTab, setActiveTab, unreadCount }) {
                   className="relative h-10 w-10 rounded-full hover:scale-105 cursor-pointer"
                 >
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src="/placeholder.svg?height=40&width=40" />
+                    <AvatarImage
+                      src={
+                        adminProfile.profilePicture ||
+                        '/placeholder.svg?height=40&width=40'
+                      }
+                    />
                     <AvatarFallback className="bg-[#8528FF] text-white">
-                      <User className="h-5 w-5" />
+                      {adminProfile.fullName ? (
+                        adminProfile.fullName
+                          .split(' ')
+                          .map(n => n[0])
+                          .join('')
+                      ) : (
+                        <User className="h-5 w-5" />
+                      )}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
@@ -131,9 +164,11 @@ export function Navbar({ activeTab, setActiveTab, unreadCount }) {
               >
                 <div className="flex items-center justify-start gap-2 p-2">
                   <div className="flex flex-col space-y-1 leading-none">
-                    <p className="font-medium">John Doe</p>
+                    <p className="font-medium">
+                      {adminProfile.fullName || 'Admin'}
+                    </p>
                     <p className="w-[200px] truncate text-sm text-muted-foreground">
-                      john.doe@company.com
+                      {adminProfile.email || 'admin@company.com'}
                     </p>
                   </div>
                 </div>

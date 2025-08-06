@@ -6,6 +6,14 @@ import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
+
+  const [showForgot, setShowForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [step, setStep] = useState(1); // 1: Email verify, 2: Reset password
+
   const router = useRouter();
 
   const handleChange = e => {
@@ -76,7 +84,10 @@ export default function LoginPage() {
               className="w-full p-2 border rounded text-sm sm:text-base mb-1"
               required
             />
-            <p className="cursor-pointer text-xs sm:text-sm text-blue-500 hover:text-blue-300 transition-all duration-300 text-right">
+            <p
+              className="cursor-pointer text-xs sm:text-sm text-blue-500 hover:text-blue-300 transition-all duration-300 text-right"
+              onClick={() => setShowForgot(true)}
+            >
               Forgot Password?
             </p>
           </div>
@@ -89,6 +100,109 @@ export default function LoginPage() {
             Login
           </button>
         </form>
+        {showForgot && (
+          <div className="mt-6 border-t pt-4">
+            {step === 1 && (
+              <>
+                <label className="block mb-1 text-sm font-medium">
+                  Verify Email
+                </label>
+                <input
+                  type="email"
+                  value={forgotEmail}
+                  onChange={e => setForgotEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="w-full p-2 border rounded text-sm sm:text-base mb-2"
+                />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+                <button
+                  onClick={async () => {
+                    try {
+                      const res = await axios.post(
+                        'http://localhost:9000/admin/check-email',
+                        {
+                          email: forgotEmail,
+                        }
+                      );
+
+                      if (res.data.exists) {
+                        setStep(2);
+                        setError('');
+                      } else {
+                        setError('Email not found');
+                      }
+                    } catch (err) {
+                      setError('Error verifying email');
+                    }
+                  }}
+                  type="button"
+                  className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 text-sm sm:text-base"
+                >
+                  Verify Email
+                </button>
+              </>
+            )}
+
+            {step === 2 && (
+              <>
+                <label className="block mt-4 mb-1 text-sm font-medium">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={e => setNewPassword(e.target.value)}
+                  className="w-full p-2 border rounded text-sm sm:text-base"
+                />
+
+                <label className="block mt-4 mb-1 text-sm font-medium">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  className="w-full p-2 border rounded text-sm sm:text-base mb-2"
+                />
+
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+
+                <button
+                  onClick={async () => {
+                    if (newPassword !== confirmPassword) {
+                      setError('Passwords do not match');
+                      return;
+                    }
+
+                    try {
+                      // Replace this with your real API call
+                      await axios.patch(
+                        'http://localhost:9000/admin/update-password',
+                        {
+                          email: forgotEmail,
+                          password: newPassword,
+                        }
+                      );
+                      alert('Password updated successfully');
+                      setShowForgot(false);
+                      setStep(1);
+                      setNewPassword('');
+                      setConfirmPassword('');
+                      setForgotEmail('');
+                      setError('');
+                    } catch (err) {
+                      setError('Something went wrong. Try again.');
+                    }
+                  }}
+                  type="button"
+                  className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 text-sm sm:text-base"
+                >
+                  Update Password
+                </button>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

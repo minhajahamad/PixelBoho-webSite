@@ -3,7 +3,7 @@ const {
   postOpenings,
   getOpenings,
   deleteOpenings,
-  updateOpenings
+  updateOpenings,
 } = require('../controllers/jobOpeningsControllers');
 
 const router = express.Router();
@@ -11,6 +11,6 @@ const router = express.Router();
 router.get('/', getOpenings);
 router.post('/', postOpenings);
 router.delete('/:id', deleteOpenings);
-router.patch('/:id',updateOpenings)
+router.patch('/:id', updateOpenings);
 
 module.exports = router;
