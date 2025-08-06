@@ -935,7 +935,7 @@ export function Settings() {
               </form>
 
               {/* Security Section */}
-              <div className="border-t pt-3 flex flex-col gap-5">
+              {/* <div className="border-t pt-3 flex flex-col gap-5">
                 <div>
                   <h1 className="font-semibold">Security Settings</h1>
                 </div>
@@ -987,14 +987,14 @@ export function Settings() {
                     </div>
                   </div>
 
-                  {/* <div className="flex justify-end">
+                 <div className="flex justify-end">
                 <Button onClick={handlePasswordChange} className="bg-[#8528FF] hover:bg-[#8528FF]/90">
                   <Save className="mr-2 h-4 w-4" />
                   Update Password
                 </Button>
-              </div> */}
+              </div> 
                 </div>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
         </TabsContent>

@@ -3,207 +3,337 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Eye, EyeOff } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
 
 export default function LoginPage() {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-
-  const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const [step, setStep] = useState(1); // 1: Email verify, 2: Reset password
+  const [mode, setMode] = useState('login');
+  const [slideDirection, setSlideDirection] = useState('right');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const router = useRouter();
 
-  const handleChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleLogin = async e => {
-    e.preventDefault();
+  const onLogin = async data => {
     try {
-      const res = await axios.post(
-        'http://localhost:9000/admin/login',
-        formData
-      );
+      const res = await axios.post('http://localhost:9000/admin/login', data);
       localStorage.setItem('token', res.data.token);
-      router.push('/');
+      toast.success('Login successful!');
+      setTimeout(() => router.push('/'), 250);
     } catch (error) {
-      console.error(error);
       alert(error.response?.data?.message || 'Login failed');
     }
   };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      router.push('/');
-    }
+    if (token) router.push('/');
   }, []);
 
+  const slideVariants = {
+    initial: direction => ({
+      opacity: 0,
+      x: direction === 'right' ? 100 : -100,
+    }),
+    animate: {
+      opacity: 1,
+      x: 0,
+    },
+    exit: direction => ({
+      opacity: 0,
+      x: direction === 'right' ? -100 : 100,
+    }),
+  };
+
+  const handleModeChange = (newMode, direction) => {
+    setSlideDirection(direction);
+    setMode(newMode);
+    setError('');
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#F9FAFB] px-4 sm:px-6 lg:px-8">
-      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
-          Admin Login
-        </h2>
-        <form onSubmit={handleLogin} className="space-y-4">
-          {/* Email */}
-          <div>
-            <label htmlFor="email" className="block mb-1 text-sm font-medium">
-              Email *
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              className="w-full p-2 border rounded text-sm sm:text-base"
-              required
-            />
-          </div>
+    <>
+      <div className="flex items-center justify-center min-h-screen bg-[#F9FAFB] px-4 sm:px-6">
+        <div className="w-full max-w-md bg-white p-6 sm:p-8 rounded-lg shadow-md relative overflow-hidden h-[400px] sm:h-[420px]">
+          <h2 className="text-2xl font-bold text-center mb-4">
+            {mode === 'login'
+              ? 'Admin Login'
+              : mode === 'forgot'
+              ? 'Verify Email'
+              : 'Reset Password'}
+          </h2>
 
-          {/* Password */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block mb-1 text-sm font-medium"
+          <AnimatePresence mode="wait" initial={false} custom={slideDirection}>
+            <motion.div
+              key={mode}
+              custom={slideDirection}
+              variants={slideVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.4, ease: 'easeInOut' }}
+              className="relative h-full flex flex-col justify-center"
             >
-              Password *
-            </label>
-            <input
-              value={formData.password}
-              onChange={handleChange}
-              id="password"
-              //   type="password"
-              name="password"
-              placeholder="Enter your password"
-              className="w-full p-2 border rounded text-sm sm:text-base mb-1"
-              required
-            />
-            <p
-              className="cursor-pointer text-xs sm:text-sm text-blue-500 hover:text-blue-300 transition-all duration-300 text-right"
-              onClick={() => setShowForgot(true)}
-            >
-              Forgot Password?
-            </p>
-          </div>
+              {mode === 'login' && (
+                <form onSubmit={handleSubmit(onLogin)} className="space-y-4">
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block mb-1 text-sm font-medium"
+                    >
+                      Email *
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="Enter your email"
+                      className="w-full p-2 border rounded text-sm"
+                      {...register('email', {
+                        required: 'Email is required',
+                        pattern: {
+                          value: /^\S+@\S+$/i,
+                          message: 'Invalid email format',
+                        },
+                      })}
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.email.message}
+                      </p>
+                    )}
+                  </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 cursor-pointer transition-all duration-300 text-sm sm:text-base"
-          >
-            Login
-          </button>
-        </form>
-        {showForgot && (
-          <div className="mt-6 border-t pt-4">
-            {step === 1 && (
-              <>
-                <label className="block mb-1 text-sm font-medium">
-                  Verify Email
-                </label>
-                <input
-                  type="email"
-                  value={forgotEmail}
-                  onChange={e => setForgotEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="w-full p-2 border rounded text-sm sm:text-base mb-2"
-                />
-                {error && <p className="text-red-500 text-sm">{error}</p>}
-                <button
-                  onClick={async () => {
-                    try {
-                      const res = await axios.post(
-                        'http://localhost:9000/admin/check-email',
-                        {
-                          email: forgotEmail,
+                  <div>
+                    <label
+                      htmlFor="password"
+                      className="block mb-1 text-sm font-medium"
+                    >
+                      Password *
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Enter your password"
+                        className="w-full p-2 pr-10 border rounded text-sm mb-1"
+                        {...register('password', {
+                          required: 'Password is required',
+                          minLength: {
+                            value: 6,
+                            message: 'Password must be at least 6 characters',
+                          },
+                        })}
+                      />
+                      <div
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                        onClick={() => setShowPassword(prev => !prev)}
+                      >
+                        {showPassword ? (
+                          <EyeOff size={18} />
+                        ) : (
+                          <Eye size={18} />
+                        )}
+                      </div>
+                    </div>
+                    {errors.password && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.password.message}
+                      </p>
+                    )}
+                    <p
+                      className="cursor-pointer text-xs text-blue-500 hover:text-blue-400 text-right"
+                      onClick={() => handleModeChange('forgot', 'right')}
+                    >
+                      Forgot Password?
+                    </p>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition duration-300 text-sm"
+                  >
+                    Login
+                  </Button>
+                </form>
+              )}
+
+              {/* Forgot and Reset remain unchanged */}
+              {mode === 'forgot' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block mb-1 text-sm font-medium">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={forgotEmail}
+                      onChange={e => setForgotEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="w-full p-2 border rounded text-sm"
+                    />
+                  </div>
+                  {error && <p className="text-red-500 text-sm">{error}</p>}
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const res = await axios.post(
+                          'http://localhost:9000/admin/check-email',
+                          { email: forgotEmail }
+                        );
+                        if (res.data.exists) {
+                          handleModeChange('reset', 'right');
+                        } else {
+                          setError('Email not found');
                         }
-                      );
-
-                      if (res.data.exists) {
-                        setStep(2);
-                        setError('');
-                      } else {
-                        setError('Email not found');
+                      } catch {
+                        setError('Error verifying email');
                       }
-                    } catch (err) {
-                      setError('Error verifying email');
-                    }
-                  }}
-                  type="button"
-                  className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 text-sm sm:text-base"
-                >
-                  Verify Email
-                </button>
-              </>
-            )}
+                    }}
+                    className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 text-sm"
+                  >
+                    Verify Email
+                  </Button>
+                  <p
+                    className="text-xs text-gray-500 hover:text-black text-center cursor-pointer"
+                    onClick={() => {
+                      handleModeChange('login', 'left');
+                      setForgotEmail('');
+                    }}
+                  >
+                    ← Back to Login
+                  </p>
+                </div>
+              )}
 
-            {step === 2 && (
-              <>
-                <label className="block mt-4 mb-1 text-sm font-medium">
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={e => setNewPassword(e.target.value)}
-                  className="w-full p-2 border rounded text-sm sm:text-base"
-                />
+              {mode === 'reset' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block mb-1 text-sm font-medium">
+                      New Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showNewPassword ? 'text' : 'password'}
+                        value={newPassword}
+                        onChange={e => setNewPassword(e.target.value)}
+                        placeholder="Enter your password"
+                        className="w-full p-2 pr-10 border rounded text-sm mb-1"
+                        required
+                      />
+                      <div
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                        onClick={() => setShowNewPassword(prev => !prev)}
+                      >
+                        {showNewPassword ? (
+                          <EyeOff size={18} />
+                        ) : (
+                          <Eye size={18} />
+                        )}
+                      </div>
+                    </div>
+                  </div>
 
-                <label className="block mt-4 mb-1 text-sm font-medium">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
-                  className="w-full p-2 border rounded text-sm sm:text-base mb-2"
-                />
+                  <div>
+                    <label className="block mb-1 text-sm font-medium">
+                      Confirm Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        value={confirmPassword}
+                        onChange={e => setConfirmPassword(e.target.value)}
+                        placeholder="Enter your password"
+                        className="w-full p-2 pr-10 border rounded text-sm mb-1"
+                        required
+                      />
+                      <div
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                        onClick={() => setShowConfirmPassword(prev => !prev)}
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff size={18} />
+                        ) : (
+                          <Eye size={18} />
+                        )}
+                      </div>
+                    </div>
+                  </div>
 
-                {error && <p className="text-red-500 text-sm">{error}</p>}
-
-                <button
-                  onClick={async () => {
-                    if (newPassword !== confirmPassword) {
-                      setError('Passwords do not match');
-                      return;
-                    }
-
-                    try {
-                      // Replace this with your real API call
-                      await axios.patch(
-                        'http://localhost:9000/admin/update-password',
-                        {
-                          email: forgotEmail,
-                          password: newPassword,
-                        }
-                      );
-                      alert('Password updated successfully');
-                      setShowForgot(false);
-                      setStep(1);
+                  {error && <p className="text-red-500 text-sm">{error}</p>}
+                  <Button
+                    onClick={async () => {
+                      if (newPassword !== confirmPassword) {
+                        setError('Passwords do not match');
+                        return;
+                      }
+                      try {
+                        await axios.patch(
+                          'http://localhost:9000/admin/update-password',
+                          {
+                            email: forgotEmail,
+                            password: newPassword,
+                          }
+                        );
+                        toast.success('Password updated successfully!');
+                        setTimeout(
+                          () => handleModeChange('login', 'right'),
+                          250
+                        );
+                        setForgotEmail('');
+                        setNewPassword('');
+                        setConfirmPassword('');
+                      } catch {
+                        setError('Something went wrong. Try again.');
+                      }
+                    }}
+                    className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 text-sm"
+                  >
+                    Update Password
+                  </Button>
+                  <p
+                    className="text-xs text-gray-500 hover:text-black text-center cursor-pointer"
+                    onClick={() => {
+                      handleModeChange('login', 'left');
+                      setForgotEmail('');
                       setNewPassword('');
                       setConfirmPassword('');
-                      setForgotEmail('');
-                      setError('');
-                    } catch (err) {
-                      setError('Something went wrong. Try again.');
-                    }
-                  }}
-                  type="button"
-                  className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 text-sm sm:text-base"
-                >
-                  Update Password
-                </button>
-              </>
-            )}
-          </div>
-        )}
+                    }}
+                  >
+                    ← Back to Login
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
-    </div>
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={true}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </>
   );
 }
