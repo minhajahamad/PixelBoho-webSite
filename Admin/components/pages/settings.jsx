@@ -324,6 +324,7 @@ export function Settings() {
                     'home',
                     'about',
                     'contact',
+                    'blogs',
                     'career',
                     'privacy-policy',
                     'terms-conditions',

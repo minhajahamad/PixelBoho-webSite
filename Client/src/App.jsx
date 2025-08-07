@@ -8,6 +8,7 @@ import ContactPage from './Pages/Contact/contact';
 import ScrollToTop from './Components/ScrollToTop/scrollToTop';
 import PrivacyPolicy from './Pages/Privacy Policy/privacyPolicy';
 import TermsConditions from './Pages/Terms and Condition/terms-condition';
+import Blogs from './Pages/Blogs/blogs';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/blogs" element={<Blogs />} />
       </Routes>
     </>
   );

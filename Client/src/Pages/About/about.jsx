@@ -16,9 +16,7 @@ const About = () => {
   const seoData = useSeoData('about');
   console.log('About Page SEO Data:', seoData);
 
-  if (!seoData) {
-    // return <div>Loading...</div>;
-  }
+  
 
 
   return (

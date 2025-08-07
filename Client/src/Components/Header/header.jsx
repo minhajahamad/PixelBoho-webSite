@@ -20,6 +20,8 @@ const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
       setActive('about');
     } else if (path === '/contact') {
       setActive('contact');
+    }else if (path === '/blogs') {
+      setActive('blogs');
     } else if (path === '/') {
       setActive('home');
     } else {
@@ -106,6 +108,15 @@ const Header = ({ onServiceClick, onContactClick, onLogoClick }) => {
             className={navItemClass('contact')}
           >
             CONTACT US
+          </p>
+          <p
+            onClick={() => {
+              setActive('blogs');
+              navigate('/blogs');
+            }}
+            className={navItemClass('blogs')}
+          >
+            BLOGS
           </p>
           <div
             onClick={handleContactClick}
