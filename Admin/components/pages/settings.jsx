@@ -46,6 +46,7 @@ import {
   Trash2,
   Edit,
   X,
+  Notebook,
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -94,6 +95,8 @@ export function Settings() {
     fetchProfile();
   }, []);
 
+  console.log(profile);
+
   // Handle form change
   const handleChange = e => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
@@ -104,7 +107,7 @@ export function Settings() {
     e.preventDefault();
     try {
       setLoading(true);
-      const token = localStorage.getItem('adminToken');
+      const token = localStorage.getItem('token');
       await axios.patch(`http://localhost:9000/admin/profile`, profile, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -768,7 +771,7 @@ export function Settings() {
       </div>
 
       <Tabs defaultValue="profile" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 ">
+        <TabsList className="grid w-full grid-cols-3 ">
           <TabsTrigger value="profile" className="flex items-center gap-2">
             <User className="h-4 w-4" />
             Profile
@@ -776,6 +779,10 @@ export function Settings() {
           <TabsTrigger value="seo" className="flex items-center gap-2">
             <Search className="h-4 w-4" />
             SEO
+          </TabsTrigger>
+          <TabsTrigger value="blog" className="flex items-center gap-2">
+            <Notebook className="h-4 w-4" />
+            Blog
           </TabsTrigger>
         </TabsList>
 
@@ -1043,6 +1050,129 @@ export function Settings() {
                     <TableHead>Title</TableHead>
                     <TableHead>Meta Description</TableHead>
                     <TableHead>Canonical URL</TableHead>
+                    <TableHead>Created At</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {seoData.length > 0 ? (
+                    seoData.map(seo => (
+                      <TableRow key={seo._id}>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">{seo.slug}</div>
+                          </div>
+                        </TableCell>
+
+                        <TableCell className="font-medium">
+                          {seo.title}
+                        </TableCell>
+
+                        <TableCell className="font-medium">
+                          {truncateMetaDescription(seo.metaDescription)}
+                          {seo.metaDescription &&
+                            seo.metaDescription.split(' ').length > 10 && (
+                              <button
+                                style={{
+                                  color: '#2563eb',
+                                  cursor: 'pointer',
+                                  background: 'none',
+                                  border: 'none',
+                                  padding: 0,
+                                  marginLeft: 2,
+                                }}
+                                onClick={() => handleViewSeo(seo)}
+                              >
+                                ...
+                              </button>
+                            )}
+                        </TableCell>
+
+                        <TableCell className="font-medium">
+                          {seo.canonicalUrl}
+                        </TableCell>
+
+                        <TableCell className="font-medium">
+                          {new Date(seo.createdAt).toLocaleDateString('en-IN', {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric',
+                          })}
+                        </TableCell>
+
+                        <TableCell>
+                          <div className="flex space-x-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="cursor-pointer hover:text-[#8528FF]"
+                              onClick={() => handleViewSeo(seo)}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="cursor-pointer hover:text-[#8528FF]"
+                              onClick={() => handleEditSeo(seo)}
+                            >
+                              <Edit className="h-4 w-4 " />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700 cursor-pointer"
+                              onClick={() => handleDeleteSeo(seo.slug)}
+                            >
+                              <Trash2 className="h-4 w-4 " />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={6}
+                        className="text-center py-6 text-gray-500"
+                      >
+                        No applications found
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Blog section */}
+        <TabsContent value="blog">
+          <Card className="max-h-[65vh] overflow-y-scroll">
+            <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <CardTitle>All Blogs </CardTitle>
+              <Dialog className="overflow-y-auto hide-scrollbar">
+                <DialogTrigger asChild>
+                  <Button className="bg-[#8528FF] hover:bg-[#8528FF]/90 w-full md:w-auto">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add New Blog
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl max-h-[85vh]  ">
+                  <DialogHeader>
+                    <DialogTitle></DialogTitle>
+                  </DialogHeader>
+                  <SEOForm />
+                </DialogContent>
+              </Dialog>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Blog Title</TableHead>
+                    <TableHead>Description</TableHead>
+                    <TableHead>Blog Image</TableHead>
                     <TableHead>Created At</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>

@@ -217,7 +217,7 @@ const AboutHeroSection = () => {
         </p>
       </div>
 
-      <style >{`
+      <style>{`
         .scroll-gradient-text {
           line-height: 1.6;
         }

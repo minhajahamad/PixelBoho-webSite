@@ -14,52 +14,53 @@ const offices = [
     address:
       'Pukalakkat complex, Mahakavi Vailoppilli Rd, Palarivattom, Kochi, Ernakulam, Kerala, 682025',
     // location: <CiLocationOn className="text-white " />,
-    phone: '+91 96337 19333',
+    phone: `+91 96337 19333`,
     email: 'info@pixelboho.in',
     // hours: 'Mon-Fri: 9:00 AM - 6:00 PM',
     // employees: '25+ Employees',
   },
   {
-    name: 'Karnataka ',
-    address: 'Brigade Road, MG Road Area, Bengaluru, Karnataka 560001',
+    name: 'Bangalore',
+    address: 'Karthik Nagar, Bangalore Bangalore East, Pin Code: 560037',
     // location: <CiLocationOn className="text-white " />,
 
-    phone: '+91 87141 71027',
+    phone: `+91 87141 71027`,
     email: 'info@pixelboho.in',
     // hours: 'Mon-Fri: 9:30 AM - 6:30 PM',
     // employees: '40+ Employees',
   },
   {
-    name: 'Tamil Nadu ',
-    address: 'OMR Road, Thoraipakkam, Chennai, Tamil Nadu 600097',
+    name: 'Chennai',
+    address: 'NO:7, Karuneegar St, Ramapuram, Paramesh Nagar, Adambakkam, Chennai, Tamil Nadu 600088',
     // location: <CiLocationOn className="text-white " />,
 
-    phone: '+91 87141 71027',
+    phone: `+91 87141 71027`,
     email: 'info@pixelboho.in',
     // hours: 'Mon-Fri: 9:00 AM - 6:00 PM',
     // employees: '30+ Employees',
   },
   {
     name: 'Uttar Pradesh ',
-    address: 'Sector 62, Noida, Uttar Pradesh 201309',
+    address: 'Saurabh Pandey 5/3 railway Road .In front Dr Ravindra Dubey Hospital Farrkhabad - 209625',
     // location: <CiLocationOn className="text-white " />,
 
-    phone: '+91 87141 71027',
+    phone: `+91 87141 71027`,
     email: 'info@pixelboho.in',
     // hours: 'Mon-Fri: 9:30 AM - 6:30 PM',
     // employees: '35+ Employees',
   },
   {
     name: 'Gujarat ',
-    address: 'SG Highway, Makarba, Ahmedabad, Gujarat 380051',
+    address: 'Sahebji Shoppers , Shop no.11,12&13 Opp: West Zone Office ,Udhna, Surat , Gujarat - 394210',
     // location: <CiLocationOn className="text-white " />,
 
-    phone: '+91 87141 71027',
+    phone: `+91 87141 71027`,
     email: 'info@pixelboho.in',
     // hours: 'Mon-Fri: 9:00 AM - 6:00 PM',
     // employees: '20+ Employees',
   },
 ];
+
 
 const ContactPage = () => {
   const seoData = useSeoData('contact');
