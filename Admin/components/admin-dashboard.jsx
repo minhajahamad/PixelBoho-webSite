@@ -7,7 +7,9 @@ import { Dashboard } from '@/components/pages/dashboard';
 import { Jobs } from '@/components/pages/jobs';
 import { Applications } from '@/components/pages/applications';
 import { Messages } from '@/components/pages/messages';
-import { Settings } from '@/components/pages/settings';
+// import  Settings  from '@/components/pages/settings';
+// import Settings from './pages/settings';
+import Settings from './pages/settings';
 
 export function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
