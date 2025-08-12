@@ -9,6 +9,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'react-toastify';
 
+import dynamic from 'next/dynamic';
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
+
 export const BlogForm = ({
   onClose,
   onBlogCreated,
@@ -130,26 +134,6 @@ export const BlogForm = ({
       onSubmit={mode === 'view' ? e => e.preventDefault() : handleSubmit}
       className="space-y-4 max-h-[70vh] overflow-y-auto pr-2"
     >
-      <div>
-        <Label htmlFor="title">Blog Title</Label>
-        <Input
-          id="title"
-          value={formData.title}
-          onChange={e => handleChange('title', e.target.value)}
-          disabled={isReadOnly}
-        />
-      </div>
-      <div>
-        <Label htmlFor="description">Blog Description</Label>
-        <Textarea
-          id="description"
-          rows={4}
-          value={formData.description}
-          onChange={e => handleChange('description', e.target.value)}
-          disabled={isReadOnly}
-        />
-      </div>
-
       <div className="flex flex-col gap-2">
         <Label htmlFor="image" className="font-semibold text-gray-700">
           Blog Image
@@ -206,6 +190,35 @@ export const BlogForm = ({
             className="mt-2 max-h-40 w-fit rounded-md shadow-md object-contain border border-gray-200"
           />
         )}
+      </div>
+      <div>
+        <Label htmlFor="title">Blog Title</Label>
+        <Input
+          id="title"
+          value={formData.title}
+          onChange={e => handleChange('title', e.target.value)}
+          disabled={isReadOnly}
+        />
+      </div>
+      <div>
+        <Label htmlFor="description">Blog Description</Label>
+        <ReactQuill
+          theme="snow"
+          value={formData.description}
+          onChange={value => handleChange('description', value)}
+          readOnly={isReadOnly}
+          modules={{
+            toolbar: [
+              ['bold', 'italic', 'underline', 'strike'],
+              [{ list: 'ordered' }, { list: 'bullet' }],
+              [{ header: [1, 2, 3, false] }],
+              [{ color: [] }, { background: [] }],
+              [{ align: [] }],
+              ['link', 'image'],
+              ['clean'],
+            ],
+          }}
+        />
       </div>
 
       {mode !== 'view' && (
