@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminDashboard } from '@/components/admin-dashboard';
 
+import api from '@/lib/api';
+
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -13,7 +15,10 @@ export default function Home() {
     if (!token) {
       router.replace('/login'); // replace so back button won't return to dashboard
     } else {
-      setLoading(false); // only render dashboard when authenticated
+      api
+        .get('/admin/profile')
+        .then(() => setLoading(false))
+        .catch(() => router.replace('/login'));
     }
   }, [router]);
   if (loading) return null;

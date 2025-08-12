@@ -23,8 +23,7 @@ import {
   X,
 } from 'lucide-react';
 
-import axios from 'axios';
-
+import api from '@/lib/api';
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'jobs', label: 'Post Jobs', icon: Briefcase },
@@ -46,23 +45,14 @@ export function Navbar({ activeTab, setActiveTab, unreadCount }) {
   useEffect(() => {
     const fetchAdminProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          const response = await axios.get(
-            'http://localhost:9000/admin/profile',
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setAdminProfile(response.data);
-        }
+        const response = await api.get('/admin/profile');
+        setAdminProfile(response.data);
       } catch (error) {
         console.error('Error fetching admin profile:', error);
       }
     };
     fetchAdminProfile();
+
     // Listen for profile updates from settings
     const handleProfileUpdate = () => {
       fetchAdminProfile();

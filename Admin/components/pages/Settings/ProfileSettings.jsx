@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -37,10 +37,7 @@ export const ProfileSettings = () => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:9000/admin/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await api.get('/admin/profile');
         setProfile(res.data);
       } catch (err) {
         console.error('Error fetching profile', err);
@@ -60,10 +57,7 @@ export const ProfileSettings = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      await axios.patch(`http://localhost:9000/admin/profile`, profile, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.patch('/admin/profile', profile);
       toast.success('Profile updated successfully!');
       setIsEditing(false);
       setOrigProfile(profile);
@@ -90,15 +84,11 @@ export const ProfileSettings = () => {
       const formData = new FormData();
       formData.append('profilePicture', file);
 
-      const token = localStorage.getItem('token');
-      const response = await axios.post(
-        'http://localhost:9000/admin/profile/upload-picture',
+      const response = await api.post(
+        '/admin/profile/upload-picture',
         formData,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
+          headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
 
