@@ -1,7 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+
+import axiosInstance from './apiconfig/axios';
+import { API_URL } from './apiconfig/api_url';
+
 import { Navbar } from '@/components/navbar';
 import { Dashboard } from '@/components/pages/dashboard';
 import { Jobs } from '@/components/pages/jobs';
@@ -18,7 +21,7 @@ export function AdminDashboard() {
   // ✅ Fetch unread count function
   const fetchUnreadCount = async () => {
     try {
-      const res = await axios.get('http://localhost:9000/messages/unread-count');
+      const res = await axiosInstance.get(API_URL.MESSAGES.GET_MESSAGE_UNREAD_COUNT);
       setUnreadCount(res.data.unreadCount || 0);
     } catch (error) {
       console.error('Failed to fetch unread count', error);

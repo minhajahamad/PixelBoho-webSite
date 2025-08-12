@@ -1,5 +1,7 @@
 // src/hooks/useSeoData.js
 import { useEffect, useState } from 'react';
+import axiosInstance from '../Components/apiconfig/axios';
+import { API_URL } from '../Components/apiconfig/api_url';
 
 export default function useSeoData(slug) {
   console.log('useSeoData HOOK called with slug:', slug);
@@ -9,7 +11,8 @@ export default function useSeoData(slug) {
     if (!slug) return;
     console.log('Slug passed:', slug);
 
-    fetch(`http://localhost:9000/seo/${slug}`)
+    axiosInstance
+      .get(`${API_URL.SEO.GET_SEO}/${slug}`)
       .then(res => res.json())
       .then(data => {
         console.log('SEO data from API:', data);

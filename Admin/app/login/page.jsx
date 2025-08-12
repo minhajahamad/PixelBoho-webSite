@@ -10,6 +10,9 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 
+import axiosInstance from '../../components/apiconfig/axios';
+import { API_URL } from '../../components/apiconfig/api_url';
+
 export default function LoginPage() {
   const [forgotEmail, setForgotEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -31,7 +34,7 @@ export default function LoginPage() {
 
   const onLogin = async data => {
     try {
-      const res = await axios.post('http://localhost:9000/admin/login', data);
+      const res = await axiosInstance.post(API_URL.ADMIN.LOGIN_ADMIN, data);
       localStorage.setItem('token', res.data.token);
       toast.success('Login successful!');
       setTimeout(() => router.push('/'), 250);
@@ -191,8 +194,8 @@ export default function LoginPage() {
                   <Button
                     onClick={async () => {
                       try {
-                        const res = await axios.post(
-                          'http://localhost:9000/admin/check-email',
+                        const res = await axiosInstance.post(
+                          API_URL.ADMIN.ADMIN_CHECK_EMAIL,
                           { email: forgotEmail }
                         );
                         if (res.data.exists) {
@@ -282,8 +285,8 @@ export default function LoginPage() {
                         return;
                       }
                       try {
-                        await axios.patch(
-                          'http://localhost:9000/admin/update-password',
+                        await axiosInstance.patch(
+                          API_URL.ADMIN.ADMIN_UPDATE_PASSWORD,
                           {
                             email: forgotEmail,
                             password: newPassword,

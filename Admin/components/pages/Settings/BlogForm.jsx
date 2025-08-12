@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'react-toastify';
+
+import { API_URL } from '@/components/apiconfig/api_url';
+import axiosInstance from '@/components/apiconfig/axios';
 
 export const BlogForm = ({
   onClose,
@@ -99,14 +101,14 @@ export const BlogForm = ({
       if (formData.image) data.append('image', formData.image);
 
       if (mode === 'edit') {
-        const res = await axios.patch(
-          `http://localhost:9000/blog/${blog._id}`,
+        const res = await axiosInstance.patch(
+          API_URL.BLOG.UPDATE_BLOG(blog._id),
           data,
           { headers: { 'Content-Type': 'multipart/form-data' } }
         );
         onBlogUpdated(res.data.data);
       } else {
-        const res = await axios.post('http://localhost:9000/blog', data, {
+        const res = await axiosInstance.post(API_URL.BLOG.POST_BLOG, data, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
         onBlogCreated(res.data.data);

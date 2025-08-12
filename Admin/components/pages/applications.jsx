@@ -38,7 +38,8 @@ import {
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
-import axios from 'axios';
+import axiosInstance from '../apiconfig/axios';
+import { API_URL } from '../apiconfig/api_url';
 
 export function Applications() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -52,7 +53,7 @@ export function Applications() {
 
   const getApplication = async () => {
     try {
-      const res = await axios.get('http://localhost:9000/applications');
+      const res = await axiosInstance.get(API_URL.APPLICATIONS.GET_APPLICATION);
       setApplications(res.data);
     } catch (error) {
       console.error('Failed to fetch application:', error);
@@ -62,7 +63,9 @@ export function Applications() {
   // ✅ Fetch Jobs
   const getJobs = async () => {
     try {
-      const res = await axios.get('http://localhost:9000/openings');
+      const res = await axiosInstance.get(
+        API_URL.JOB_OPENINGS.GET_JOB_OPENINGS
+      );
       setJobs(res.data.openings || []); // Assuming backend returns array of job objects
     } catch (error) {
       console.error('Failed to fetch jobs:', error);
@@ -133,7 +136,7 @@ export function Applications() {
   //For  Deleting appliacation
   const handleDeleteJob = async id => {
     try {
-      await axios.delete(`http://localhost:9000/applications/${id}`);
+      await axiosInstance.delete(API_URL.APPLICATIONS.DELETE_APPLICATION(id));
       setApplications(
         applications.filter(application => application._id !== id)
       );

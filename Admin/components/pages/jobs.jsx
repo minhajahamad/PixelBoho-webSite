@@ -29,8 +29,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Plus, Search, Edit, Trash2, Eye } from 'lucide-react';
-import axios from 'axios';
-
+import axiosInstance from '../apiconfig/axios';
+import { API_URL } from '../apiconfig/api_url';
 export function Jobs() {
   const [searchTerm, setSearchTerm] = useState('');
   const [jobs, setJobs] = useState([]); //state for storing job
@@ -43,7 +43,9 @@ export function Jobs() {
 
   const getJobOpenings = async () => {
     try {
-      const res = await axios.get('http://localhost:9000/openings');
+      const res = await axiosInstance.get(
+        API_URL.JOB_OPENINGS.GET_JOB_OPENINGS
+      );
       setTotalJobCount(res.data.totalCount);
       const fetchedJobs = (res.data.openings || []).map(job => ({
         ...job,
@@ -82,7 +84,7 @@ export function Jobs() {
   // Delete
   const handleDeleteJob = async id => {
     try {
-      await axios.delete(`http://localhost:9000/openings/${id}`);
+      await axiosInstance.delete(API_URL.JOB_OPENINGS.DELETE_JOB_OPENINGS(id));
       setJobs(jobs.filter(job => job.id !== id));
     } catch (error) {
       console.error('Failed to delete job:', error);
@@ -132,13 +134,16 @@ export function Jobs() {
 
       try {
         if (job) {
-          await axios.patch(
-            `http://localhost:9000/openings/${job.id}`,
+          await axiosInstance.patch(
+            API_URL.JOB_OPENINGS.UPDATE_JOB_OPENINGS(job.id),
             jobData
           );
           await getJobOpenings(); // Refresh with updated data
         } else {
-          await axios.post('http://localhost:9000/openings', jobData);
+          await axiosInstance.post(
+            API_URL.JOB_OPENINGS.POST_JOB_OPENINGS,
+            jobData
+          );
           await getJobOpenings(); // Refresh jobs after new one added
         }
 

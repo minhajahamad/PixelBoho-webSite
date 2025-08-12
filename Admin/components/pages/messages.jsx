@@ -1,11 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+
+import axiosInstance from '../apiconfig/axios';
+import { API_URL } from '../apiconfig/api_url';
+
 import {
   Table,
   TableBody,
@@ -34,7 +37,7 @@ export function Messages({ setUnreadCount, unreadCount }) {
   // ✅ Fetch all messages
   const getMessages = async () => {
     try {
-      const res = await axios.get('http://localhost:9000/messages');
+      const res = await axiosInstance.get(API_URL.MESSAGES.GET_MESSAGE);
       setMessages(res.data);
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -48,7 +51,7 @@ export function Messages({ setUnreadCount, unreadCount }) {
   // ✅ Delete Message
   const handleDeleteMessage = async id => {
     try {
-      await axios.delete(`http://localhost:9000/messages/${id}`);
+      await axiosInstance.delete(API_URL.MESSAGES.DELETE_MESSAGE(id));
       setMessages(messages.filter(message => message._id !== id));
     } catch (error) {
       console.error('Failed to delete message:', error);

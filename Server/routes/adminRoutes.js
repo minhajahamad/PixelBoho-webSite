@@ -40,7 +40,7 @@ const upload = multer({
 });
 
 router.post('/login', loginAdmin);
-router.post('/signup', verifyAdmin, signupAdmin);
+router.post('/signup', verifyAdmin, signupAdmin);  //ONLY FOR POSTMAN
 
 router.get('/profile', verifyAdmin, getAdminProfile);
 router.patch('/profile', verifyAdmin, updateAdminProfile);

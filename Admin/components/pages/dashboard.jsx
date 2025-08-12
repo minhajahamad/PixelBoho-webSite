@@ -25,7 +25,8 @@ import {
   Cell,
 } from 'recharts';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../apiconfig/axios';
+import { API_URL } from '../apiconfig/api_url';
 
 const chartData = [
   { name: 'Jan', applications: 65, jobs: 12 },
@@ -119,11 +120,11 @@ export function Dashboard({ setActiveTab }) {
     const fetchStats = async () => {
       try {
         // Fetch Jobs
-        const jobsRes = await axios.get('http://localhost:9000/openings');
+        const jobsRes = await axiosInstance.get(API_URL.JOB_OPENINGS.GET_JOB_OPENINGS);
         setTotalJobs(jobsRes.data.totalCount || 0);
 
         // Fetch Applications
-        const appsRes = await axios.get('http://localhost:9000/applications');
+        const appsRes = await axiosInstance.get(API_URL.APPLICATIONS.GET_APPLICATION);
         setTotalApplications(appsRes.data.length || 0);
       } catch (error) {
         console.error('Failed to fetch stats:', error);

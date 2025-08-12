@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import { IoIosClose } from 'react-icons/io';
 
-import axios from 'axios';
+import axiosInstance from '../apiconfig/axios';
+import { API_URL } from '../apiconfig/api_url';
+
 
 const CareerJobCard = ({ job }) => {
   const [showModal, setShowModal] = useState(false);
@@ -27,8 +29,8 @@ const CareerJobCard = ({ job }) => {
         submissionData.append('resume', formData.resume);
       }
 
-      const res = await axios.post(
-        'http://localhost:9000/applications',
+      const res = await axiosInstance.post(
+        API_URL.APPLICATIONS.POST_APPLICATION,
         submissionData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },

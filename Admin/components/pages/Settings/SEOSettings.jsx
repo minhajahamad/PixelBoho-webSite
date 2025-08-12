@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+
+import axiosInstance from '@/components/apiconfig/axios';
+import { API_URL } from '@/components/apiconfig/api_url';
 
 import {
   Table,
@@ -41,7 +43,7 @@ export const SEOSettings = () => {
   // Fetch SEO entries
   const getSlugs = async () => {
     try {
-      const res = await axios.get('http://localhost:9000/seo');
+      const res = await axiosInstance.get(API_URL.SEO.GET_ALL_SEO);
       setSeoData(res.data.seoEntries);
       setTotalCount(res.data.totalCount);
     } catch (error) {
@@ -90,7 +92,7 @@ export const SEOSettings = () => {
     setTotalCount(prev => prev - 1);
 
     try {
-      await axios.delete(`http://localhost:9000/seo/${slug}`);
+      await axiosInstance.delete(API_URL.SEO.DELETE_SEO(slug));
       toast.success('SEO entry deleted successfully');
       await getSlugs();
     } catch (error) {

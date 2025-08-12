@@ -17,6 +17,9 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { API_URL } from '@/components/apiconfig/api_url';
+import axiosInstance from '@/components/apiconfig/axios';
+
 export default function BlogSettings() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,7 +36,7 @@ export default function BlogSettings() {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:9000/blog`);
+      const res = await axiosInstance.get(API_URL.BLOG.GET_BLOG);
       const blogsData = Array.isArray(res.data.data) ? res.data.data : [];
       setBlogs(blogsData);
       setTotalCounts(res.data.totalCount || blogsData.length);
@@ -50,7 +53,7 @@ export default function BlogSettings() {
   const onDeleteBlog = async id => {
     if (!window.confirm('Are you sure you want to delete this blog?')) return;
     try {
-      await axios.delete(`http://localhost:9000/blog/${id}`);
+      await axiosInstance.delete(API_URL.BLOG.DELETE_BLOG(id));
       setBlogs(prev => prev.filter(blog => blog._id !== id));
       setTotalCounts(prev => prev - 1);
       toast.success('Blog deleted successfully');
