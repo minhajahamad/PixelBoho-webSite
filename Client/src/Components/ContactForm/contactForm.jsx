@@ -1,9 +1,12 @@
 import React, { forwardRef, useState } from 'react';
 import { Select } from 'antd';
-import axios from 'axios';
+
+import { API_URL } from '../apiconfig/api_url';
+import axiosInstance from '../apiconfig/axios';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -31,7 +34,10 @@ const ContactForm = forwardRef((props, ref) => {
     console.log('Sending data:', messages);
 
     try {
-      const res = await axios.post('http://localhost:9000/messages', messages);
+      const res = await axiosInstance.post(
+        API_URL.MESSAGES.POST_MESSAGE,
+        messages
+      );
       console.log('Response:', res.data);
 
       // ✅ Show toast instead of alert
