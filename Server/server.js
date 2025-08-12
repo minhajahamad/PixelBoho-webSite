@@ -88,6 +88,10 @@ app.get('/sitemap.xml', async (req, res) => {
 const routes = require('./routes/index');
 app.use(routes);
 
+app.get('/', (req, res) => {
+  res.send('Backend server is up and running!');
+});
+
 // 404 handler
 app.use('*', (req, res) => {
   res.status(404).json({ message: 'No Route Found For This Path' });

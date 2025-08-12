@@ -9,10 +9,6 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'react-toastify';
 
-import dynamic from 'next/dynamic';
-import 'react-quill-new/dist/quill.snow.css';
-const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
-
 export const BlogForm = ({
   onClose,
   onBlogCreated,
@@ -204,16 +200,11 @@ export const BlogForm = ({
       </div>
       <div>
         <Label htmlFor="description">Blog Description</Label>
-        <div className="h-[49vh] w-full overflow-y-auto rounded border border-gray-200 bg-white hide-scrollbar">
-          <ReactQuill
-            theme="snow"
-            value={formData.description}
-            onChange={value => handleChange('description', value)}
-            readOnly={isReadOnly}
-            className="h-full"
-            style={{ height: '100%' }}
-          />
-        </div>
+        <textarea
+          value={formData.description}
+          onChange={value => handleChange('description', value)}
+          readOnly={isReadOnly}
+        />
       </div>
 
       {mode !== 'view' && (

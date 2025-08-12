@@ -7,7 +7,7 @@ import { User, Search } from 'lucide-react';
 import { ProfileSettings } from './Settings/ProfileSettings';
 // import { SEOSettings } from "@/components/settings/SEOSettings";
 import { SEOSettings } from './Settings/SEOSettings';
-import BlogSettings from './Settings/BlogSettings';
+import BlogCard from './Settings/BlogSettings';
 export default function Settings() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
@@ -43,7 +43,7 @@ export default function Settings() {
         </TabsContent>
 
         <TabsContent value="blog">
-          <BlogSettings />
+          <BlogCard />
         </TabsContent>
       </Tabs>
     </div>
