@@ -10,8 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'react-toastify';
 
 import dynamic from 'next/dynamic';
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill-new/dist/quill.snow.css';
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export const BlogForm = ({
   onClose,
@@ -207,17 +207,6 @@ export const BlogForm = ({
           value={formData.description}
           onChange={value => handleChange('description', value)}
           readOnly={isReadOnly}
-          modules={{
-            toolbar: [
-              ['bold', 'italic', 'underline', 'strike'],
-              [{ list: 'ordered' }, { list: 'bullet' }],
-              [{ header: [1, 2, 3, false] }],
-              [{ color: [] }, { background: [] }],
-              [{ align: [] }],
-              ['link', 'image'],
-              ['clean'],
-            ],
-          }}
         />
       </div>
 

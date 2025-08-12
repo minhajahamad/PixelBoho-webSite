@@ -110,7 +110,7 @@ export default function BlogSettings() {
                 Add New Blog
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="w-[95vw] max-w-[900px] max-h-[90vh] p-4 md:p-8">
               <DialogHeader>
                 <DialogTitle>
                   {formMode === 'edit' ? 'Edit Blog' : 'Create New Blog'}
