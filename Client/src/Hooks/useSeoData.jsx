@@ -9,14 +9,12 @@ export default function useSeoData(slug) {
 
   useEffect(() => {
     if (!slug) return;
-    console.log('Slug passed:', slug);
 
     axiosInstance
-      .get(`${API_URL.SEO.GET_SEO}/${slug}`)
-      .then(res => res.json())
-      .then(data => {
-        console.log('SEO data from API:', data);
-        setSeoData(data);
+      .get(API_URL.SEO.GET_SEO_BY_SLUG(slug))
+      .then(res => {
+        console.log('SEO data from API:', res.data);
+        setSeoData(res.data);
       })
       .catch(err => console.error('SEO Fetch Error:', err));
   }, [slug]);

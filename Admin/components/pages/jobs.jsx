@@ -4,6 +4,10 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   Table,
   TableBody,
@@ -40,22 +44,37 @@ export function Jobs() {
 
   //Fetch job
   const [totalJobCount, setTotalJobCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const getJobOpenings = async () => {
     try {
+      setLoading(true);
       const res = await axiosInstance.get(
         API_URL.JOB_OPENINGS.GET_JOB_OPENINGS
       );
       setTotalJobCount(res.data.totalCount);
-      const fetchedJobs = (res.data.openings || []).map(job => ({
-        ...job,
-        id: job._id,
-        postedDate: new Date(job.createdAt).toISOString().split('T')[0],
-        // status: 'Active',
-      }));
+      const fetchedJobs = (res.data.openings || [])
+        .map(job => {
+          const date = new Date(job.createdAt);
+          const formattedDate = date.toLocaleString('en-IN', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+          });
+          return {
+            ...job,
+            id: job._id,
+            createdAt: job.createdAt,
+            postedDate: formattedDate,
+          };
+        })
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setJobs(fetchedJobs);
     } catch (error) {
       console.error('Error fetching jobs:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,9 +105,10 @@ export function Jobs() {
     try {
       await axiosInstance.delete(API_URL.JOB_OPENINGS.DELETE_JOB_OPENINGS(id));
       setJobs(jobs.filter(job => job.id !== id));
+      toast.success('Job deleted successfully');
     } catch (error) {
       console.error('Failed to delete job:', error);
-      alert('Error deleting job');
+      toast.error('Error deleting job');
     }
   };
 
@@ -119,7 +139,8 @@ export function Jobs() {
         e.preventDefault();
         return;
       }
-      e.preventDefault();
+
+      setSubmitting(true);
 
       const jobData = {
         ...formData,
@@ -138,19 +159,25 @@ export function Jobs() {
             API_URL.JOB_OPENINGS.UPDATE_JOB_OPENINGS(job.id),
             jobData
           );
-          await getJobOpenings(); // Refresh with updated data
+          await getJobOpenings();
+          toast.success('Job edited successfully'); // Refresh with updated data
         } else {
           await axiosInstance.post(
             API_URL.JOB_OPENINGS.POST_JOB_OPENINGS,
             jobData
           );
           await getJobOpenings(); // Refresh jobs after new one added
+          toast.success('Job posted successfully');
+
+          // Reset form data only after successful creation
         }
 
         onClose();
       } catch (err) {
         console.error('Error submitting job:', err);
-        alert('Failed to create job.');
+        toast.error('Failed to create job.');
+      } finally {
+        setSubmitting(false); // hide loader
       }
     };
 
@@ -268,9 +295,16 @@ export function Jobs() {
             </Button>
             <Button
               type="submit"
+              disabled={submitting}
               className="bg-[#8528FF] hover:bg-[#8528FF]/90"
             >
-              {job ? 'Update Job' : 'Create Job'}
+              {submitting ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : job ? (
+                'Update Job'
+              ) : (
+                'Create Job'
+              )}{' '}
             </Button>
           </div>
         )}
@@ -279,150 +313,171 @@ export function Jobs() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Job Openings</h1>
-          <p className="text-gray-600">
-            Manage your job postings and track applications
-          </p>
+    <>
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Job Openings</h1>
+            <p className="text-gray-600">
+              Manage your job postings and track applications
+            </p>
+          </div>
+
+          <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-[#8528FF] hover:bg-[#8528FF]/90 cursor-pointer group">
+                <Plus className="mr-2 h-4 w-4 group-hover:scale-115 " />
+                Add New Job
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>Create New Job Opening</DialogTitle>
+              </DialogHeader>
+              <JobForm onClose={() => setIsAddModalOpen(false)} />
+            </DialogContent>
+          </Dialog>
         </div>
 
-        <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-[#8528FF] hover:bg-[#8528FF]/90 cursor-pointer group">
-              <Plus className="mr-2 h-4 w-4 group-hover:scale-115 " />
-              Add New Job
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Create New Job Opening</DialogTitle>
-            </DialogHeader>
-            <JobForm onClose={() => setIsAddModalOpen(false)} />
-          </DialogContent>
-        </Dialog>
-      </div>
+        {editingJob && (
+          <Dialog
+            open={!!editingJob}
+            onOpenChange={open => !open && setEditingJob(null)}
+          >
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>Edit Job Opening</DialogTitle>
+              </DialogHeader>
+              <JobForm job={editingJob} onClose={() => setEditingJob(null)} />
+            </DialogContent>
+          </Dialog>
+        )}
 
-      {editingJob && (
+        {/* Search Section */}
+        <div className="flex space-x-5">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Input
+              placeholder="Search jobs by title or category..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              className="pl-10 "
+            />
+          </div>
+        </div>
+
+        {/* Table */}
+        <Card className="max-h-[65vh] overflow-y-scroll">
+          <CardHeader>
+            <CardTitle>All Job Openings ({totalJobCount})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Job Title</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Experience</TableHead>
+                  <TableHead>Posted Date</TableHead>
+                  <TableHead>Applications</TableHead>
+                  {/* <TableHead>Status</TableHead> */}
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={6}
+                      className="text-center py-6 text-gray-500"
+                    >
+                      Loading.....
+                    </TableCell>
+                  </TableRow>
+                ) : filteredJobs.length > 0 ? (
+                  filteredJobs.map(job => (
+                    <TableRow key={job.id}>
+                      <TableCell className="font-medium">{job.title}</TableCell>
+                      <TableCell>{job.category}</TableCell>
+                      <TableCell>{job.experience}</TableCell>
+                      <TableCell>{job.postedDate}</TableCell>
+                      <TableCell>{job.applications}</TableCell>
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="cursor-pointer hover:text-[#8528FF]"
+                            onClick={() => handleViewJob(job)}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setEditingJob(job)}
+                            className="cursor-pointer hover:text-[#8528FF]"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeleteJob(job.id)}
+                            className="text-red-600 hover:text-red-700 cursor-pointer"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={6}
+                      className="text-center py-6 text-gray-500"
+                    >
+                      No jobs found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* View Job Modal */}
         <Dialog
-          open={!!editingJob}
-          onOpenChange={open => !open && setEditingJob(null)}
+          open={!!viewingJob}
+          onOpenChange={open => {
+            if (!open) handleCloseViewJob();
+          }}
         >
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Edit Job Opening</DialogTitle>
+              <DialogTitle>View Job Opening</DialogTitle>
             </DialogHeader>
-            <JobForm job={editingJob} onClose={() => setEditingJob(null)} />
+            {viewingJob && (
+              <JobForm
+                job={viewingJob}
+                onClose={handleCloseViewJob}
+                mode="view"
+              />
+            )}
           </DialogContent>
         </Dialog>
-      )}
-
-      {/* Search Section */}
-      <div className="flex space-x-5">
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-          <Input
-            placeholder="Search jobs by title or category..."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            className="pl-10 "
-          />
-        </div>
       </div>
-
-      {/* Table */}
-      <Card className="max-h-[65vh] overflow-y-scroll">
-        <CardHeader>
-          <CardTitle>All Job Openings ({totalJobCount})</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Job Title</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Experience</TableHead>
-                <TableHead>Posted Date</TableHead>
-                <TableHead>Applications</TableHead>
-                {/* <TableHead>Status</TableHead> */}
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredJobs.length > 0 ? (
-                filteredJobs.map(job => (
-                  <TableRow key={job.id}>
-                    <TableCell className="font-medium">{job.title}</TableCell>
-                    <TableCell>{job.category}</TableCell>
-                    <TableCell>{job.experience}</TableCell>
-                    <TableCell>{job.postedDate}</TableCell>
-                    <TableCell>{job.applications}</TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="cursor-pointer hover:text-[#8528FF]"
-                          onClick={() => handleViewJob(job)}
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setEditingJob(job)}
-                          className="cursor-pointer hover:text-[#8528FF]"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDeleteJob(job.id)}
-                          className="text-red-600 hover:text-red-700 cursor-pointer"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={6}
-                    className="text-center py-6 text-gray-500"
-                  >
-                    No jobs found
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-
-      {/* View Job Modal */}
-      <Dialog
-        open={!!viewingJob}
-        onOpenChange={open => {
-          if (!open) handleCloseViewJob();
-        }}
-      >
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>View Job Opening</DialogTitle>
-          </DialogHeader>
-          {viewingJob && (
-            <JobForm
-              job={viewingJob}
-              onClose={handleCloseViewJob}
-              mode="view"
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-    </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={true}
+        closeOnClick
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </>
   );
 }

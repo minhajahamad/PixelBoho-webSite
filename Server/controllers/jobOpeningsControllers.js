@@ -14,7 +14,7 @@ module.exports.postOpenings = async (req, res) => {
 module.exports.getOpenings = async (req, res) => {
   try {
     // Fetch jobs
-    const openings = await Openings.find();
+    const openings = await Openings.find().sort({ createdAt: -1 });
 
     // Count applications for each job
     const applicationsCount = await Application.aggregate([

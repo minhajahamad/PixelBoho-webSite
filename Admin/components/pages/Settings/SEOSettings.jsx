@@ -39,16 +39,20 @@ export const SEOSettings = () => {
   const [editingSeo, setEditingSeo] = useState(null);
 
   const [viewingSeo, setViewingSeo] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Fetch SEO entries
   const getSlugs = async () => {
     try {
+      setLoading(true);
       const res = await axiosInstance.get(API_URL.SEO.GET_ALL_SEO);
       setSeoData(res.data.seoEntries);
       setTotalCount(res.data.totalCount);
     } catch (error) {
       console.error('Failed to fetch slugs:', error);
       toast.error('Failed to load SEO entries');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -165,7 +169,16 @@ export const SEOSettings = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {seoData.length > 0 ? (
+              {loading ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center py-6 text-gray-500"
+                  >
+                    Loading SEO's...
+                  </TableCell>
+                </TableRow>
+              ) : seoData.length > 0 ? (
                 seoData.map(seo => (
                   <TableRow key={seo._id}>
                     <TableCell>

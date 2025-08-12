@@ -33,14 +33,18 @@ export function Messages({ setUnreadCount, unreadCount }) {
   const [messages, setMessages] = useState([]);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [viewingMessage, setViewingMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // ✅ Fetch all messages
   const getMessages = async () => {
     try {
+      setLoading(true);
       const res = await axiosInstance.get(API_URL.MESSAGES.GET_MESSAGE);
       setMessages(res.data);
     } catch (error) {
       console.error('Error fetching messages:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,13 +83,15 @@ export function Messages({ setUnreadCount, unreadCount }) {
   };
 
   // ✅ Filter for search
-  const filteredMessages = messages.filter(message =>
-    Object.values(message).some(
-      value =>
-        typeof value === 'string' &&
-        value.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredMessages = messages
+    .filter(message =>
+      Object.values(message).some(
+        value =>
+          typeof value === 'string' &&
+          value.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     )
-  );
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   // Handler to open view modal
   const handleViewMessage = message => {
@@ -207,7 +213,16 @@ export function Messages({ setUnreadCount, unreadCount }) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredMessages.length > 0 ? (
+              {loading ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center py-6 text-gray-500"
+                  >
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              ) : filteredMessages.length > 0 ? (
                 filteredMessages.map(message => (
                   <TableRow
                     key={message._id}

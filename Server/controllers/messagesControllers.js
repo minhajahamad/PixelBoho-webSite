@@ -13,7 +13,7 @@ module.exports.postMessage = async (req, res) => {
 
 module.exports.getMessage = async (req, res) => {
   try {
-    const dbResonse = await Message.find();
+    const dbResonse = await Message.find().sort({ createdAt: -1 });
     res.status(201).json(dbResonse);
   } catch (e) {
     console.error(e);

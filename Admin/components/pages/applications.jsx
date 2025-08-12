@@ -50,13 +50,21 @@ export function Applications() {
   const [applications, setApplications] = useState([]);
   const [jobs, setJobs] = useState([]); // ✅ New state for job list
   const [viewingApplication, setViewingApplication] = useState(null); //state for viewing application
+  const [loading, setLoading] = useState(false);
 
   const getApplication = async () => {
     try {
+      setLoading(true);
       const res = await axiosInstance.get(API_URL.APPLICATIONS.GET_APPLICATION);
-      setApplications(res.data);
+      const sortedApplications = (res.data || []).sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+
+      setApplications(sortedApplications);
     } catch (error) {
       console.error('Failed to fetch application:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -325,7 +333,16 @@ export function Applications() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredApplications.length > 0 ? (
+              {loading ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center py-6 text-gray-500"
+                  >
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              ) : filteredApplications.length > 0 ? (
                 filteredApplications.map(application => (
                   <TableRow key={application.id}>
                     <TableCell>

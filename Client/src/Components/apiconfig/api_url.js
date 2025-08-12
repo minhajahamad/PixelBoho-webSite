@@ -9,6 +9,6 @@ export const API_URL = {
     GET_JOB_OPENINGS: '/openings',
   },
   SEO: {
-    GET_SEO: '/seo',
+    GET_SEO_BY_SLUG: slug => `/seo/${slug}`,
   },
 };
