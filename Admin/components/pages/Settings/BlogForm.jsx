@@ -132,7 +132,7 @@ export const BlogForm = ({
   return (
     <form
       onSubmit={mode === 'view' ? e => e.preventDefault() : handleSubmit}
-      className="space-y-4 max-h-[70vh] overflow-y-auto pr-2"
+      className="space-y-4 "
     >
       <div className="flex flex-col gap-2">
         <Label htmlFor="image" className="font-semibold text-gray-700">
@@ -176,14 +176,16 @@ export const BlogForm = ({
         </div>
 
         {/* Image preview */}
-        {mode === 'edit' && blog?.image && !imagePreview && (
-          <img
-            src={blog.image}
-            alt="Current blog"
-            className="mt-2 max-h-40 w-fit rounded-md shadow-md object-contain border border-gray-200"
-          />
-        )}
-        {imagePreview && (
+        {(mode === 'edit' || mode === 'view') &&
+          blog?.image &&
+          !imagePreview && (
+            <img
+              src={blog.image}
+              alt="Current blog"
+              className="mt-2 max-h-40 w-fit rounded-md shadow-md object-contain border border-gray-200"
+            />
+          )}
+        {mode !== 'view' && imagePreview && (
           <img
             src={imagePreview}
             alt="Selected preview"
@@ -202,16 +204,20 @@ export const BlogForm = ({
       </div>
       <div>
         <Label htmlFor="description">Blog Description</Label>
-        <ReactQuill
-          theme="snow"
-          value={formData.description}
-          onChange={value => handleChange('description', value)}
-          readOnly={isReadOnly}
-        />
+        <div className="h-[49vh] w-full overflow-y-auto rounded border border-gray-200 bg-white hide-scrollbar">
+          <ReactQuill
+            theme="snow"
+            value={formData.description}
+            onChange={value => handleChange('description', value)}
+            readOnly={isReadOnly}
+            className="h-full"
+            style={{ height: '100%' }}
+          />
+        </div>
       </div>
 
       {mode !== 'view' && (
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-2 mt-6">
           <Button variant="outline" onClick={onClose} type="button">
             Cancel
           </Button>

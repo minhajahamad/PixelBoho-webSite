@@ -10,25 +10,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2, X, Eye } from 'lucide-react';
 import { BlogForm } from './BlogForm';
 import axios from 'axios';
-
-// Import react-toastify
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function BlogSettings() {
-  const [blogs, setBlogs] = useState([]); // ✅ start as empty array
+  const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalCounts, setTotalCounts] = useState(0);
 
@@ -44,11 +34,8 @@ export default function BlogSettings() {
     try {
       setLoading(true);
       const res = await axios.get(`http://localhost:9000/blog`);
-
-      // Ensure we get an array
       const blogsData = Array.isArray(res.data.data) ? res.data.data : [];
       setBlogs(blogsData);
-      // Set count from API or fallback to array length
       setTotalCounts(res.data.totalCount || blogsData.length);
     } catch (err) {
       console.error('Error fetching blogs:', err);
@@ -74,7 +61,7 @@ export default function BlogSettings() {
   };
 
   const handleBlogCreated = newBlog => {
-    setBlogs(prev => [newBlog, ...prev]); // add newest first
+    setBlogs(prev => [newBlog, ...prev]);
     setTotalCounts(prev => prev + 1);
     toast.success('Blog created successfully!');
   };
@@ -98,34 +85,22 @@ export default function BlogSettings() {
     setOpen(true);
   };
 
+  // New function for view mode
+  const openViewForm = blog => {
+    setFormMode('view'); // <= set mode to 'view'
+    setSelectedBlog(blog);
+    setOpen(true);
+  };
+
   return (
     <>
       <Card className="space-y-4">
         <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <CardTitle>All Blog's ({totalCounts}) </CardTitle>
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={openCreateForm}>
-                <Plus className="w-4 h-4 mr-2" />
-                Add New Blog
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="w-[95vw] max-w-[900px] max-h-[90vh] p-4 md:p-8">
-              <DialogHeader>
-                <DialogTitle>
-                  {formMode === 'edit' ? 'Edit Blog' : 'Create New Blog'}
-                </DialogTitle>
-              </DialogHeader>
-              {/* Add your blog form here */}
-              <BlogForm
-                mode={formMode}
-                blog={selectedBlog}
-                onClose={() => setOpen(false)}
-                onBlogCreated={handleBlogCreated}
-                onBlogUpdated={handleBlogUpdated}
-              />
-            </DialogContent>
-          </Dialog>
+          <CardTitle>All Blog&apos;s ({totalCounts})</CardTitle>
+          <Button onClick={openCreateForm}>
+            <Plus className="w-4 h-4 mr-2" />
+            Add New Blog
+          </Button>
         </CardHeader>
 
         {loading ? (
@@ -149,7 +124,12 @@ export default function BlogSettings() {
                       <TableCell className="font-medium">
                         {blog.title}
                       </TableCell>
-                      <TableCell>{blog.description}</TableCell>
+                      <TableCell>
+                        <div
+                          className="line-clamp-3 prose prose-sm sm:prose lg:prose-lg max-w-none"
+                          dangerouslySetInnerHTML={{ __html: blog.description }}
+                        />
+                      </TableCell>
                       <TableCell>
                         {blog.image ? (
                           <img
@@ -167,6 +147,14 @@ export default function BlogSettings() {
                           : '—'}
                       </TableCell>
                       <TableCell>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => openViewForm(blog)}
+                          className="cursor-pointer hover:text-[#8528FF]"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"
@@ -201,6 +189,32 @@ export default function BlogSettings() {
           </CardContent>
         )}
       </Card>
+
+      {/* Custom Modal */}
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hide-scrollbar">
+          <div className="bg-white w-[95vw] max-w-[1100px] h-[90vh] rounded-lg p-6 overflow-y-auto">
+            <div className="flex justify-between items-center border-b pb-3 mb-4">
+              <h2 className="text-xl font-semibold">
+                {formMode === 'edit' ? 'Edit Blog' : 'Create New Blog'}
+              </h2>
+              <button
+                onClick={() => setOpen(false)}
+                className="text-gray-500 hover:text-gray-700 text-xl cursor-pointer"
+              >
+                <X />
+              </button>
+            </div>
+            <BlogForm
+              mode={formMode}
+              blog={selectedBlog}
+              onClose={() => setOpen(false)}
+              onBlogCreated={handleBlogCreated}
+              onBlogUpdated={handleBlogUpdated}
+            />
+          </div>
+        </div>
+      )}
 
       <ToastContainer
         position="bottom-right"
