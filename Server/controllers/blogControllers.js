@@ -14,6 +14,22 @@ module.exports.getBlog = async (req, res) => {
   }
 };
 
+module.exports.getBlogById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const dbResponse = await Blog.findById(id);
+
+    if (!dbResponse) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+
+    res.status(201).json({ data: dbResponse });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message, error: true });
+  }
+};
+
 module.exports.postBlog = async (req, res) => {
   try {
     const baseUrl = `${req.protocol}://${req.get('host')}`;
@@ -33,34 +49,37 @@ module.exports.postBlog = async (req, res) => {
   }
 };
 
-
 module.exports.updateBlog = async (req, res) => {
-    try {
-      const { id } = req.params;
-  
-      const oldBlog = await Blog.findById(id);
-      if (!oldBlog) return res.status(404).json({ message: 'Blog not found' });
-  
-      const baseUrl = `${req.protocol}://${req.get('host')}`;
-      const imageUrl = req.file ? `${baseUrl}/uploads/blogs/${req.file.filename}` : undefined;
-  
-      const updateData = { ...req.body };
-      if (imageUrl) {
-        deleteFile(oldBlog.image);
-        updateData.image = imageUrl;
-      }
-  
-      const dbResponse = await Blog.findByIdAndUpdate(id, updateData, { new: true });
-  
-      res.status(201).json({
-        message: 'Blog updated successfully',
-        data: dbResponse,
-      });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: e.message, error: true });
+  try {
+    const { id } = req.params;
+
+    const oldBlog = await Blog.findById(id);
+    if (!oldBlog) return res.status(404).json({ message: 'Blog not found' });
+
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const imageUrl = req.file
+      ? `${baseUrl}/uploads/blogs/${req.file.filename}`
+      : undefined;
+
+    const updateData = { ...req.body };
+    if (imageUrl) {
+      deleteFile(oldBlog.image);
+      updateData.image = imageUrl;
     }
-  };
+
+    const dbResponse = await Blog.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+
+    res.status(201).json({
+      message: 'Blog updated successfully',
+      data: dbResponse,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message, error: true });
+  }
+};
 
 module.exports.deleteBlog = async (req, res) => {
   try {

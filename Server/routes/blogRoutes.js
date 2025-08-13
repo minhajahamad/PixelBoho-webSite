@@ -5,6 +5,7 @@ const {
   postBlog,
   updateBlog,
   deleteBlog,
+  getBlogById
 } = require('../controllers/blogControllers');
 
 const router = express.Router();
@@ -21,6 +22,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 router.get('/', getBlog);
+router.get('/:id', getBlogById);
 router.post('/', upload.single('image'), postBlog);
 router.patch('/:id',upload.single('image'), updateBlog);
 router.delete('/:id', deleteBlog);

@@ -145,6 +145,7 @@ export function Navbar({ activeTab, setActiveTab, unreadCount }) {
                       )}
                     </AvatarFallback>
                   </Avatar>
+                  {/* <p>Profile</p> */}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent

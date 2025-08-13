@@ -11,4 +11,7 @@ export const API_URL = {
   SEO: {
     GET_SEO_BY_SLUG: slug => `/seo/${slug}`,
   },
+  BLOG:{
+    GET_BLOG:'/blog'
+  }
 };

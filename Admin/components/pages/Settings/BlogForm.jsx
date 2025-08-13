@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'react-toastify';
-
 import { API_URL } from '@/components/apiconfig/api_url';
 import axiosInstance from '@/components/apiconfig/axios';
 
@@ -121,17 +120,31 @@ export const BlogForm = ({
     }
   };
 
-  // Disable submit button if invalid (optional UX improvement)
-  const isSubmitDisabled =
-    !formData.title.trim() ||
-    !formData.description.trim() ||
-    (mode === 'create' && !formData.image);
-
   return (
     <form
       onSubmit={mode === 'view' ? e => e.preventDefault() : handleSubmit}
-      className="space-y-4 "
+      className="space-y-4 max-h-[70vh] overflow-y-auto pr-2"
     >
+      <div>
+        <Label htmlFor="title">Blog Title</Label>
+        <Input
+          id="title"
+          value={formData.title}
+          onChange={e => handleChange('title', e.target.value)}
+          disabled={isReadOnly}
+        />
+      </div>
+      <div>
+        <Label htmlFor="description">Blog Description</Label>
+        <Textarea
+          id="description"
+          rows={4}
+          value={formData.description}
+          onChange={e => handleChange('description', e.target.value)}
+          disabled={isReadOnly}
+        />
+      </div>
+
       <div className="flex flex-col gap-2">
         <Label htmlFor="image" className="font-semibold text-gray-700">
           Blog Image
@@ -174,16 +187,14 @@ export const BlogForm = ({
         </div>
 
         {/* Image preview */}
-        {(mode === 'edit' || mode === 'view') &&
-          blog?.image &&
-          !imagePreview && (
-            <img
-              src={blog.image}
-              alt="Current blog"
-              className="mt-2 max-h-40 w-fit rounded-md shadow-md object-contain border border-gray-200"
-            />
-          )}
-        {mode !== 'view' && imagePreview && (
+        {mode === 'edit' && blog?.image && !imagePreview && (
+          <img
+            src={blog.image}
+            alt="Current blog"
+            className="mt-2 max-h-40 w-fit rounded-md shadow-md object-contain border border-gray-200"
+          />
+        )}
+        {imagePreview && (
           <img
             src={imagePreview}
             alt="Selected preview"
@@ -191,26 +202,9 @@ export const BlogForm = ({
           />
         )}
       </div>
-      <div>
-        <Label htmlFor="title">Blog Title</Label>
-        <Input
-          id="title"
-          value={formData.title}
-          onChange={e => handleChange('title', e.target.value)}
-          disabled={isReadOnly}
-        />
-      </div>
-      <div>
-        <Label htmlFor="description">Blog Description</Label>
-        <textarea
-          value={formData.description}
-          onChange={value => handleChange('description', value)}
-          readOnly={isReadOnly}
-        />
-      </div>
 
       {mode !== 'view' && (
-        <div className="flex justify-end gap-2 mt-6">
+        <div className="flex justify-end gap-2">
           <Button variant="outline" onClick={onClose} type="button">
             Cancel
           </Button>
