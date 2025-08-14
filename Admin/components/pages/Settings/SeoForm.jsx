@@ -30,7 +30,7 @@ export const SEOForm = ({ onClose, onSeoCreated, onSeoUpdated, seo, mode }) => {
           robots: seo.robots || '',
           locale: seo.locale || '',
           sitemapPriority: seo.sitemapPriority || '',
-          changeFrequency: seo.changeFrequency || '',
+          changeFreq: seo.changeFreq || '',
           ogTitle: seo.ogTitle || '',
           ogDescription: seo.ogDescription || '',
           ogImage: seo.ogImage || '',
@@ -60,7 +60,7 @@ export const SEOForm = ({ onClose, onSeoCreated, onSeoUpdated, seo, mode }) => {
           robots: '',
           locale: '',
           sitemapPriority: '',
-          changeFrequency: '',
+          changeFreq: '',
           ogTitle: '',
           ogDescription: '',
           ogImage: '',
@@ -87,8 +87,18 @@ export const SEOForm = ({ onClose, onSeoCreated, onSeoUpdated, seo, mode }) => {
     setLoading(true);
     try {
       if (mode === 'edit') {
+        console.log('SEO:', seo);
+        console.log('SEO.slug:', seo?.slug, typeof seo?.slug);
+        console.log('FormData.slug:', formData?.slug, typeof formData?.slug);
+        console.log('Slug to send:', slugString);
+
+        if (!slugString) {
+          alert('Slug is missing. Cannot update SEO entry.');
+          setLoading(false);
+          return;
+        }
         const res = await axiosInstance.patch(
-          API_URL.SEO.UPDATE_SEO(slug),
+          API_URL.SEO.UPDATE_SEO(formData.slug),
           formData
         );
         onSeoUpdated(res.data.data);
@@ -219,11 +229,11 @@ export const SEOForm = ({ onClose, onSeoCreated, onSeoUpdated, seo, mode }) => {
         <div>
           <Label>Change Frequency</Label>
           {isReadOnly ? (
-            <Input value={formData.changeFrequency} disabled />
+            <Input value={formData.changeFreq} disabled />
           ) : (
             <Select
-              value={formData.changeFrequency}
-              onValueChange={value => handleChange('changeFrequency', value)}
+              value={formData.changeFreq}
+              onValueChange={value => handleChange('changeFreq', value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select frequency" />

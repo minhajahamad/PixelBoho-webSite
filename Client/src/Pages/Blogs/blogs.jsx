@@ -9,18 +9,20 @@ import { FaArrowRight } from 'react-icons/fa';
 
 import 'react-quill/dist/quill.snow.css';
 
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+import axiosInstance from '../../Components/apiconfig/axios';
+import { API_URL } from '../../Components/apiconfig/api_url';
+
 const Blogs = () => {
-const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const seoData = useSeoData('blogs');
 
   const [blogs, setBlogs] = useState([]);
   const getBlogs = async () => {
     try {
-      const res = await axios.get('http://localhost:9000/blog');
+      const res = await axiosInstance.get(API_URL.BLOG.GET_BLOG);
       setBlogs(res.data.data || []);
     } catch (error) {
       console.error('Fetching blogs error', error);
@@ -45,32 +47,30 @@ const navigate=useNavigate()
               <div
                 key={index}
                 onClick={() => navigate(`/blogs/${blog._id}`)}
-                className="bg-[#101010] border border-[#dedede33] rounded-md flex flex-col cursor-pointer group overflow-hidden"
+                className="bg-[#101010] border border-[#dedede33] rounded-md flex flex-col cursor-pointer group overflow-hidden h-[450px]"
               >
-                <div className="w-full h-[65%] aspect-video overflow-hidden">
+                <div className="w-full h-[250px] overflow-hidden flex-shrink-0">
                   <img
                     src={blog.image}
                     alt={blog.title || 'Blog image'}
                     className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300 ease-in-out"
                   />
                 </div>
-                <div className="p-5 flex flex-col flex-grow">
-                  <p className="text-lg sm:text-xl font-semibold text-white group-hover:text-[#8528FF] transition-all duration-300 ease-in-out line-clamp-2">
-                    {blog.title}
-                  </p>
-                  <div
-                    className="font-light text-[#E2E2E2] text-sm sm:text-base xl:text-[18px] line-clamp-3  prose prose-sm sm:prose lg:prose-lg "
-                    dangerouslySetInnerHTML={{ __html: blog.description }}
-                  />
+                <div className="flex-1 p-5 flex flex-col justify-between min-h-0">
+                  <div className="flex-1">
+                    <p className="text-lg sm:text-xl font-semibold text-white group-hover:text-[#8528FF] transition-all duration-300 ease-in-out mb-3 leading-tight">
+                      {blog.title}
+                    </p>
+                    <p className="font-light text-[#E2E2E2] text-sm sm:text-base xl:text-[18px] line-clamp-3 leading-relaxed">
+                      {blog.description}
+                    </p>
+                  </div>
 
-                  {/* Spacer pushes "Read More" to bottom */}
-                  <div className="flex-grow" />
-
-                  <div className="mt-5 flex gap-2 items-center justify-end hover:text-[#8528FF] transition-all duration-300 ease-in-out">
-                    <p className="text-[#ffff] font-light cursor-pointer hover:text-[#8528FF] transition-all duration-300 ease-in-out ">
+                  <div className="mt-5 flex gap-2 items-center justify-end group-hover:text-[#8528FF] transition-all duration-300 ease-in-out flex-shrink-0">
+                    <p className="text-white font-light cursor-pointer group-hover:text-[#8528FF] transition-all duration-300 ease-in-out">
                       Read More
                     </p>
-                    <FaArrowRight />
+                    <FaArrowRight className="text-white group-hover:text-[#8528FF] transition-all duration-300 ease-in-out" />
                   </div>
                 </div>
               </div>

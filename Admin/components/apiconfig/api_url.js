@@ -14,7 +14,7 @@ export const API_URL = {
     GET_ALL_SEO: '/seo',
     GET_SEO_BY_SLUG: slug => `/seo/${slug}`,
     POST_SEO: '/seo',
-    UPDATE_SEO: slug => `/seo/${slug}`,
+    UPDATE_SEO: slug => `/seo/${encodeURIComponent(slug)}`,
     DELETE_SEO: slug => `/seo/${slug}`,
   },
   MESSAGES: {
